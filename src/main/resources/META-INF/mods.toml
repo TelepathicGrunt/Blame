@@ -1,0 +1,19 @@
+modLoader="javafml" #mandatory
+loaderVersion="[28,)" #mandatory (28 is current forge version)
+issueTrackerURL="http://my.issue.tracker/" #optional
+license="GNU Lesser General Public License v3.0"
+
+[[mods]] #mandatory
+modId="blame" #mandatory
+version="${file.jarVersion}" #mandatory
+displayName="Blame!" #mandatory
+#displayURL="http://example.com/" #optional
+#logoFile="blame.png" #optional
+credits="inslkhufdnjkfdnsljkfdnbhfsjbnlgkj" #optional
+authors="TelepathicGrunt" #optional
+description='''
+Crashing due to a feature or structure from a mod? Don't worry!
+This mod will find exactly which feature/structure and biome the crash is occurring from!
+
+TIME TO PLACE SOME BLAME!!!
+'''

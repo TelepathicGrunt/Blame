@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.telepathicgrunt.blame.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "blame.refmap.json",
+  "mixins": [
+    "BiomeMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}
