@@ -1,5 +1,8 @@
 package com.telepathicgrunt.blame.mixin;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mojang.serialization.JsonOps;
 import com.telepathicgrunt.blame.Blame;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.util.SharedSeedRandom;
@@ -44,14 +47,16 @@ public class BiomeMixin {
 								   Exception exception, CrashReport crashreport)
 	{
 		DynamicRegistries dynamicRegistries = worldGenRegion.getWorld().getWorldServer().func_241828_r();
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-		crashreport.makeCategory("Configuredfeature")
-				.addDetail("Id", Objects.requireNonNull(dynamicRegistries.func_243612_b(Registry.field_243552_au).getKey(configuredfeature)))
-				.addDetail("Description", configuredfeature::toString);
-
-		crashreport.makeCategory("Biome")
-				.addDetail("Id", Objects.requireNonNull(dynamicRegistries.func_243612_b(Registry.BIOME_KEY).getKey((Biome)(Object)this)))
-				.addDetail("Description", ((Biome)(Object)this)::toString);
+		crashreport.getCategory()
+				.addDetail("\n****************** Blame Report ******************",
+					"\n\n ConfiguredFeature Registry Name : " + Objects.requireNonNull(dynamicRegistries.func_243612_b(Registry.field_243552_au).getKey(configuredfeature)) +
+					"\n Biome Registry Name : " + Objects.requireNonNull(dynamicRegistries.func_243612_b(Registry.BIOME_KEY).getKey((Biome)(Object)this)) +
+					"\n\n JSON info : " +
+							(ConfiguredFeature.field_236264_b_.encode(() -> configuredfeature, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left().isPresent()
+									? gson.toJson(ConfiguredFeature.field_236264_b_.encode(() -> configuredfeature, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left().get())
+									: " failed to get json.") + "\n\n");
 
 		Blame.LOGGER.log(Level.ERROR, crashreport.getCompleteReport());
 	}
@@ -74,14 +79,11 @@ public class BiomeMixin {
 	{
 		DynamicRegistries dynamicRegistries = worldGenRegion.getWorld().getWorldServer().func_241828_r();
 
-		crashreport.makeCategory("Structure")
-				.addDetail("Id", Objects.requireNonNull(dynamicRegistries.func_243612_b(Registry.STRUCTURE_FEATURE_KEY).getKey(structure)))
-				.addDetail("Description", structure::toString)
-				.addDetail("Description", structure::getStructureName);
-
-		crashreport.makeCategory("Biome")
-				.addDetail("Id", Objects.requireNonNull(dynamicRegistries.func_243612_b(Registry.BIOME_KEY).getKey((Biome)(Object)this)))
-				.addDetail("Description", ((Biome)(Object)this)::toString);
+		crashreport.getCategory()
+				.addDetail("\n****************** Blame Report ******************",
+				"\n\n Structure Name : " + structure.getStructureName() +
+				"\n Structure Registry Name : " + Objects.requireNonNull(dynamicRegistries.func_243612_b(Registry.STRUCTURE_FEATURE_KEY).getKey(structure)) +
+				"\n Biome Registry Name : " + Objects.requireNonNull(dynamicRegistries.func_243612_b(Registry.BIOME_KEY).getKey((Biome)(Object)this)) + "\n\n");
 
 		Blame.LOGGER.log(Level.ERROR, crashreport.getCompleteReport());
 	}
