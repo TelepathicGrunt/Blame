@@ -2,9 +2,11 @@ package com.telepathicgrunt.blame.mixin;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import com.telepathicgrunt.blame.Blame;
 import net.minecraft.crash.CrashReport;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.DynamicRegistries;
@@ -27,8 +29,18 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 
+/* @author - TelepathicGrunt
+ *
+ * Two small mixins to make crashes during feature gen and structure gen now
+ * output info about the feature, structure, and biome into the crashlog and
+ * into the latest.log. Basically it needs more info as it is impossible
+ * to find the broken feature before.
+ *
+ * LGPLv3
+ */
 @Mixin(Biome.class)
 public class BiomeMixin {
 	/**
@@ -49,15 +61,18 @@ public class BiomeMixin {
 		DynamicRegistries dynamicRegistries = worldGenRegion.getWorld().getWorldServer().func_241828_r();
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+		ResourceLocation configuredFeatureID = dynamicRegistries.func_243612_b(Registry.field_243552_au).getKey(configuredfeature);
+		ResourceLocation biomeID = dynamicRegistries.func_243612_b(Registry.BIOME_KEY).getKey((Biome)(Object)this);
+		Optional<JsonElement> configuredFeatureJSON = ConfiguredFeature.field_236264_b_.encode(() -> configuredfeature, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left();
+
+		// Add extra info to the crash report file.
 		crashreport.getCategory()
 				.addDetail("\n****************** Blame Report ******************",
-					"\n\n ConfiguredFeature Registry Name : " + Objects.requireNonNull(dynamicRegistries.func_243612_b(Registry.field_243552_au).getKey(configuredfeature)) +
-					"\n Biome Registry Name : " + Objects.requireNonNull(dynamicRegistries.func_243612_b(Registry.BIOME_KEY).getKey((Biome)(Object)this)) +
-					"\n\n JSON info : " +
-							(ConfiguredFeature.field_236264_b_.encode(() -> configuredfeature, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left().isPresent()
-									? gson.toJson(ConfiguredFeature.field_236264_b_.encode(() -> configuredfeature, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left().get())
-									: " failed to get json.") + "\n\n");
+					"\n\n ConfiguredFeature Registry Name : " + (configuredFeatureID != null ? configuredFeatureID : "Has no identifier as it was not registered... go yell at the mod owner when you find them! lol") +
+						"\n Biome Registry Name : " + (biomeID != null ? biomeID : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!") +
+						"\n\n JSON info : " + (configuredFeatureJSON.isPresent() ? gson.toJson(configuredFeatureJSON.get()) : "Failed to get JSON somehow.") + "\n\n");
 
+		// Log it to the latest.log file as well.
 		Blame.LOGGER.log(Level.ERROR, crashreport.getCompleteReport());
 	}
 
@@ -74,18 +89,25 @@ public class BiomeMixin {
 									 WorldGenRegion worldGenRegion, long seed, SharedSeedRandom random, BlockPos pos,
 									 CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> list,
 									 int numOfGenerationStage, int generationStageIndex, int configuredFeatureIndex,
-									 Iterator<Structure<?>> var12, Structure<?> structure,
+									 Iterator<Structure<?>> var12, Structure<?> structureFeature,
 									 int chunkX, int chunkZ, int ChunkXPos, int ChunkZPos,
 									 Exception exception, CrashReport crashreport)
 	{
 		DynamicRegistries dynamicRegistries = worldGenRegion.getWorld().getWorldServer().func_241828_r();
 
+		ResourceLocation structureID = dynamicRegistries.func_243612_b(Registry.STRUCTURE_FEATURE_KEY).getKey(structureFeature);
+		ResourceLocation biomeID = dynamicRegistries.func_243612_b(Registry.BIOME_KEY).getKey((Biome)(Object)this);
+
+		// Add extra info to the crash report file.
+		// Note, only structures can do the details part as configuredfeatures always says the ConfiguredFeature class.
 		crashreport.getCategory()
 				.addDetail("\n****************** Blame Report ******************",
-				"\n\n Structure Name : " + structure.getStructureName() +
-				"\n Structure Registry Name : " + Objects.requireNonNull(dynamicRegistries.func_243612_b(Registry.STRUCTURE_FEATURE_KEY).getKey(structure)) +
-				"\n Biome Registry Name : " + Objects.requireNonNull(dynamicRegistries.func_243612_b(Registry.BIOME_KEY).getKey((Biome)(Object)this)) + "\n\n");
+						"\n\n Structure Name : " + structureFeature.getStructureName() + // Never null
+						"\n Structure Registry Name : " + (structureID != null ? structureID : "Structure is not registered somehow. Yell at the mod author when found to register their structures!") +
+						"\n Structure Details : " + structureFeature.toString() +
+						"\n Biome Registry Name : " + (biomeID != null ? biomeID : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!"));
 
+		// Log it to the latest.log file as well.
 		Blame.LOGGER.log(Level.ERROR, crashreport.getCompleteReport());
 	}
 }
