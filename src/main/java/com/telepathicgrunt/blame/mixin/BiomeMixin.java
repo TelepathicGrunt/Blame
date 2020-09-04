@@ -58,7 +58,7 @@ public class BiomeMixin {
 								   Iterator<ConfiguredFeature<?, ?>> var12, Supplier<ConfiguredFeature<?, ?>> supplier, ConfiguredFeature<?, ?> configuredfeature,
 								   Exception exception, CrashReport crashreport)
 	{
-		DynamicRegistries dynamicRegistries = worldGenRegion.getWorld().getWorldServer().func_241828_r();
+		DynamicRegistries dynamicRegistries = worldGenRegion.func_241828_r();
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 		ResourceLocation configuredFeatureID = dynamicRegistries.func_243612_b(Registry.field_243552_au).getKey(configuredfeature);
@@ -93,7 +93,7 @@ public class BiomeMixin {
 									 int chunkX, int chunkZ, int ChunkXPos, int ChunkZPos,
 									 Exception exception, CrashReport crashreport)
 	{
-		DynamicRegistries dynamicRegistries = worldGenRegion.getWorld().getWorldServer().func_241828_r();
+		DynamicRegistries dynamicRegistries = worldGenRegion.func_241828_r();
 
 		ResourceLocation structureID = dynamicRegistries.func_243612_b(Registry.STRUCTURE_FEATURE_KEY).getKey(structureFeature);
 		ResourceLocation biomeID = dynamicRegistries.func_243612_b(Registry.BIOME_KEY).getKey((Biome)(Object)this);
