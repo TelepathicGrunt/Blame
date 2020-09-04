@@ -17,6 +17,7 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.StructureFeature;
 import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -70,17 +71,18 @@ public class BiomeMixin {
 			locals = LocalCapture.CAPTURE_FAILHARD)
 	private void addStructureDetails(StructureAccessor structureAccessor, ChunkGenerator chunkGenerator,
 									 ChunkRegion chunkRegion, long seed, ChunkRandom random, BlockPos pos,
-									 CallbackInfo ci, int numOfGenerationStage, int generationStageIndex,
-									 int structureIndex, List<StructureFeature<?>> list, Iterator<StructureFeature<?>> var12,
+									 CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> list,
+									 int numOfGenerationStage, int generationStageIndex, int structureIndex,
+									 List<StructureFeature<?>> list2, Iterator<StructureFeature<?>> var13,
 									 StructureFeature<?> structureFeature, Exception exception, CrashReport crashreport)
 	{
 		DynamicRegistryManager dynamicRegistries = chunkRegion.getRegistryManager();
 
 		crashreport.getSystemDetailsSection()
 				.add("\n****************** Blame Report ******************",
-				"\n\n Structure Name : " + structureFeature.getName() +
-				"\n Structure Registry Name : " + Objects.requireNonNull(dynamicRegistries.get(Registry.STRUCTURE_FEATURE_KEY).getKey(structureFeature)) +
-				"\n Biome Registry Name : " + Objects.requireNonNull(dynamicRegistries.get(Registry.BIOME_KEY).getKey((Biome)(Object)this)) + "\n\n");
+						"\n\n Structure Name : " + structureFeature.getName() +
+								"\n Structure Registry Name : " + Objects.requireNonNull(dynamicRegistries.get(Registry.STRUCTURE_FEATURE_KEY).getKey(structureFeature)) +
+								"\n Biome Registry Name : " + Objects.requireNonNull(dynamicRegistries.get(Registry.BIOME_KEY).getKey((Biome)(Object)this)) + "\n\n");
 
 		Blame.LOGGER.log(Level.ERROR, crashreport.getMessage());
 	}
