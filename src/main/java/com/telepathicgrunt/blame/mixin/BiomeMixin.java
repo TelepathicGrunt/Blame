@@ -41,7 +41,7 @@ public class BiomeMixin {
 								   ChunkRegion chunkRegion, long seed, ChunkRandom random, BlockPos pos,
 								   CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> GenerationStageList,
 								   int numOfGenerationStage, int generationStageIndex, int configuredFeatureIndex,
-								   Iterator var12, Supplier supplier, ConfiguredFeature<?, ?> configuredfeature,
+								   Iterator<ConfiguredFeature<?, ?>> var12, Supplier<ConfiguredFeature<?, ?>> supplier, ConfiguredFeature<?, ?> configuredfeature,
 								   Exception exception, CrashReport crashreport)
 	{
 		DynamicRegistryManager dynamicRegistries = chunkRegion.getRegistryManager();
@@ -70,10 +70,9 @@ public class BiomeMixin {
 			locals = LocalCapture.CAPTURE_FAILHARD)
 	private void addStructureDetails(StructureAccessor structureAccessor, ChunkGenerator chunkGenerator,
 									 ChunkRegion chunkRegion, long seed, ChunkRandom random, BlockPos pos,
-									 CallbackInfo ci, List list, int numOfGenerationStage, int generationStageIndex,
-									 int configuredFeatureIndex, Iterator var12, StructureFeature<?> structureFeature,
-									 int chunkX, int chunkZ, int ChunkXPos, int ChunkZPos,
-									 Exception exception, CrashReport crashreport)
+									 CallbackInfo ci, int numOfGenerationStage, int generationStageIndex,
+									 int structureIndex, List<StructureFeature<?>> list, Iterator<StructureFeature<?>> var12,
+									 StructureFeature<?> structureFeature, Exception exception, CrashReport crashreport)
 	{
 		DynamicRegistryManager dynamicRegistries = chunkRegion.getRegistryManager();
 
