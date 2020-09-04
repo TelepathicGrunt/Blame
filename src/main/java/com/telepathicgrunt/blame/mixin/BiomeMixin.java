@@ -43,7 +43,7 @@ public class BiomeMixin {
 								   WorldGenRegion worldGenRegion, long seed, SharedSeedRandom random, BlockPos pos,
 								   CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> GenerationStageList,
 								   int numOfGenerationStage, int generationStageIndex, int configuredFeatureIndex,
-								   Iterator var12, Supplier supplier, ConfiguredFeature<?, ?> configuredfeature,
+								   Iterator<ConfiguredFeature<?, ?>> var12, Supplier<ConfiguredFeature<?, ?>> supplier, ConfiguredFeature<?, ?> configuredfeature,
 								   Exception exception, CrashReport crashreport)
 	{
 		DynamicRegistries dynamicRegistries = worldGenRegion.getWorld().getWorldServer().func_241828_r();
@@ -72,8 +72,9 @@ public class BiomeMixin {
 			locals = LocalCapture.CAPTURE_FAILHARD)
 	private void addStructureDetails(StructureManager structureManager, ChunkGenerator chunkGenerator,
 									 WorldGenRegion worldGenRegion, long seed, SharedSeedRandom random, BlockPos pos,
-									 CallbackInfo ci, List list, int numOfGenerationStage, int generationStageIndex,
-									 int configuredFeatureIndex, Iterator var12, Structure<?> structure,
+									 CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> list,
+									 int numOfGenerationStage, int generationStageIndex, int configuredFeatureIndex,
+									 Iterator<Structure<?>> var12, Structure<?> structure,
 									 int chunkX, int chunkZ, int ChunkXPos, int ChunkZPos,
 									 Exception exception, CrashReport crashreport)
 	{
