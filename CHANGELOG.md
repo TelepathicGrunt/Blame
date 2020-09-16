@@ -6,6 +6,14 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
 
+   (V.1.2.0 Changes) (1.16.2/1.16.3 Minecraft)
+   
+    Detection of DynamicRegistry classloading:
+• Will detect if a mod classloaded DynamicRegistry way too
+  early and is killing all other mods in the registry. 
+  The message will print a stacktrace to help narrow down
+  which mod is registering things improperly.
+
 
    (V.1.1.0 Changes) (1.16.2 Minecraft)
    
