@@ -64,13 +64,15 @@ repositories{
         name = "ModMaven"
         url = "https://modmaven.k-4u.nl"
     }
+    flatDir {
+        dirs 'deps'
+    }
     jcenter()
     mavenCentral()
-
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}" //21
+    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

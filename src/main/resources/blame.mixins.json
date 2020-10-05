@@ -5,7 +5,7 @@
   "refmap": "blame.refmap.json",
   "mixins": [
     "BiomeMixin",
-    "DynamicRegistryMixin",
+    "DynamicRegistriesMixin",
     "WorldSettingsImportMixin"
   ],
   "client": [

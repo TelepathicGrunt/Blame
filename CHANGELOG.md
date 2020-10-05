@@ -6,6 +6,13 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
 
+   (V.1.3.0 Changes) (1.16.2/1.16.3 Minecraft)
+   
+    Unregistered worldgen:
+• Will now detect any ConfiguredFeature, ConfiguredStructure, or ConfiguredCarver
+  that is unregistered as those mods will break other mods that registered properly.
+
+
    (V.1.2.0 Changes) (1.16.2/1.16.3 Minecraft)
    
     Detection of DynamicRegistry classloading:
