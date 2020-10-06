@@ -18,7 +18,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
 
 /* @author - TelepathicGrunt
  *

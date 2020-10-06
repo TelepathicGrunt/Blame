@@ -6,6 +6,7 @@
   "mixins": [
     "BiomeMixin",
     "DynamicRegistriesMixin",
+    "TemplateManagerMixin",
     "WorldSettingsImportMixin"
   ],
   "client": [

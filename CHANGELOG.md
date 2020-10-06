@@ -6,6 +6,18 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
 
+   (V.1.4.0 Changes) (1.16.2/1.16.3 Minecraft)
+     
+    Missing nbt file:
+• Will now log any attempt to load any nbt file that doesn't exist
+  and state what the identifier was to make it easier to find which 
+  mod/datapack is not using the correct path to the nbt file.
+  
+    Unregistered worldgen:
+• Fixed false positive spam when the stuff was indeed registered. 
+  There's some weird biome/registry interactions going on that I missed.
+
+   
    (V.1.3.0 Changes) (1.16.2/1.16.3 Minecraft)
    
     Unregistered worldgen:

@@ -71,63 +71,87 @@ public class DynamicRegistriesMixin {
 	}
 
 
+
 	/**
 	 * The main hook for the parser to work from. This will check every biomes in the
 	 * DynamicRegistry to see if it has exploded due to unregistered stuff added to it.
+	 *
+	 * It compares to the string representation of all registered objects because if we
+	 * do a simple registry.get(), there seems to be a weird issue where the object in
+	 * the biome is not actually the same object as in the registry. Like the biome did
+	 * its own deep copy of what's in the registry as so, .get fails despite the object
+	 * actually being registered already. That's why we compare the stringified JSON
+	 * results instead.
 	 */
 	@Inject(method = "func_239770_b_()Lnet/minecraft/util/registry/DynamicRegistries$Impl;",
 			at = @At(value = "RETURN"), require = 1)
 	private static void printBrokenList(CallbackInfoReturnable<DynamicRegistries.Impl> cir)
 	{
+		// Create a store here to minimize memory impact and let it get garbaged collected later.
 		DynamicRegistries.Impl imp = cir.getReturnValue();
-
-		//ConfiguredFeatures
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		Set<String> registered_stuff = new HashSet<>();
 		Map<String, Set<ResourceLocation>> unconfigured_stuff_map = new HashMap<>();
+
+		// ConfiguredFeatures
+		imp.func_230521_a_(Registry.field_243552_au).get().stream()
+				.forEach(entry -> registered_stuff.add(ConfiguredFeature.field_242763_a
+						.encode(entry, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left().get().toString()));
+
 		for(Map.Entry<RegistryKey<Biome>, Biome> mapEntry : imp.func_230521_a_(Registry.BIOME_KEY).get().getEntries()) {
-			findUnregisteredConfiguredFeatures(imp.func_230521_a_(Registry.field_243552_au).get(), mapEntry, unconfigured_stuff_map );
+			findUnregisteredConfiguredFeatures(mapEntry, unconfigured_stuff_map, registered_stuff, gson);
 		}
 		printUnregisteredStuff(unconfigured_stuff_map, "ConfiguredFeature");
+		registered_stuff.clear();
 		unconfigured_stuff_map.clear();
 
-		//ConfiguredStructures
+		// ConfiguredStructures
+		imp.func_230521_a_(Registry.field_243553_av).get().stream()
+				.forEach(entry -> registered_stuff.add(StructureFeature.field_236267_a_
+						.encode(entry, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left().get().toString()));
+
 		for(Map.Entry<RegistryKey<Biome>, Biome> mapEntry : imp.func_230521_a_(Registry.BIOME_KEY).get().getEntries()) {
-			findUnregisteredConfiguredStructures(imp.func_230521_a_(Registry.field_243553_av).get(), mapEntry, unconfigured_stuff_map );
+			findUnregisteredConfiguredStructures(mapEntry, unconfigured_stuff_map, registered_stuff, gson);
 		}
 		printUnregisteredStuff(unconfigured_stuff_map, "ConfiguredStructure");
+		registered_stuff.clear();
 		unconfigured_stuff_map.clear();
 
-		//ConfiguredCarvers
+		// ConfiguredCarvers
+		imp.func_230521_a_(Registry.field_243551_at).get().stream()
+				.forEach(entry -> registered_stuff.add(ConfiguredCarver.field_236235_a_
+						.encode(entry, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left().get().toString()));
+
 		for(Map.Entry<RegistryKey<Biome>, Biome> mapEntry : imp.func_230521_a_(Registry.BIOME_KEY).get().getEntries()) {
-			findUnregisteredConfiguredCarver(imp.func_230521_a_(Registry.field_243551_at).get(), mapEntry, unconfigured_stuff_map );
+			findUnregisteredConfiguredCarver(mapEntry, unconfigured_stuff_map, registered_stuff, gson);
 		}
 		printUnregisteredStuff(unconfigured_stuff_map, "ConfiguredStructure");
+		registered_stuff.clear();
 		unconfigured_stuff_map.clear();
 	}
 
 	/**
 	 * Prints all unregistered configured features to the log.
 	 */
-	private static void findUnregisteredConfiguredFeatures(MutableRegistry<ConfiguredFeature<?,?>> registry, Map.Entry<RegistryKey<Biome>, Biome>  mapEntry,
-														   Map<String, Set<ResourceLocation>> unregistered_feature_map){
+	private static void findUnregisteredConfiguredFeatures(Map.Entry<RegistryKey<Biome>, Biome>  mapEntry,
+														   Map<String, Set<ResourceLocation>> unregistered_feature_map,
+														   Set<String> registered_stuff, Gson gson)
+	{
 
 		for(List<Supplier<ConfiguredFeature<?, ?>>> generationStageList : mapEntry.getValue().func_242440_e().func_242498_c()){
 			for(Supplier<ConfiguredFeature<?, ?>> configuredFeatureSupplier : generationStageList){
-				ResourceLocation configuredFeatureID = registry.getKey(configuredFeatureSupplier.get());
-				if(configuredFeatureID == null){
-					Gson gson = new GsonBuilder().setPrettyPrinting().create();
-					ResourceLocation biomeID = mapEntry.getKey().func_240901_a_();
 
-					Optional<JsonElement> configuredFeatureJSON = ConfiguredFeature.field_236264_b_
-							.encode(configuredFeatureSupplier, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left();
+				Optional<JsonElement> configuredFeatureJSON = ConfiguredFeature.field_236264_b_
+						.encode(configuredFeatureSupplier, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left();
 
-					String cfstring = configuredFeatureJSON.isPresent() ?
-							gson.toJson(configuredFeatureJSON.get()) : configuredFeatureSupplier.get().toString();
+				ResourceLocation biomeID = mapEntry.getKey().func_240901_a_();
 
-					if(!unregistered_feature_map.containsKey(cfstring))
-						unregistered_feature_map.put(cfstring, new HashSet<>());
-
-					unregistered_feature_map.get(cfstring).add(biomeID);
-				}
+				detectAndCacheUnregisteredObject(
+						unregistered_feature_map,
+						registered_stuff,
+						gson,
+						biomeID,
+						configuredFeatureJSON);
 			}
 		}
 	}
@@ -135,52 +159,61 @@ public class DynamicRegistriesMixin {
 	/**
 	 * Prints all unregistered configured structures to the log.
 	 */
-	private static void findUnregisteredConfiguredStructures(MutableRegistry<StructureFeature<?,?>> registry, Map.Entry<RegistryKey<Biome>, Biome>  mapEntry,
-															 Map<String, Set<ResourceLocation>> unregistered_structure_map) {
+	private static void findUnregisteredConfiguredStructures(Map.Entry<RegistryKey<Biome>, Biome>  mapEntry,
+															 Map<String, Set<ResourceLocation>> unregistered_structure_map,
+															 Set<String> registered_stuff, Gson gson)
+	{
 		for(Supplier<StructureFeature<?, ?>> configuredStructureSupplier : mapEntry.getValue().func_242440_e().func_242487_a()){
-			ResourceLocation configuredStructureID = registry.getKey(configuredStructureSupplier.get());
-			if(configuredStructureID == null){
-				Gson gson = new GsonBuilder().setPrettyPrinting().create();
-				ResourceLocation biomeID = mapEntry.getKey().func_240901_a_();
 
-				Optional<JsonElement> configuredStructureJSON = StructureFeature.field_244391_b_
-						.encode(configuredStructureSupplier, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left();
+			ResourceLocation biomeID = mapEntry.getKey().func_240901_a_();
+			Optional<JsonElement> configuredStructureJSON = StructureFeature.field_236267_a_
+					.encode(configuredStructureSupplier.get(), JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left();
 
-				String cfstring = configuredStructureJSON.isPresent() ?
-						gson.toJson(configuredStructureJSON.get()) : configuredStructureSupplier.get().toString();
-
-				if(!unregistered_structure_map.containsKey(cfstring))
-					unregistered_structure_map.put(cfstring, new HashSet<>());
-
-				unregistered_structure_map.get(cfstring).add(biomeID);
-			}
+			detectAndCacheUnregisteredObject(
+					unregistered_structure_map,
+					registered_stuff,
+					gson,
+					biomeID,
+					configuredStructureJSON);
 		}
 	}
 
 	/**
 	 * Prints all unregistered configured carver to the log.
 	 */
-	private static void findUnregisteredConfiguredCarver(MutableRegistry<ConfiguredCarver<?>> registry, Map.Entry<RegistryKey<Biome>, Biome>  mapEntry,
-														 Map<String, Set<ResourceLocation>> unregistered_carver_map) {
+	private static void findUnregisteredConfiguredCarver(Map.Entry<RegistryKey<Biome>, Biome>  mapEntry,
+														 Map<String, Set<ResourceLocation>> unregistered_carver_map,
+														 Set<String> registered_stuff, Gson gson)
+	{
 		for(GenerationStage.Carving carvingStage : GenerationStage.Carving.values()) {
 			for (Supplier<ConfiguredCarver<?>> configuredCarverSupplier : mapEntry.getValue().func_242440_e().func_242489_a(carvingStage)) {
-				ResourceLocation configuredStructureID = registry.getKey(configuredCarverSupplier.get());
-				if (configuredStructureID == null) {
-					Gson gson = new GsonBuilder().setPrettyPrinting().create();
-					ResourceLocation biomeID = mapEntry.getKey().func_240901_a_();
 
-					Optional<JsonElement> configuredCarverJSON = ConfiguredCarver.field_244390_b_
-							.encode(configuredCarverSupplier, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left();
+				ResourceLocation biomeID = mapEntry.getKey().func_240901_a_();
+				Optional<JsonElement> configuredCarverJSON = ConfiguredCarver.field_236235_a_
+						.encode(configuredCarverSupplier.get(), JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left();
 
-					String cfstring = configuredCarverJSON.isPresent() ?
-							gson.toJson(configuredCarverJSON.get()) : configuredCarverSupplier.get().toString();
-
-					if (!unregistered_carver_map.containsKey(cfstring))
-						unregistered_carver_map.put(cfstring, new HashSet<>());
-
-					unregistered_carver_map.get(cfstring).add(biomeID);
-				}
+				detectAndCacheUnregisteredObject(
+						unregistered_carver_map,
+						registered_stuff,
+						gson,
+						biomeID,
+						configuredCarverJSON);
 			}
+		}
+	}
+
+	private static void detectAndCacheUnregisteredObject(Map<String, Set<ResourceLocation>> unregistered_structure_map,
+														 Set<String> registered_stuff, Gson gson, ResourceLocation biomeID,
+														 Optional<JsonElement> configuredStructureJSON)
+	{
+		if(!registered_stuff.contains(configuredStructureJSON.get().toString()))
+		{
+			String cfstring = gson.toJson(configuredStructureJSON.get());
+
+			if(!unregistered_structure_map.containsKey(cfstring))
+				unregistered_structure_map.put(cfstring, new HashSet<>());
+
+			unregistered_structure_map.get(cfstring).add(biomeID);
 		}
 	}
 
