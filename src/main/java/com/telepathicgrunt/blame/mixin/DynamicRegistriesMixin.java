@@ -25,6 +25,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /*
  * Mixin inspired by shartte's DebugWorldGenIssues. Credit goes to him!
@@ -90,8 +93,10 @@ public class DynamicRegistriesMixin {
 	{
 		// Create a store here to minimize memory impact and let it get garbaged collected later.
 		Map<String, Set<ResourceLocation>> unconfigured_stuff_map = new HashMap<>();
+		Set<String> collected_possible_issue_mods = new HashSet<>();
 		DynamicRegistries.Impl imp = cir.getReturnValue();
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		Pattern pattern = Pattern.compile("\"(?:Name|type|location)\": \"([a-z_:]+)\"");
 
 		// ConfiguredFeatures
 		imp.func_230521_a_(Registry.field_243552_au).ifPresent(configuredFeatureRegistry ->
@@ -99,7 +104,7 @@ public class DynamicRegistriesMixin {
 				.forEach(mapEntry -> findUnregisteredConfiguredFeatures(mapEntry, unconfigured_stuff_map, configuredFeatureRegistry, gson))));
 
 		printUnregisteredStuff(unconfigured_stuff_map, "ConfiguredFeature");
-		unconfigured_stuff_map.clear();
+		extractModNames(unconfigured_stuff_map, collected_possible_issue_mods, pattern);
 
 		// ConfiguredStructures
 		imp.func_230521_a_(Registry.field_243553_av).ifPresent(configuredStructureRegistry ->
@@ -107,7 +112,7 @@ public class DynamicRegistriesMixin {
 				.forEach(mapEntry -> findUnregisteredConfiguredStructures(mapEntry, unconfigured_stuff_map, configuredStructureRegistry, gson))));
 
 		printUnregisteredStuff(unconfigured_stuff_map, "ConfiguredStructure");
-		unconfigured_stuff_map.clear();
+		extractModNames(unconfigured_stuff_map, collected_possible_issue_mods, pattern);
 
 		// ConfiguredCarvers
 		imp.func_230521_a_(Registry.field_243551_at).ifPresent(configuredCarverRegistry ->
@@ -115,6 +120,36 @@ public class DynamicRegistriesMixin {
 				.forEach(mapEntry -> findUnregisteredConfiguredCarver(mapEntry, unconfigured_stuff_map, configuredCarverRegistry, gson))));
 
 		printUnregisteredStuff(unconfigured_stuff_map, "ConfiguredStructure");
+		extractModNames(unconfigured_stuff_map, collected_possible_issue_mods, pattern);
+
+		if(collected_possible_issue_mods.size() != 0){
+			// Add extra info to the log.
+			String errorReport = "\n****************** Blame Report ******************" +
+					"\n\n This is an experimental report. It is suppose to automatically read" +
+					"\n the JSON of all the unregistered ConfiguredFeatures, ConfiguredStructures," +
+					"\n and ConfiguredCarvers. Then does its best to collect the terms that seem to" +
+					"\n state whose mod the unregistered stuff belongs to." +
+					"\n\n Possible mods responsible for unregistered stuff: \n" +
+					collected_possible_issue_mods.stream().sorted().collect(Collectors.joining("\n")) + "\n\n";
+
+			// Log it to the latest.log file as well.
+			Blame.LOGGER.log(Level.ERROR, errorReport);
+		}
+		collected_possible_issue_mods.clear();
+	}
+
+	private static void extractModNames(Map<String, Set<ResourceLocation>> unconfigured_stuff_map, Set<String> collected_possible_issue_mods, Pattern pattern) {
+		unconfigured_stuff_map.keySet()
+				.forEach(jsonString -> {
+					Matcher match = pattern.matcher(jsonString);
+					int count = 0;
+					while(match.find()) {
+						count++;
+						if(!match.group(count).contains("minecraft:")){
+							collected_possible_issue_mods.add(match.group(1));
+						}
+					}
+				});
 		unconfigured_stuff_map.clear();
 	}
 

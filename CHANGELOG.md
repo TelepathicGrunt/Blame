@@ -11,7 +11,9 @@ Gotta blame the broken mods!
     Unregistered worldgen:
 • Detection of unregistered worldgen now works perfectly after
   I had an epiphany on why the registries acted weird!
-  Also fixed a possible crash too.
+  Also fixed a possible crash too and made it now list
+  all the mods responsible for unregistered stuff at 
+  the bottom as best as it can.
 
 
    (V.1.4.1 Changes) (1.16.2/1.16.3 Minecraft)
