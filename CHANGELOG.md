@@ -7,11 +7,11 @@ Gotta blame the broken mods!
        | Blame Forge changelog |
 
    (V.1.4.2 Changes) (1.16.2/1.16.3 Minecraft)
-   
-    DynamicRegistries:
-• Idk wtf was going on??? Someone reported a crash that was literally
-  supposed to be impossible unless the compiler got drunk or something???
-  Trying a new lambda spam fix to see if it works...
+    
+    Unregistered worldgen:
+• Detection of unregistered worldgen now works perfectly after
+  I had an epiphany on why the registries acted weird!
+  Also fixed a possible crash too.
 
 
    (V.1.4.1 Changes) (1.16.2/1.16.3 Minecraft)
