@@ -6,6 +6,22 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
 
+   (V.1.4.2 Changes) (1.16.2/1.16.3 Minecraft)
+   
+    DynamicRegistries:
+• Idk wtf was going on??? Someone reported a crash that was literally
+  supposed to be impossible unless the compiler got drunk or something???
+  Trying a new lambda spam fix to see if it works...
+
+
+   (V.1.4.1 Changes) (1.16.2/1.16.3 Minecraft)
+   
+    Unregistered worldgen:
+• Add a quick check to prevent crash with TownCraft modpack. 
+  What was causing the crash should've been impossible which hints
+  at some weirdness going on in that pack...
+
+
    (V.1.4.0 Changes) (1.16.2/1.16.3 Minecraft)
      
     Missing nbt file:
