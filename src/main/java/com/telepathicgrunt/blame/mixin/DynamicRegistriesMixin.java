@@ -142,10 +142,8 @@ public class DynamicRegistriesMixin {
 		unconfigured_stuff_map.keySet()
 				.forEach(jsonString -> {
 					Matcher match = pattern.matcher(jsonString);
-					int count = 0;
 					while(match.find()) {
-						count++;
-						if(!match.group(count).contains("minecraft:")){
+						if(!match.group(1).contains("minecraft:")){
 							collected_possible_issue_mods.add(match.group(1));
 						}
 					}
