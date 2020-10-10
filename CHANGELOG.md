@@ -6,6 +6,17 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
 
+   (V.1.4.3 Changes) (1.16.2/1.16.3 Minecraft)
+      
+    Flat/Custom ChunkGenerator crashes:
+• Will detect if the ChunkGenerator will crash at world load and if so,
+  add details to the log about which mod's structure caused the crash so
+  they can add their structures to FlatGenerationSettings.STRUCTURES map. 
+  
+    Unregistered worldgen:
+• Forgot to comment out my unregistered Desert Well test lmao. Oops. Sorry about that
+
+
    (V.1.4.2 Changes) (1.16.2/1.16.3 Minecraft)
     
     Unregistered worldgen:

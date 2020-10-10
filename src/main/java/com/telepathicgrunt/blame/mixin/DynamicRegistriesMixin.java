@@ -164,6 +164,7 @@ public class DynamicRegistriesMixin {
 		for(List<Supplier<ConfiguredFeature<?, ?>>> generationStageList : mapEntry.getValue().func_242440_e().func_242498_c()){
 			for(Supplier<ConfiguredFeature<?, ?>> configuredFeatureSupplier : generationStageList){
 
+				ConfiguredFeature<?, ?> test = configuredFeatureSupplier.get();
 				ResourceLocation biomeID = mapEntry.getKey().func_240901_a_();
 				if(configuredFeatureRegistry.getKey(configuredFeatureSupplier.get()) == null &&
 					WorldGenRegistries.field_243653_e.getKey(configuredFeatureSupplier.get()) == null)
