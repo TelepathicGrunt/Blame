@@ -1,7 +1,3 @@
-<h1>DO NOT USE THIS FABRIC VERSION. It's old, outdated, and broken. You can help by PRing the current Forge version to this Fabric branch! It will be some time before I can do the port myself</h1>
-
-
-
 <p style="text-align: center;"><span style="font-size: 14px;"><strong>Got a modpack where a feature or structure is crashing and the crashlogs are telling you nothing?</strong></span></p>
 <p style="text-align: center;"><span style="font-size: 14px;"><strong>When you add two worldgen mods together, do features or structures stop spawning?</strong></span></p>
 <p style="text-align: center;"><span style="font-size: 18px;"><strong>FEAR NO MORE!!!</strong></span></p>
