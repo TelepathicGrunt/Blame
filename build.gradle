@@ -4,7 +4,6 @@ buildscript {
         jcenter()
         mavenCentral()
         maven {url='https://dist.creeper.host/Sponge/maven'}
-
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
@@ -32,23 +31,13 @@ minecraft {
         client {
             workingDirectory project.file('run')
             arg "-mixin.config="+archivesBaseName+".mixins.json"
-
-            mods {
-                examplemod {
-                    source sourceSets.main
-                }
-            }
+            mods { blame { source sourceSets.main } }
         }
 
         server {
             workingDirectory project.file('run')
             arg "-mixin.config="+archivesBaseName+".mixins.json"
-
-            mods {
-                examplemod {
-                    source sourceSets.main
-                }
-            }
+            mods { blame { source sourceSets.main } }
         }
     }
 }
