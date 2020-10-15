@@ -5,11 +5,11 @@ import com.mojang.serialization.DataResult;
 import com.telepathicgrunt.blame.Blame;
 import com.telepathicgrunt.blame.utils.ErrorHints;
 import com.telepathicgrunt.blame.utils.PrettyPrintBrokenJSON;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.dynamic.RegistryOps;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.registry.SimpleRegistry;
-import net.minecraft.util.registry.WorldSettingsImport;
 import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -28,34 +28,34 @@ import java.util.Iterator;
  *
  * LGPLv3
  */
-@Mixin(WorldSettingsImport.class)
-public class WorldSettingsImportMixin<E> {
+@Mixin(RegistryOps.class)
+public class RegistryOpsMixin<E> {
 
 	@Unique
-	private static ResourceLocation currentResource;
+	private static Identifier currentResource;
 
 	/**
 	 * Grabs the current file we are at to pass to next mixin in case file explodes.
 	 */
-	@Inject(method = "Lnet/minecraft/util/registry/WorldSettingsImport;func_241797_a_(Lnet/minecraft/util/registry/SimpleRegistry;Lnet/minecraft/util/RegistryKey;Lcom/mojang/serialization/Codec;)Lcom/mojang/serialization/DataResult;",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ResourceLocation;getPath()Ljava/lang/String;", ordinal = 1),
+	@Inject(method = "loadToRegistry(Lnet/minecraft/util/registry/SimpleRegistry;Lnet/minecraft/util/registry/RegistryKey;Lcom/mojang/serialization/Codec;)Lcom/mojang/serialization/DataResult;",
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Identifier;getPath()Ljava/lang/String;", ordinal = 1),
 			locals = LocalCapture.CAPTURE_FAILHARD)
 	private void getCurrentFile(SimpleRegistry<E> registry, RegistryKey<? extends Registry<E>> registryKey, Codec<E> codec,
-								CallbackInfoReturnable<DataResult<SimpleRegistry<E>>> cir, Collection<ResourceLocation> collection,
-								DataResult<SimpleRegistry<E>> dataresult, String parentPath, Iterator<ResourceLocation> resourceLocationIterator,
-								ResourceLocation resourceLocation)
+								CallbackInfoReturnable<DataResult<SimpleRegistry<E>>> cir, Collection<Identifier> collection,
+								DataResult<SimpleRegistry<E>> dataresult, String parentPath, Iterator<Identifier> identifierIterator,
+								Identifier identifier)
 	{
-		currentResource = resourceLocation;
+		currentResource = identifier;
 	}
 
 	/**
 	 * Checks if the loaded datapack file errored and print it's resource location if it did
 	 */
-	@Inject(method = "Lnet/minecraft/util/registry/WorldSettingsImport;func_241797_a_(Lnet/minecraft/util/registry/SimpleRegistry;Lnet/minecraft/util/RegistryKey;Lcom/mojang/serialization/Codec;)Lcom/mojang/serialization/DataResult;",
+	@Inject(method = "loadToRegistry(Lnet/minecraft/util/registry/SimpleRegistry;Lnet/minecraft/util/registry/RegistryKey;Lcom/mojang/serialization/Codec;)Lcom/mojang/serialization/DataResult;",
 			at = @At(value = "INVOKE_ASSIGN", target = "Lcom/mojang/serialization/DataResult;flatMap(Ljava/util/function/Function;)Lcom/mojang/serialization/DataResult;"),
 			locals = LocalCapture.CAPTURE_FAILHARD)
 	private void addBrokenFileDetails(SimpleRegistry<E> registry, RegistryKey<? extends Registry<E>> registryKey, Codec<E> codec,
-									  CallbackInfoReturnable<DataResult<SimpleRegistry<E>>> cir, Collection<ResourceLocation> collection,
+									  CallbackInfoReturnable<DataResult<SimpleRegistry<E>>> cir, Collection<Identifier> collection,
 									  DataResult<SimpleRegistry<E>> dataresult)
 	{
 		if(dataresult.error().isPresent()){

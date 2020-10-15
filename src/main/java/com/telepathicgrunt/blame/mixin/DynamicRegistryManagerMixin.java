@@ -5,22 +5,17 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import com.telepathicgrunt.blame.Blame;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.DynamicRegistries;
-import net.minecraft.util.registry.MutableRegistry;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.WorldGenRegistries;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.*;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.StructureFeature;
+import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
 import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.*;
@@ -37,56 +32,8 @@ import java.util.stream.Collectors;
  * DynamicRegistries is classloaded in non-vanilla places and added
  * info to the error message for those to read.
  */
-@Mixin(value = DynamicRegistries.class, priority = 99999)
-public class DynamicRegistriesMixin {
-	@Inject(method = "<clinit>", at = @At("TAIL"), require = 1)
-	private static void onInit(CallbackInfo ci) {
-		//gets the details of what method classloaded DynamicRegistries
-		StackTraceElement stack = Thread.currentThread().getStackTrace()[3];
-
-		// vanilla loaded DynamicRegistries safely. No panic.
-		// Did you know clients have 3 places that classloads DynamicRegistries but server has only 1?
-		if((stack.getClassName().equals("net.minecraft.client.gui.screen.CreateWorldScreen") &&
-			stack.getMethodName().equals("func_243425_a")) ||
-
-			(stack.getClassName().equals("net.minecraft.client.Minecraft") &&
-			stack.getMethodName().equals("func_238191_a_")) ||
-
-			(stack.getClassName().equals("net.minecraft.server.Main") &&
-			stack.getMethodName().equals("main")) ||
-
-			(stack.getClassName().equals("net.minecraft.client.network.play.ClientPlayNetHandler") &&
-			stack.getMethodName().equals("<init>")))
-		{
-			return;
-		}
-
-		if((stack.getClassName().equals("de.teamlapen.vampirism.client.core.ClientEventHandler") &&
-				stack.getMethodName().equals("onGuiInit")))
-		{
-			Blame.LOGGER.log(Level.ERROR,
-					"\n****************** Blame Report ******************" +
-							"\n\n Vampirism classloaded the DynamicRegistries class." +
-							"\n However, this should be okay as they do it after the main " +
-							"\n mod initialization is done. Ignore this message and continue on lol.\n");
-			Thread.dumpStack();
-			return;
-		}
-
-		Blame.LOGGER.log(Level.ERROR,
-				"\n****************** Blame Report ******************" +
-						"\n\n Oh no! Oh god! Someone classloaded DynamicRegistries class way too early!" +
-						"\n Most registry entries for other mods is broken now! Please read the following stacktrace" +
-						"\n and see if you can find which mod broke the game badly and please show them this log file." +
-						"\n (If you can't tell which mod, let Blame creator, TelepathicGrunt, know!)" +
-						"\n\n If you are the modder notified, you may be registering/accessing the dynamic" +
-						"\n registries before the world is loaded/made, please use the registeries in" +
-						"\n WorldGenRegistries as that is what DynamicRegistries will copy from when " +
-						"\n vanilla creates/loads the world (and is why loading DynamicRegistries early breaks all mods)\n");
-		Thread.dumpStack();
-	}
-
-
+@Mixin(value = DynamicRegistryManager.class, priority = 99999)
+public class DynamicRegistryManagerMixin {
 
 	/**
 	 * The main hook for the parser to work from. This will check every biomes in the
@@ -99,36 +46,36 @@ public class DynamicRegistriesMixin {
 	 * actually being registered already. That's why we compare the stringified JSON
 	 * results instead.
 	 */
-	@Inject(method = "func_239770_b_()Lnet/minecraft/util/registry/DynamicRegistries$Impl;",
+	@Inject(method = "Lnet/minecraft/util/registry/DynamicRegistryManager;create()Lnet/minecraft/util/registry/DynamicRegistryManager$Impl;",
 			at = @At(value = "RETURN"), require = 1)
-	private static void printUnregisteredWorldgenConfiguredStuff(CallbackInfoReturnable<DynamicRegistries.Impl> cir)
+	private static void printUnregisteredWorldgenConfiguredStuff(CallbackInfoReturnable<DynamicRegistryManager.Impl> cir)
 	{
 		// Create a store here to minimize memory impact and let it get garbaged collected later.
-		Map<String, Set<ResourceLocation>> unconfigured_stuff_map = new HashMap<>();
+		Map<String, Set<Identifier>> unconfigured_stuff_map = new HashMap<>();
 		Set<String> collected_possible_issue_mods = new HashSet<>();
-		DynamicRegistries.Impl imp = cir.getReturnValue();
+		DynamicRegistryManager.Impl imp = cir.getReturnValue();
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		Pattern pattern = Pattern.compile("\"(?:Name|type|location)\": \"([a-z_:]+)\"");
 
 		// ConfiguredFeatures
-		imp.func_230521_a_(Registry.field_243552_au).ifPresent(configuredFeatureRegistry ->
-		imp.func_230521_a_(Registry.BIOME_KEY).ifPresent(mutableRegistry -> mutableRegistry.getEntries()
+		imp.getOptional(Registry.CONFIGURED_FEATURE_WORLDGEN).ifPresent(configuredFeatureRegistry ->
+		imp.getOptional(Registry.BIOME_KEY).ifPresent(mutableRegistry -> mutableRegistry.getEntries()
 				.forEach(mapEntry -> findUnregisteredConfiguredFeatures(mapEntry, unconfigured_stuff_map, configuredFeatureRegistry, gson))));
 
 		printUnregisteredStuff(unconfigured_stuff_map, "ConfiguredFeature");
 		extractModNames(unconfigured_stuff_map, collected_possible_issue_mods, pattern);
 
 		// ConfiguredStructures
-		imp.func_230521_a_(Registry.field_243553_av).ifPresent(configuredStructureRegistry ->
-		imp.func_230521_a_(Registry.BIOME_KEY).ifPresent(mutableRegistry -> mutableRegistry.getEntries()
+		imp.getOptional(Registry.CONFIGURED_STRUCTURE_FEATURE_WORLDGEN).ifPresent(configuredStructureRegistry ->
+		imp.getOptional(Registry.BIOME_KEY).ifPresent(mutableRegistry -> mutableRegistry.getEntries()
 				.forEach(mapEntry -> findUnregisteredConfiguredStructures(mapEntry, unconfigured_stuff_map, configuredStructureRegistry, gson))));
 
 		printUnregisteredStuff(unconfigured_stuff_map, "ConfiguredStructure");
 		extractModNames(unconfigured_stuff_map, collected_possible_issue_mods, pattern);
 
 		// ConfiguredCarvers
-		imp.func_230521_a_(Registry.field_243551_at).ifPresent(configuredCarverRegistry ->
-		imp.func_230521_a_(Registry.BIOME_KEY).ifPresent(mutableRegistry -> mutableRegistry.getEntries()
+		imp.getOptional(Registry.CONFIGURED_CARVER_WORLDGEN).ifPresent(configuredCarverRegistry ->
+		imp.getOptional(Registry.BIOME_KEY).ifPresent(mutableRegistry -> mutableRegistry.getEntries()
 				.forEach(mapEntry -> findUnregisteredConfiguredCarver(mapEntry, unconfigured_stuff_map, configuredCarverRegistry, gson))));
 
 		printUnregisteredStuff(unconfigured_stuff_map, "ConfiguredStructure");
@@ -150,7 +97,7 @@ public class DynamicRegistriesMixin {
 		collected_possible_issue_mods.clear();
 	}
 
-	private static void extractModNames(Map<String, Set<ResourceLocation>> unconfigured_stuff_map, Set<String> collected_possible_issue_mods, Pattern pattern) {
+	private static void extractModNames(Map<String, Set<Identifier>> unconfigured_stuff_map, Set<String> collected_possible_issue_mods, Pattern pattern) {
 		unconfigured_stuff_map.keySet()
 				.forEach(jsonString -> {
 					Matcher match = pattern.matcher(jsonString);
@@ -168,19 +115,19 @@ public class DynamicRegistriesMixin {
 	 */
 	private static void findUnregisteredConfiguredFeatures(
 			Map.Entry<RegistryKey<Biome>, Biome>  mapEntry,
-			Map<String, Set<ResourceLocation>> unregistered_feature_map,
+			Map<String, Set<Identifier>> unregistered_feature_map,
 			MutableRegistry<ConfiguredFeature<?,?>> configuredFeatureRegistry,
 			Gson gson)
 	{
 
-		for(List<Supplier<ConfiguredFeature<?, ?>>> generationStageList : mapEntry.getValue().func_242440_e().func_242498_c()){
+		for(List<Supplier<ConfiguredFeature<?, ?>>> generationStageList : mapEntry.getValue().getGenerationSettings().getFeatures()){
 			for(Supplier<ConfiguredFeature<?, ?>> configuredFeatureSupplier : generationStageList){
 
-				ResourceLocation biomeID = mapEntry.getKey().func_240901_a_();
-				if(configuredFeatureRegistry.getKey(configuredFeatureSupplier.get()) == null &&
-					WorldGenRegistries.field_243653_e.getKey(configuredFeatureSupplier.get()) == null)
+				Identifier biomeID = mapEntry.getKey().getValue();
+				if(configuredFeatureRegistry.getId(configuredFeatureSupplier.get()) == null &&
+					BuiltinRegistries.CONFIGURED_FEATURE.getId(configuredFeatureSupplier.get()) == null)
 				{
-					ConfiguredFeature.field_236264_b_
+					ConfiguredFeature.CODEC
 							.encode(configuredFeatureSupplier, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left()
 							.ifPresent(configuredFeatureJSON ->
 									cacheUnregisteredObject(
@@ -198,17 +145,17 @@ public class DynamicRegistriesMixin {
 	 */
 	private static void findUnregisteredConfiguredStructures(
 		Map.Entry<RegistryKey<Biome>, Biome>  mapEntry,
-		Map<String, Set<ResourceLocation>> unregistered_structure_map,
-		MutableRegistry<StructureFeature<?,?>> configuredStructureRegistry,
+		Map<String, Set<Identifier>> unregistered_structure_map,
+		MutableRegistry<ConfiguredStructureFeature<?,?>> configuredStructureRegistry,
 		Gson gson)
 	{
-		for(Supplier<StructureFeature<?, ?>> configuredStructureSupplier : mapEntry.getValue().func_242440_e().func_242487_a()){
+		for(Supplier<ConfiguredStructureFeature<?, ?>> configuredStructureSupplier : mapEntry.getValue().getGenerationSettings().getStructureFeatures()){
 
-			ResourceLocation biomeID = mapEntry.getKey().func_240901_a_();
-			if(configuredStructureRegistry.getKey(configuredStructureSupplier.get()) == null &&
-				WorldGenRegistries.field_243654_f.getKey(configuredStructureSupplier.get()) == null)
+			Identifier biomeID = mapEntry.getKey().getValue();
+			if(configuredStructureRegistry.getId(configuredStructureSupplier.get()) == null &&
+				BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getId(configuredStructureSupplier.get()) == null)
 			{
-				StructureFeature.field_236267_a_
+				ConfiguredStructureFeature.CODEC
 						.encode(configuredStructureSupplier.get(), JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left()
 						.ifPresent(configuredStructureJSON ->
 								cacheUnregisteredObject(
@@ -225,19 +172,19 @@ public class DynamicRegistriesMixin {
 	 */
 	private static void findUnregisteredConfiguredCarver(
 		Map.Entry<RegistryKey<Biome>, Biome>  mapEntry,
-		Map<String, Set<ResourceLocation>> unregistered_carver_map,
+		Map<String, Set<Identifier>> unregistered_carver_map,
 		MutableRegistry<ConfiguredCarver<?>> configuredCarverRegistry,
 		Gson gson)
 	{
-		for(GenerationStage.Carving carvingStage : GenerationStage.Carving.values()) {
-			for (Supplier<ConfiguredCarver<?>> configuredCarverSupplier : mapEntry.getValue().func_242440_e().func_242489_a(carvingStage)) {
+		for(GenerationStep.Carver carvingStage : GenerationStep.Carver.values()) {
+			for (Supplier<ConfiguredCarver<?>> configuredCarverSupplier : mapEntry.getValue().getGenerationSettings().getCarversForStep(carvingStage)) {
 
-				ResourceLocation biomeID = mapEntry.getKey().func_240901_a_();
-				if(configuredCarverRegistry.getKey(configuredCarverSupplier.get()) == null &&
-					WorldGenRegistries.field_243652_d.getKey(configuredCarverSupplier.get()) == null)
+				Identifier biomeID = mapEntry.getKey().getValue();
+				if(configuredCarverRegistry.getId(configuredCarverSupplier.get()) == null &&
+					BuiltinRegistries.CONFIGURED_CARVER.getId(configuredCarverSupplier.get()) == null)
 				{
-					ConfiguredCarver.field_236235_a_
-							.encode(configuredCarverSupplier.get(), JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left()
+					ConfiguredCarver.field_24828
+							.encode(configuredCarverSupplier, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left()
 							.ifPresent(configuredCarverJSON ->
 									cacheUnregisteredObject(
 											configuredCarverJSON,
@@ -251,8 +198,8 @@ public class DynamicRegistriesMixin {
 
 	private static void cacheUnregisteredObject(
 			JsonElement configuredObjectJSON,
-			Map<String, Set<ResourceLocation>> unregistered_object_map,
-			ResourceLocation biomeID,
+			Map<String, Set<Identifier>> unregistered_object_map,
+			Identifier biomeID,
 			Gson gson)
 	{
 		String cfstring = gson.toJson(configuredObjectJSON);
@@ -263,8 +210,8 @@ public class DynamicRegistriesMixin {
 		unregistered_object_map.get(cfstring).add(biomeID);
 	}
 
-	private static void printUnregisteredStuff(Map<String, Set<ResourceLocation>> UNREGISTERED_STUFF_MAP, String type){
-		for(Map.Entry<String, Set<ResourceLocation>> entry : UNREGISTERED_STUFF_MAP.entrySet()){
+	private static void printUnregisteredStuff(Map<String, Set<Identifier>> UNREGISTERED_STUFF_MAP, String type){
+		for(Map.Entry<String, Set<Identifier>> entry : UNREGISTERED_STUFF_MAP.entrySet()){
 
 			// Add extra info to the log.
 			String errorReport = "\n****************** Blame Report ******************" +

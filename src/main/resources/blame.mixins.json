@@ -4,7 +4,11 @@
   "package": "com.telepathicgrunt.blame.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "BiomeMixin"
+    "BiomeMixin",
+    "DynamicRegistryManagerMixin",
+    "FlatChunkGeneratorConfigMixin",
+    "RegistryOpsMixin",
+    "StructureManagerMixin"
   ],
   "client": [],
   "injectors": {

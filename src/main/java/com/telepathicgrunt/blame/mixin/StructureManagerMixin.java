@@ -1,16 +1,15 @@
 package com.telepathicgrunt.blame.mixin;
 
 import com.telepathicgrunt.blame.Blame;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.gen.feature.template.Template;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.structure.Structure;
+import net.minecraft.structure.StructureManager;
+import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,19 +20,19 @@ import java.util.Set;
  *
  * LGPLv3
  */
-@Mixin(TemplateManager.class)
-public class TemplateManagerMixin {
+@Mixin(StructureManager.class)
+public class StructureManagerMixin {
 
 	// Prevent log spam if one mod keeps attempting to get the missing nbt file.
 	@Unique
 	private static final Set<String> PRINTED_RLS = new HashSet<>();
 
-	@Inject(method = "loadTemplateResource(Lnet/minecraft/util/ResourceLocation;)Lnet/minecraft/world/gen/feature/template/Template;",
+	@Inject(method = "loadStructureFromResource(Lnet/minecraft/util/Identifier;)Lnet/minecraft/structure/Structure;",
 			at = @At(value = "RETURN"))
-	private void addMissingnbtDetails(ResourceLocation miniRL, CallbackInfoReturnable<Template> cir)
+	private void addMissingnbtDetails(Identifier miniRL, CallbackInfoReturnable<Structure> cir)
 	{
 		if(cir.getReturnValue() == null){
-			ResourceLocation fullRL = new ResourceLocation(miniRL.getNamespace(), "structures/" + miniRL.getPath() + ".nbt");
+			Identifier fullRL = new Identifier(miniRL.getNamespace(), "structures/" + miniRL.getPath() + ".nbt");
 			if(PRINTED_RLS.contains(fullRL.toString())) return;
 
 			// Add extra info to the log file.
