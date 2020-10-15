@@ -47,20 +47,20 @@ public class BiomeMixin {
 	 */
 	@Inject(method = "generateFeatureStep(Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/world/ChunkRegion;JLnet/minecraft/world/gen/ChunkRandom;Lnet/minecraft/util/math/BlockPos;)V",
 			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/crash/CrashReport;create(Ljava/lang/Throwable;Ljava/lang/String;)Lnet/minecraft/util/crash/CrashReport;", ordinal = 1),
-			locals = LocalCapture.CAPTURE_FAILHARD)
-	private void addFeatureDetails(StructureAccessor structureManager, ChunkGenerator chunkGenerator,
-								   ChunkRegion worldGenRegion, long seed, ChunkRandom random, BlockPos pos,
+			locals = LocalCapture.PRINT)
+	private void addFeatureDetails(StructureAccessor structureAccessor, ChunkGenerator chunkGenerator,
+								   ChunkRegion chunkRegion, long seed, ChunkRandom random, BlockPos pos,
 								   CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> GenerationStageList,
-								   int numOfGenerationStage, int generationStageIndex, int configuredFeatureIndex,
-								   Iterator<ConfiguredFeature<?, ?>> var12, Supplier<ConfiguredFeature<?, ?>> supplier, ConfiguredFeature<?, ?> configuredfeature,
-								   Exception exception, CrashReport crashreport)
+								   int numOfGenerationSteps, int generationStepIndex, int configuredFeatureIndex,
+								   Iterator<ConfiguredFeature<?, ?>> var12, Supplier<ConfiguredFeature<?, ?>> supplier,
+								   ConfiguredFeature<?, ?> configuredFeature, Exception exception, CrashReport crashreport)
 	{
-		DynamicRegistryManager dynamicRegistries = worldGenRegion.getRegistryManager();
+		DynamicRegistryManager dynamicRegistryManager = chunkRegion.getRegistryManager();
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-		Identifier configuredFeatureID = dynamicRegistries.get(Registry.CONFIGURED_FEATURE_WORLDGEN).getId(configuredfeature);
-		Identifier biomeID = dynamicRegistries.get(Registry.BIOME_KEY).getId((Biome)(Object)this);
-		Optional<JsonElement> configuredFeatureJSON = ConfiguredFeature.CODEC.encode(() -> configuredfeature, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left();
+		Identifier configuredFeatureID = dynamicRegistryManager.get(Registry.CONFIGURED_FEATURE_WORLDGEN).getId(configuredFeature);
+		Identifier biomeID = dynamicRegistryManager.get(Registry.BIOME_KEY).getId((Biome)(Object)this);
+		Optional<JsonElement> configuredFeatureJSON = ConfiguredFeature.CODEC.encode(() -> configuredFeature, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left();
 
 		// Add extra info to the crash report file.
 		crashreport.getSystemDetailsSection()
@@ -81,19 +81,18 @@ public class BiomeMixin {
 	 */
 	@Inject(method = "generateFeatureStep(Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/world/ChunkRegion;JLnet/minecraft/world/gen/ChunkRandom;Lnet/minecraft/util/math/BlockPos;)V",
 			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/crash/CrashReport;create(Ljava/lang/Throwable;Ljava/lang/String;)Lnet/minecraft/util/crash/CrashReport;", ordinal = 0),
-			locals = LocalCapture.CAPTURE_FAILHARD)
-	private void addStructureDetails(StructureAccessor structureManager, ChunkGenerator chunkGenerator,
-									 ChunkRegion worldGenRegion, long seed, ChunkRandom random, BlockPos pos,
-									 CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> list,
-									 int numOfGenerationStage, int generationStageIndex, int configuredFeatureIndex,
-									 Iterator<StructureFeature<?>> var12, StructureFeature<?> structureFeature,
-									 int chunkX, int chunkZ, int ChunkXPos, int ChunkZPos,
+			locals = LocalCapture.PRINT)
+	private void addStructureDetails(StructureAccessor structureAccessor, ChunkGenerator chunkGenerator,
+									 ChunkRegion chunkRegion, long seed, ChunkRandom random, BlockPos pos,
+									 CallbackInfo ci, int numOfGenerationSteps, int generationStepIndex,
+									 int configuredFeatureIndex, List<List<Supplier<ConfiguredFeature<?, ?>>>> list,
+									 Iterator<StructureFeature<?>> structureFeatureIterator, StructureFeature<?> structureFeature,
 									 Exception exception, CrashReport crashreport)
 	{
-		DynamicRegistryManager dynamicRegistries = worldGenRegion.getRegistryManager();
+		DynamicRegistryManager dynamicRegistryManager = chunkRegion.getRegistryManager();
 
-		Identifier structureID = dynamicRegistries.get(Registry.STRUCTURE_FEATURE_KEY).getId(structureFeature);
-		Identifier biomeID = dynamicRegistries.get(Registry.BIOME_KEY).getId((Biome)(Object)this);
+		Identifier structureID = dynamicRegistryManager.get(Registry.STRUCTURE_FEATURE_KEY).getId(structureFeature);
+		Identifier biomeID = dynamicRegistryManager.get(Registry.BIOME_KEY).getId((Biome)(Object)this);
 
 		// Add extra info to the crash report file.
 		// Note, only structures can do the details part as configuredfeatures always says the ConfiguredFeature class.
