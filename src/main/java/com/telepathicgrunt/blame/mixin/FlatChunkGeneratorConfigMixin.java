@@ -39,7 +39,7 @@ public class FlatChunkGeneratorConfigMixin {
 	 * the structure to the FlatGenerationSettings's STRUCTURES map. Doing so will cause a crash.
 	 * This mixin will say what structure it was that triggered it.
 	 */
-	@Inject(method = "method_28917()Lnet/minecraft/world/biome/Biome;",
+	@Inject(method = "createBiome()Lnet/minecraft/world/biome/Biome;",
 			at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"),
 			locals = LocalCapture.CAPTURE_FAILHARD)
 	private void addCrashDetails(CallbackInfoReturnable<Biome> cir, Biome biome, GenerationSettings generationSettings,

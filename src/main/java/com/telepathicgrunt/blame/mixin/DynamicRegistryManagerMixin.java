@@ -183,7 +183,7 @@ public class DynamicRegistryManagerMixin {
 				if(configuredCarverRegistry.getId(configuredCarverSupplier.get()) == null &&
 					BuiltinRegistries.CONFIGURED_CARVER.getId(configuredCarverSupplier.get()) == null)
 				{
-					ConfiguredCarver.field_24828
+					ConfiguredCarver.REGISTRY_CODEC
 							.encode(configuredCarverSupplier, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left()
 							.ifPresent(configuredCarverJSON ->
 									cacheUnregisteredObject(
