@@ -7,9 +7,11 @@ import com.telepathicgrunt.blame.utils.ErrorHints;
 import com.telepathicgrunt.blame.utils.PrettyPrintBrokenJSON;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.dynamic.RegistryOps;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.world.biome.BuiltinBiomes;
 import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -71,8 +73,8 @@ public class RegistryOpsMixin<E> {
 					brokenJSON = "{" + parsed[1];
 				}
 				catch(Exception e){
-					Blame.LOGGER.log(Level.ERROR, "Failed to turn error msg into string. Please notify " +
-							"TelepathicGrunt (Blame creator) and show him this message:  " + dataresult.error().get().message());
+					brokenJSON = "Failed to turn error msg into string. Please notify " +
+							"TelepathicGrunt (Blame creator) and show him this message:  \n" + dataresult.error().get().message();
 				}
 			}
 

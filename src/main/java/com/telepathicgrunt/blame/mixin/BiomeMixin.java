@@ -60,7 +60,7 @@ public class BiomeMixin {
 
 		Identifier configuredFeatureID = dynamicRegistryManager.get(Registry.CONFIGURED_FEATURE_WORLDGEN).getId(configuredFeature);
 		Identifier biomeID = dynamicRegistryManager.get(Registry.BIOME_KEY).getId((Biome)(Object)this);
-		Optional<JsonElement> configuredFeatureJSON = ConfiguredFeature.CODEC.encode(() -> configuredFeature, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left();
+		Optional<JsonElement> configuredFeatureJSON = ConfiguredFeature.REGISTRY_CODEC.encode(() -> configuredFeature, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left();
 
 		// Add extra info to the crash report file.
 		crashreport.getSystemDetailsSection()

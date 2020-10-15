@@ -127,7 +127,7 @@ public class DynamicRegistryManagerMixin {
 				if(configuredFeatureRegistry.getId(configuredFeatureSupplier.get()) == null &&
 					BuiltinRegistries.CONFIGURED_FEATURE.getId(configuredFeatureSupplier.get()) == null)
 				{
-					ConfiguredFeature.CODEC
+					ConfiguredFeature.REGISTRY_CODEC
 							.encode(configuredFeatureSupplier, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left()
 							.ifPresent(configuredFeatureJSON ->
 									cacheUnregisteredObject(
