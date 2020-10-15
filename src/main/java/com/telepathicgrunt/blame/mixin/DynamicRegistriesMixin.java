@@ -61,6 +61,18 @@ public class DynamicRegistriesMixin {
 			return;
 		}
 
+		if((stack.getClassName().equals("de.teamlapen.vampirism.client.core.ClientEventHandler") &&
+				stack.getMethodName().equals("onGuiInit")))
+		{
+			Blame.LOGGER.log(Level.ERROR,
+					"\n****************** Blame Report ******************" +
+							"\n\n Vampirism classloaded the DynamicRegistries class." +
+							"\n However, this should be okay as they do it after the main " +
+							"\n mod initialization is done. Ignore this message and continue on lol.\n");
+			Thread.dumpStack();
+			return;
+		}
+
 		Blame.LOGGER.log(Level.ERROR,
 				"\n****************** Blame Report ******************" +
 						"\n\n Oh no! Oh god! Someone classloaded DynamicRegistries class way too early!" +

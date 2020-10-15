@@ -6,6 +6,14 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
 
+   (V.1.4.4 Changes) (1.16.2/1.16.3 Minecraft)
+      
+    DynamicRegistries:
+• Changed scary classloading warning to be more of just a small comment 
+  when Vampirism loads up the DynamicRegistries as it appears they 
+  classload it at a safe time.
+
+
    (V.1.4.3 Changes) (1.16.2/1.16.3 Minecraft)
       
     Flat/Custom ChunkGenerator crashes:
