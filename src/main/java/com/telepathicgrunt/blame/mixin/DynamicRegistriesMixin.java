@@ -108,7 +108,7 @@ public class DynamicRegistriesMixin {
 		Set<String> collected_possible_issue_mods = new HashSet<>();
 		DynamicRegistries.Impl imp = cir.getReturnValue();
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		Pattern pattern = Pattern.compile("\"(?:Name|type|location)\": \"([a-z_:]+)\"");
+		Pattern pattern = Pattern.compile("\"(?:Name|type|location)\": *\"([a-z_:]+)\"");
 
 		// ConfiguredFeatures
 		imp.func_230521_a_(Registry.field_243552_au).ifPresent(configuredFeatureRegistry ->
