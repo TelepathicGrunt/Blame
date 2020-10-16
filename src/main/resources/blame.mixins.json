@@ -7,7 +7,6 @@
     "BiomeMixin",
     "DynamicRegistryManagerMixin",
     "FlatChunkGeneratorConfigMixin",
-    "RegistryOpsInnerClassMixin",
     "RegistryOpsMixin",
     "StructureManagerMixin"
   ],
