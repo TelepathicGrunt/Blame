@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import com.telepathicgrunt.blame.Blame;
+import com.telepathicgrunt.blame.main.BiomeBlame;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.math.BlockPos;
@@ -55,22 +56,7 @@ public class BiomeMixin {
 								   Iterator<ConfiguredFeature<?, ?>> var12, Supplier<ConfiguredFeature<?, ?>> supplier,
 								   ConfiguredFeature<?, ?> configuredFeature, Exception exception, CrashReport crashreport)
 	{
-		DynamicRegistryManager dynamicRegistryManager = chunkRegion.getRegistryManager();
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-		Identifier configuredFeatureID = dynamicRegistryManager.get(Registry.CONFIGURED_FEATURE_WORLDGEN).getId(configuredFeature);
-		Identifier biomeID = dynamicRegistryManager.get(Registry.BIOME_KEY).getId((Biome)(Object)this);
-		Optional<JsonElement> configuredFeatureJSON = ConfiguredFeature.REGISTRY_CODEC.encode(() -> configuredFeature, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left();
-
-		// Add extra info to the crash report file.
-		crashreport.getSystemDetailsSection()
-				.add("\n****************** Blame Report ******************",
-					"\n\n ConfiguredFeature Registry Name : " + (configuredFeatureID != null ? configuredFeatureID : "Has no identifier as it was not registered... go yell at the mod owner when you find them! lol") +
-						"\n Biome Registry Name : " + (biomeID != null ? biomeID : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!") +
-						"\n\n JSON info : " + (configuredFeatureJSON.isPresent() ? gson.toJson(configuredFeatureJSON.get()) : "Failed to get JSON somehow.") + "\n\n");
-
-		// Log it to the latest.log file as well.
-		Blame.LOGGER.log(Level.ERROR, crashreport.getMessage());
+		BiomeBlame.addFeatureDetails((Biome)(Object)this, chunkRegion, configuredFeature, crashreport);
 	}
 
 
@@ -90,21 +76,6 @@ public class BiomeMixin {
 									 Iterator<StructureFeature<?>> structureFeatureIterator, StructureFeature<?> structureFeature,
 									 Exception exception, CrashReport crashreport)
 	{
-		DynamicRegistryManager dynamicRegistryManager = chunkRegion.getRegistryManager();
-
-		Identifier structureID = dynamicRegistryManager.get(Registry.STRUCTURE_FEATURE_KEY).getId(structureFeature);
-		Identifier biomeID = dynamicRegistryManager.get(Registry.BIOME_KEY).getId((Biome)(Object)this);
-
-		// Add extra info to the crash report file.
-		// Note, only structures can do the details part as configuredfeatures always says the ConfiguredFeature class.
-		crashreport.getSystemDetailsSection()
-				.add("\n****************** Blame Report ******************",
-						"\n\n Structure Name : " + structureFeature.getName() + // Never null
-						"\n Structure Registry Name : " + (structureID != null ? structureID : "Structure is not registered somehow. Yell at the mod author when found to register their structures!") +
-						"\n Structure Details : " + structureFeature.toString() +
-						"\n Biome Registry Name : " + (biomeID != null ? biomeID : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!"));
-
-		// Log it to the latest.log file as well.
-		Blame.LOGGER.log(Level.ERROR, crashreport.getMessage());
+		BiomeBlame.addStructureDetails((Biome)(Object)this, chunkRegion, structureFeature, crashreport);
 	}
 }

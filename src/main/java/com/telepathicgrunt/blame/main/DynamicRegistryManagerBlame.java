@@ -1,9 +1,10 @@
-package com.telepathicgrunt.blame;
+package com.telepathicgrunt.blame.main;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
+import com.telepathicgrunt.blame.Blame;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.*;
 import net.minecraft.world.biome.Biome;
@@ -19,7 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class DynamicRegistryManagerEnhance {
+public class DynamicRegistryManagerBlame {
 
 
     public static void printUnregisteredWorldgenConfiguredStuff(DynamicRegistryManager.Impl imp){

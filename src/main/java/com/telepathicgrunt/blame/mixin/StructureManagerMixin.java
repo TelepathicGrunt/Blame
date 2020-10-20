@@ -1,6 +1,7 @@
 package com.telepathicgrunt.blame.mixin;
 
 import com.telepathicgrunt.blame.Blame;
+import com.telepathicgrunt.blame.main.StructureManagerBlame;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.StructureManager;
 import net.minecraft.util.Identifier;
@@ -23,27 +24,12 @@ import java.util.Set;
 @Mixin(StructureManager.class)
 public class StructureManagerMixin {
 
-	// Prevent log spam if one mod keeps attempting to get the missing nbt file.
-	@Unique
-	private static final Set<String> PRINTED_RLS = new HashSet<>();
-
 	@Inject(method = "loadStructureFromResource(Lnet/minecraft/util/Identifier;)Lnet/minecraft/structure/Structure;",
 			at = @At(value = "RETURN"))
 	private void addMissingnbtDetails(Identifier miniRL, CallbackInfoReturnable<Structure> cir)
 	{
 		if(cir.getReturnValue() == null){
-			Identifier fullRL = new Identifier(miniRL.getNamespace(), "structures/" + miniRL.getPath() + ".nbt");
-			if(PRINTED_RLS.contains(fullRL.toString())) return;
-
-			// Add extra info to the log file.
-			String errorReport = "\n****************** Blame Report ******************" +
-					"\n\n Failed to load nbt file from : " + fullRL +
-					"\n Most common cause is that the nbt file is not actually at that location." +
-					"\n Please let the mod author know about this so they can move their nbt file to the correct place." +
-					"\n A common mistake is putting the nbt file in the asset folder when it needs to go in data/structures folder.\n";
-			Blame.LOGGER.log(Level.ERROR, errorReport);
-
-			PRINTED_RLS.add(fullRL.toString());
+			StructureManagerBlame.addMissingnbtDetails(miniRL);
 		}
 	}
 }

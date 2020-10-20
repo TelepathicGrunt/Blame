@@ -9,7 +9,7 @@ Gotta blame the broken mods!
    (V.2.0.0 Changes) (1.16.2/1.16.3 Minecraft)
       
     Major:
-• Ported to Fabric from Forge
+• Ported to Fabric from Forge!
 
 
    (V.1.4.4 Changes) (1.16.2/1.16.3 Minecraft)

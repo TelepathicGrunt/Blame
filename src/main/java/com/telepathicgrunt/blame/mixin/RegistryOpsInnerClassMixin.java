@@ -32,7 +32,7 @@ import java.util.OptionalInt;
 
 /* @author - TelepathicGrunt
  *
- *
+ * cannot use until https://github.com/SpongePowered/Mixin/issues/386 is fixed
  *
  * LGPLv3
  */
