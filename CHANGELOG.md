@@ -6,6 +6,14 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
 
+   (V.1.4.5 Changes) (1.16.2/1.16.3 Minecraft)
+      
+    Backend:
+• Some cleaning and refactoring so if Blame is the one to crash, 
+  the logs will now say the crash happened in Blame. So yes, it
+  is now easier to blame Blame itself lmao.
+
+
    (V.1.4.4 Changes) (1.16.2/1.16.3 Minecraft)
       
     DynamicRegistries:

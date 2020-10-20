@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import com.telepathicgrunt.blame.Blame;
+import com.telepathicgrunt.blame.main.FlatGenerationSettingsBlame;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedSeedRandom;
@@ -64,22 +65,6 @@ public class FlatGenerationSettingsMixin {
 								 BiomeGenerationSettings.Builder biomegenerationsettings$builder, Iterator<?> var4,
 								 Map.Entry<Structure<?>, StructureSeparationSettings> structureEntry)
 	{
-		// This condition will cause a crash
-		if(STRUCTURES.get(structureEntry.getKey()) == null){
-
-			ResourceLocation rl = Registry.STRUCTURE_FEATURE.getKey(structureEntry.getKey());
-			String extraDetail = rl != null ? (" | " + rl.toString()) : "";
-
-			// Add extra info to the log before crash.
-			String errorReport = "\n****************** Blame Report ******************" +
-					"\n\n A crash is most likely going to happen right after this report!" +
-					"\n It seems " + structureEntry.getKey().getStructureName() + extraDetail + " is the cause because it is not added " +
-					"\n to the FlatGenerationSettings.STRUCTURES map. Please let the mod owner " +
-					"\n of that structure know about this crash. That way they can add their structure " +
-					"\n to that map since someone is trying to spawn it in a flat/custom dimension. \n\n";
-
-			// Log it to the latest.log file as well.
-			Blame.LOGGER.log(Level.ERROR, errorReport);
-		}
+		FlatGenerationSettingsBlame.addCrashDetails(STRUCTURES, structureEntry);
 	}
 }
