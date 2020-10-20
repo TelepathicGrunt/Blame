@@ -7,7 +7,12 @@ Gotta blame the broken mods!
        | Blame Forge changelog |
 
    (V.1.4.5 Changes) (1.16.2/1.16.3 Minecraft)
-      
+       
+    Missing nbt file:
+• Will now try its best to state what Template Pool attempted to
+  spawn the missing nbt file to make it easier for modders to
+  locate and fix the problem.
+  
     Backend:
 • Some cleaning and refactoring so if Blame is the one to crash, 
   the logs will now say the crash happened in Blame. So yes, it

@@ -7,6 +7,9 @@
     "BiomeMixin",
     "DynamicRegistriesMixin",
     "FlatGenerationSettingsMixin",
+    "JigsawManagerAssemblerMixin",
+    "JigsawManagerMixin",
+    "SingleJigsawPieceAccessor",
     "TemplateManagerMixin",
     "WorldSettingsImportMixin"
   ],
