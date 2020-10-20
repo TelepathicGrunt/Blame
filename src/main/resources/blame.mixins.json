@@ -7,8 +7,11 @@
     "BiomeMixin",
     "DynamicRegistryManagerMixin",
     "FlatChunkGeneratorConfigMixin",
+    "StructurePoolBasedGeneratorStructurePoolGeneratorMixin",
     "RegistryOpsMixin",
-    "StructureManagerMixin"
+    "SinglePoolElementAccessor",
+    "StructureManagerMixin",
+    "StructurePoolBasedGeneratorMixin"
   ],
   "client": [],
   "injectors": {
