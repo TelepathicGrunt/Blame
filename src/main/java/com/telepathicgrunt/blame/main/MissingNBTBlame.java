@@ -31,19 +31,24 @@ public class MissingNBTBlame {
 	public static void addMissingnbtDetails(ResourceLocation miniRL)
 	{
 		ResourceLocation fullRL = new ResourceLocation(miniRL.getNamespace(), "structures/" + miniRL.getPath() + ".nbt");
-		if(PRINTED_RLS.contains(fullRL.toString())) return;
+		ResourceLocation parentID = null;
+
+		if(CURRENT_RL != null && CURRENT_RL.getValue().equals(miniRL))
+			parentID = CURRENT_RL.getValue();
+
+		if(PRINTED_RLS.contains(parentID + fullRL.toString())) return;
 
 		// Add extra info to the log file.
 		String errorReport = "\n****************** Blame Report ******************" +
 				"\n\n Failed to load structure nbt file from : " + miniRL + " which is resolved to " + fullRL +
-				(CURRENT_RL != null && CURRENT_RL.getValue().equals(miniRL) ? "\n The calling Template Pool is: " + CURRENT_RL.getKey() : "") +
+				(parentID != null ? "\n The calling Template Pool is: " + parentID : "") +
 				"\n Most common cause is that the structure nbt file is not actually at that location." +
 				"\n Please let the mod author know about this so they can move their structure nbt file to the correct place." +
 				"\n A common mistake is putting the structure nbt file in the asset folder when it needs to go in data/structures folder.\n";
 		Blame.LOGGER.log(Level.ERROR, errorReport);
 
-		if(CURRENT_RL != null && CURRENT_RL.getValue().equals(miniRL)){
-			PRINTED_RLS.add(CURRENT_RL.getKey()+fullRL.toString());
+		if(parentID != null){
+			PRINTED_RLS.add(parentID + fullRL.toString());
 		}
 		else{
 			PRINTED_RLS.add(fullRL.toString());
