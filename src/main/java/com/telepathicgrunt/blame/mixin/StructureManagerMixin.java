@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(StructureManager.class)
 public class StructureManagerMixin {
 
-	@Inject(method = "loadStructureFromResource(Lnet/minecraft/util/Identifier;)Lnet/minecraft/structure/Structure;",
+	@Inject(method = "getStructure(Lnet/minecraft/util/Identifier;)Lnet/minecraft/structure/Structure;",
 			at = @At(value = "RETURN"))
 	private void addMissingnbtDetails(Identifier miniRL, CallbackInfoReturnable<Structure> cir)
 	{

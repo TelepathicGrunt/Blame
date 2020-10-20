@@ -40,7 +40,7 @@ public class MissingNBTBlame {
 		Identifier parentID = null;
 
 		if(CURRENT_RL != null && CURRENT_RL.getRight().equals(miniRL))
-			parentID = CURRENT_RL.getRight();
+			parentID = CURRENT_RL.getLeft();
 
 		if(PRINTED_RLS.contains(parentID + fullID.toString())) return;
 
@@ -53,11 +53,6 @@ public class MissingNBTBlame {
 				"\n A common mistake is putting the structure nbt file in the asset folder when it needs to go in data/structures folder.\n";
 		Blame.LOGGER.log(Level.ERROR, errorReport);
 
-		if(parentID != null){
-			PRINTED_RLS.add(parentID + fullID.toString());
-		}
-		else{
-			PRINTED_RLS.add(fullID.toString());
-		}
+		PRINTED_RLS.add(parentID + fullID.toString());
 	}
 }
