@@ -9,6 +9,7 @@
     "FlatGenerationSettingsMixin",
     "JigsawManagerAssemblerMixin",
     "JigsawManagerMixin",
+    "JigsawPatternMixin",
     "SingleJigsawPieceAccessor",
     "TemplateManagerMixin",
     "WorldSettingsImportMixin"
