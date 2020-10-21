@@ -2,6 +2,9 @@ package com.telepathicgrunt.blame.mixin;
 
 import com.telepathicgrunt.blame.main.MissingNBTBlame;
 import javafx.util.Pair;
+import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPattern;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPiece;
 import net.minecraft.world.gen.feature.jigsaw.SingleJigsawPiece;
@@ -19,21 +22,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  *
  * LGPLv3
  */
-@Mixin(JigsawPattern.class)
-public class JigsawPatternMixin {
+@Mixin(SingleJigsawPiece.class)
+public class SingleJigsawPieceMixin {
 
-
-	@Inject(method = "getMaxSize(Lnet/minecraft/world/gen/feature/template/TemplateManager;)I",
+	@Inject(method = "func_236843_a_(Lnet/minecraft/world/gen/feature/template/TemplateManager;)Lnet/minecraft/world/gen/feature/template/Template;",
 			at = @At(value = "HEAD"))
-	private void tempPool(TemplateManager templateManager, CallbackInfoReturnable<Integer> cir)
+	private void storeCurrentPool(TemplateManager templateManagerIn, CallbackInfoReturnable<MutableBoundingBox> cir)
 	{
-		MissingNBTBlame.CALLING_POOL = ((JigsawPattern)(Object)this).getName();
-	}
-
-	@Inject(method = "getMaxSize(Lnet/minecraft/world/gen/feature/template/TemplateManager;)I",
-			at = @At(value = "TAIL"))
-	private void tempPoolClear(TemplateManager templateManager, CallbackInfoReturnable<Integer> cir)
-	{
-		MissingNBTBlame.CALLING_POOL = null;
+		if(MissingNBTBlame.CALLING_POOL != null &((SingleJigsawPieceAccessor)this).getTemplateRL().left().isPresent()){
+			MissingNBTBlame.storeCurrentIdentifiers(new Pair<>(MissingNBTBlame.CALLING_POOL, ((SingleJigsawPieceAccessor)this).getTemplateRL().left().get()));
+		}
+		else{
+			MissingNBTBlame.storeCurrentIdentifiers(null);
+		}
 	}
 }

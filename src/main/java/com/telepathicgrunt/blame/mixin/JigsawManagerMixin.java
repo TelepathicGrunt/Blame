@@ -40,13 +40,8 @@ public class JigsawManagerMixin {
 											 TemplateManager templateManager, BlockPos blockPos,
 											 List<? super AbstractVillagePiece> pieces_list, Random random,
 											 boolean b, boolean b1, CallbackInfo ci, MutableRegistry<JigsawPattern> mutableregistry,
-											 Rotation rotation, JigsawPattern jigsawpattern, JigsawPiece jigsawpiece)
+											 Rotation rotation, JigsawPattern jigsawpattern)
 	{
-		if(jigsawpiece instanceof SingleJigsawPiece && ((SingleJigsawPieceAccessor)jigsawpiece).getTemplateRL().left().isPresent()){
-			MissingNBTBlame.storeCurrentIdentifiers(new Pair<>(jigsawpattern.getName(), ((SingleJigsawPieceAccessor) jigsawpiece).getTemplateRL().left().get()));
-		}
-		else{
-			MissingNBTBlame.storeCurrentIdentifiers(null);
-		}
+		MissingNBTBlame.CALLING_POOL = jigsawpattern.getName();
 	}
 }

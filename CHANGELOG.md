@@ -6,6 +6,12 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
 
+   (V.1.4.6 Changes) (1.16.2/1.16.3 Minecraft)
+       
+    Missing nbt file:
+• Show a more accurate filepath of where the missing nbt file was looked for at.
+
+
    (V.1.4.5 Changes) (1.16.2/1.16.3 Minecraft)
        
     Missing nbt file:

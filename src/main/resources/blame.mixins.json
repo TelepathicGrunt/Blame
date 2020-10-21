@@ -11,6 +11,7 @@
     "JigsawManagerMixin",
     "JigsawPatternMixin",
     "SingleJigsawPieceAccessor",
+    "SingleJigsawPieceMixin",
     "TemplateManagerMixin",
     "WorldSettingsImportMixin"
   ],

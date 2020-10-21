@@ -38,23 +38,19 @@ public class JigsawManagerAssemblerMixin {
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Rotation;shuffledRotations(Ljava/util/Random;)Ljava/util/List;"),
 			locals = LocalCapture.CAPTURE_FAILHARD)
 	private void storeCurrentPool2(AbstractVillagePiece abstractVillagePiece, MutableObject<VoxelShape> voxelShapeMutableObject,
-								   int i1, int i2, boolean b, CallbackInfo ci, JigsawPiece jigsawpiece, BlockPos blockpos,
-								   Rotation rotation, JigsawPattern.PlacementBehaviour jigsawpattern$placementbehaviour,
-								   boolean flag, MutableObject mutableobject, MutableBoundingBox mutableboundingbox, int i,
-								   Iterator var14, Template.BlockInfo template$blockinfo, Direction direction, BlockPos blockpos1,
-								   BlockPos blockpos2, int j, int k, ResourceLocation resourcelocation, Optional optional,
-								   ResourceLocation resourcelocation1, Optional optional1, boolean flag1, MutableObject mutableobject1,
-								   int l, List list, Iterator var29, JigsawPiece jigsawpiece1)
+								   int i1, int i2, boolean b, CallbackInfo ci, JigsawPiece jigsawpiece)
 	{
-		if(jigsawpiece instanceof SingleJigsawPiece && ((SingleJigsawPieceAccessor)jigsawpiece).getTemplateRL().left().isPresent() &&
-			jigsawpiece1 instanceof SingleJigsawPiece && ((SingleJigsawPieceAccessor)jigsawpiece1).getTemplateRL().left().isPresent())
+		if(jigsawpiece instanceof SingleJigsawPiece && ((SingleJigsawPieceAccessor)jigsawpiece).getTemplateRL().left().isPresent())
 		{
-			MissingNBTBlame.storeCurrentIdentifiers(new Pair<>(
-					((SingleJigsawPieceAccessor) jigsawpiece).getTemplateRL().left().get(),
-					((SingleJigsawPieceAccessor) jigsawpiece1).getTemplateRL().left().get()));
+			MissingNBTBlame.CALLING_POOL = ((SingleJigsawPieceAccessor) jigsawpiece).getTemplateRL().left().get();
 		}
-		else{
-			MissingNBTBlame.storeCurrentIdentifiers(null);
-		}
+	}
+
+	@Inject(method = "func_236831_a_(Lnet/minecraft/world/gen/feature/structure/AbstractVillagePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZ)V",
+			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/gen/feature/jigsaw/JigsawManager$IPieceFactory;create(Lnet/minecraft/world/gen/feature/template/TemplateManager;Lnet/minecraft/world/gen/feature/jigsaw/JigsawPiece;Lnet/minecraft/util/math/BlockPos;ILnet/minecraft/util/Rotation;Lnet/minecraft/util/math/MutableBoundingBox;)Lnet/minecraft/world/gen/feature/structure/AbstractVillagePiece;"))
+	private void storeCurrentPool2(AbstractVillagePiece abstractVillagePiece, MutableObject<VoxelShape> voxelShapeMutableObject,
+								   int i, int i1, boolean b, CallbackInfo ci)
+	{
+		MissingNBTBlame.CALLING_POOL = null;
 	}
 }
