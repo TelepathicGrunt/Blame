@@ -1,9 +1,8 @@
 package com.telepathicgrunt.blame.main;
 
+import com.mojang.datafixers.util.Pair;
 import com.telepathicgrunt.blame.Blame;
-import javafx.util.Pair;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.gen.feature.jigsaw.JigsawPattern;
 import org.apache.logging.log4j.Level;
 
 import java.util.HashSet;
@@ -35,8 +34,8 @@ public class MissingNBTBlame {
 		String fullPath = "data/" + miniRL.getNamespace() + "/structures/" + miniRL.getPath() + ".nbt";
 		ResourceLocation parentID = null;
 
-		if(CURRENT_RL != null && CURRENT_RL.getValue().equals(miniRL))
-			parentID = CURRENT_RL.getKey();
+		if(CURRENT_RL != null && CURRENT_RL.getSecond().equals(miniRL))
+			parentID = CURRENT_RL.getFirst();
 
 		if(PRINTED_RLS.contains(parentID + fullPath)) return;
 

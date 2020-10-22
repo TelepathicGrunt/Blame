@@ -1,7 +1,6 @@
 package com.telepathicgrunt.blame.mixin;
 
 import com.telepathicgrunt.blame.main.MissingNBTBlame;
-import javafx.util.Pair;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.DynamicRegistries;
@@ -9,8 +8,6 @@ import net.minecraft.util.registry.MutableRegistry;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.jigsaw.JigsawManager;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPattern;
-import net.minecraft.world.gen.feature.jigsaw.JigsawPiece;
-import net.minecraft.world.gen.feature.jigsaw.SingleJigsawPiece;
 import net.minecraft.world.gen.feature.structure.AbstractVillagePiece;
 import net.minecraft.world.gen.feature.structure.VillageConfig;
 import net.minecraft.world.gen.feature.template.TemplateManager;
