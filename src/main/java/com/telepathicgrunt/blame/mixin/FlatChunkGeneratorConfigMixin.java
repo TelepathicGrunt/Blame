@@ -1,15 +1,11 @@
 package com.telepathicgrunt.blame.mixin;
 
-import com.telepathicgrunt.blame.Blame;
 import com.telepathicgrunt.blame.main.FlatChunkGeneratorConfigBlame;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.gen.chunk.FlatChunkGeneratorConfig;
 import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.gen.feature.StructureFeature;
-import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

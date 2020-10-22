@@ -2,16 +2,8 @@ package com.telepathicgrunt.blame.mixin;
 
 import com.telepathicgrunt.blame.main.MissingNBTBlame;
 import net.minecraft.structure.PoolStructurePiece;
-import net.minecraft.structure.Structure;
 import net.minecraft.structure.pool.SinglePoolElement;
-import net.minecraft.structure.pool.StructurePool;
 import net.minecraft.structure.pool.StructurePoolElement;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
-import net.minecraft.util.math.BlockBox;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,10 +11,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
 
 /* @author - TelepathicGrunt
  *
@@ -34,26 +22,23 @@ import java.util.Optional;
 public class StructurePoolBasedGeneratorStructurePoolGeneratorMixin {
 
 
-	@Inject(method = "Lnet/minecraft/structure/pool/StructurePoolBasedGenerator$StructurePoolGenerator;generatePiece(Lnet/minecraft/structure/PoolStructurePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZ)V",
+	@Inject(method = "generatePiece(Lnet/minecraft/structure/PoolStructurePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZ)V",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/util/BlockRotation;randomRotationOrder(Ljava/util/Random;)Ljava/util/List;"),
 			locals = LocalCapture.CAPTURE_FAILHARD)
 	private void storeCurrentPool2(PoolStructurePiece piece, MutableObject<VoxelShape> mutableObject, int minY, int currentSize,
-								   boolean bl, CallbackInfo ci, StructurePoolElement structurePoolElement, BlockPos blockPos,
-								   BlockRotation blockRotation, StructurePool.Projection projection, boolean bl2, MutableObject mutableObject2,
-								   BlockBox blockBox, int i, Iterator var14, Structure.StructureBlockInfo structureBlockInfo, Direction direction,
-								   BlockPos blockPos2, BlockPos blockPos3, int j, int k, Identifier identifier, Optional optional,
-								   Identifier identifier2, Optional optional2, MutableObject mutableObject4, int m, List list, Iterator var29,
-								   StructurePoolElement structurePoolElement2)
+								   boolean bl, CallbackInfo ci, StructurePoolElement structurePoolElement)
 	{
-		if(structurePoolElement instanceof SinglePoolElement && ((SinglePoolElementAccessor)structurePoolElement).getTemplateID().left().isPresent() &&
-				structurePoolElement2 instanceof SinglePoolElement && ((SinglePoolElementAccessor)structurePoolElement2).getTemplateID().left().isPresent())
+		if(structurePoolElement instanceof SinglePoolElement && ((SinglePoolElementAccessor)structurePoolElement).getTemplateID().left().isPresent())
 		{
-			MissingNBTBlame.storeCurrentIdentifiers(new Pair<>(
-					((SinglePoolElementAccessor) structurePoolElement).getTemplateID().left().get(),
-					((SinglePoolElementAccessor) structurePoolElement2).getTemplateID().left().get()));
+			MissingNBTBlame.CALLING_POOL = ((SinglePoolElementAccessor) structurePoolElement).getTemplateID().left().get();
 		}
-		else{
-			MissingNBTBlame.storeCurrentIdentifiers(null);
-		}
+	}
+
+	@Inject(method = "generatePiece(Lnet/minecraft/structure/PoolStructurePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZ)V",
+			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/structure/pool/StructurePoolBasedGenerator$PieceFactory;create(Lnet/minecraft/structure/StructureManager;Lnet/minecraft/structure/pool/StructurePoolElement;Lnet/minecraft/util/math/BlockPos;ILnet/minecraft/util/BlockRotation;Lnet/minecraft/util/math/BlockBox;)Lnet/minecraft/structure/PoolStructurePiece;"))
+	private void storeCurrentPool3(PoolStructurePiece piece, MutableObject<VoxelShape> mutableObject,
+								   int minY, int currentSize, boolean bl, CallbackInfo ci)
+	{
+		MissingNBTBlame.CALLING_POOL = null;
 	}
 }

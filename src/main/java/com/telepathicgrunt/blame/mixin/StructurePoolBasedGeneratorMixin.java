@@ -3,12 +3,9 @@ package com.telepathicgrunt.blame.mixin;
 import com.telepathicgrunt.blame.main.MissingNBTBlame;
 import net.minecraft.structure.PoolStructurePiece;
 import net.minecraft.structure.StructureManager;
-import net.minecraft.structure.pool.SinglePoolElement;
 import net.minecraft.structure.pool.StructurePool;
 import net.minecraft.structure.pool.StructurePoolBasedGenerator;
-import net.minecraft.structure.pool.StructurePoolElement;
 import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.MutableRegistry;
@@ -39,13 +36,8 @@ public class StructurePoolBasedGeneratorMixin {
 										 StructurePoolBasedGenerator.PieceFactory pieceFactory, ChunkGenerator chunkGenerator,
 										 StructureManager structureManager, BlockPos blockPos, List<? super PoolStructurePiece> list,
 										 Random random, boolean bl, boolean bl2, CallbackInfo ci, MutableRegistry<StructurePool> mutableRegistry,
-										 BlockRotation blockRotation, StructurePool structurePool, StructurePoolElement structurePoolElement)
+										 BlockRotation blockRotation, StructurePool structurePool)
 	{
-		if(structurePoolElement instanceof SinglePoolElement && ((SinglePoolElementAccessor)structurePoolElement).getTemplateID().left().isPresent()){
-			MissingNBTBlame.storeCurrentIdentifiers(new Pair<>(structurePool.getId(), ((SinglePoolElementAccessor) structurePoolElement).getTemplateID().left().get()));
-		}
-		else{
-			MissingNBTBlame.storeCurrentIdentifiers(null);
-		}
+		MissingNBTBlame.CALLING_POOL = structurePool.getId();
 	}
 }

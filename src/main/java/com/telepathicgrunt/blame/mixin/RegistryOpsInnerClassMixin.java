@@ -1,34 +1,6 @@
 package com.telepathicgrunt.blame.mixin;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.Decoder;
-import com.mojang.serialization.DynamicOps;
-import com.telepathicgrunt.blame.Blame;
-import com.telepathicgrunt.blame.utils.ErrorHints;
-import com.telepathicgrunt.blame.utils.PrettyPrintBrokenJSON;
-import net.minecraft.resource.Resource;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.dynamic.RegistryOps;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.util.registry.SimpleRegistry;
-import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Coerce;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-
-import java.io.Reader;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.OptionalInt;
 
 /* @author - TelepathicGrunt
  *

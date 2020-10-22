@@ -1,16 +1,8 @@
 package com.telepathicgrunt.blame.mixin;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.mojang.serialization.JsonOps;
-import com.telepathicgrunt.blame.Blame;
 import com.telepathicgrunt.blame.main.BiomeBlame;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.DynamicRegistryManager;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkRandom;
@@ -18,7 +10,6 @@ import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.StructureFeature;
-import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -27,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 /* @author - TelepathicGrunt

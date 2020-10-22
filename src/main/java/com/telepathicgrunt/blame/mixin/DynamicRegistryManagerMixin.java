@@ -1,7 +1,7 @@
 package com.telepathicgrunt.blame.mixin;
 
 import com.telepathicgrunt.blame.main.DynamicRegistryManagerBlame;
-import net.minecraft.util.registry.*;
+import net.minecraft.util.registry.DynamicRegistryManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

@@ -9,6 +9,7 @@
     "FlatChunkGeneratorConfigMixin",
     "RegistryOpsMixin",
     "SinglePoolElementAccessor",
+    "SinglePoolElementMixin",
     "StructureManagerMixin",
     "StructurePoolBasedGeneratorMixin",
     "StructurePoolBasedGeneratorStructurePoolGeneratorMixin",
