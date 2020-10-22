@@ -7,7 +7,10 @@ Gotta blame the broken mods!
        | Blame Forge changelog |
 
    (V.1.4.6 Changes) (1.16.2/1.16.3 Minecraft)
-       
+        
+    Major:
+• Fixed crash with certain JVM versions.
+    
     Missing nbt file:
 • Show a more accurate filepath of where the missing nbt file was looked for at.
 
