@@ -31,13 +31,6 @@ public class DynamicRegistriesMixin {
 	/**
 	 * The main hook for the parser to work from. This will check every biomes in the
 	 * DynamicRegistry to see if it has exploded due to unregistered stuff added to it.
-	 *
-	 * It compares to the string representation of all registered objects because if we
-	 * do a simple registry.get(), there seems to be a weird issue where the object in
-	 * the biome is not actually the same object as in the registry. Like the biome did
-	 * its own deep copy of what's in the registry as so, .get fails despite the object
-	 * actually being registered already. That's why we compare the stringified JSON
-	 * results instead.
 	 */
 	@Inject(method = "func_239770_b_()Lnet/minecraft/util/registry/DynamicRegistries$Impl;",
 			at = @At(value = "RETURN"), require = 1)
