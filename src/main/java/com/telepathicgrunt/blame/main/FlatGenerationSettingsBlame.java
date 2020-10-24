@@ -24,10 +24,10 @@ public class FlatGenerationSettingsBlame {
 	 * the structure to the FlatGenerationSettings's STRUCTURES map. Doing so will cause a crash.
 	 * This mixin will say what structure it was that triggered it.
 	 */
-	public static void addCrashDetails(Map<Structure<?>, StructureFeature<?, ?>> main_structure_map, Map.Entry<Structure<?>, StructureSeparationSettings> structureEntry)
+	public static void addCrashDetails(Map<Structure<?>, StructureFeature<?, ?>> mainStructureMap, Map.Entry<Structure<?>, StructureSeparationSettings> structureEntry)
 	{
 		// This condition will cause a crash
-		if(main_structure_map.get(structureEntry.getKey()) == null){
+		if(mainStructureMap.get(structureEntry.getKey()) == null){
 
 			ResourceLocation rl = Registry.STRUCTURE_FEATURE.getKey(structureEntry.getKey());
 			String extraDetail = rl != null ? (" | " + rl.toString()) : "";

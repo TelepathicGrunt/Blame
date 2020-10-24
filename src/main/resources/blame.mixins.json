@@ -5,6 +5,8 @@
   "refmap": "blame.refmap.json",
   "mixins": [
     "BiomeMixin",
+    "DispenserBlockAccessor",
+    "BootstrapMixin",
     "DynamicRegistriesMixin",
     "FlatGenerationSettingsMixin",
     "JigsawManagerAssemblerMixin",

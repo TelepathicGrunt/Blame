@@ -6,6 +6,13 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
 
+   (V.1.4.7 Changes) (1.16.2/1.16.3 Minecraft)
+        
+    Dispenser Behaviors:
+• Will now print out extra info when someone registry override a
+  dispenser behavior for an already registered behavior for an item.
+
+
    (V.1.4.6 Changes) (1.16.2/1.16.3 Minecraft)
         
     Major:
