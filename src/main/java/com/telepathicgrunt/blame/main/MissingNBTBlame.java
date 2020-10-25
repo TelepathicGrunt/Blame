@@ -40,7 +40,7 @@ public class MissingNBTBlame {
 		if(PRINTED_RLS.contains(parentID + fullPath)) return;
 
 		// Add extra info to the log file.
-		String errorReport = "\n****************** Blame Report ******************" +
+		String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
 				"\n\n Failed to load structure nbt file from : " + miniRL + " which is resolved to " + fullPath +
 				(parentID != null ? "\n The calling Template Pool is: " + parentID : "") +
 				"\n Most common cause is that the structure nbt file is not actually at that location." +

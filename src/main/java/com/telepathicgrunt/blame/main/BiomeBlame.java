@@ -43,7 +43,7 @@ public class BiomeBlame {
 
 		// Add extra info to the crash report file.
 		crashreport.getCategory()
-				.addDetail("\n****************** Blame Report ******************",
+				.addDetail("\n****************** Blame Report " + Blame.VERSION + " ******************",
 					"\n\n ConfiguredFeature Registry Name : " + (configuredFeatureID != null ? configuredFeatureID : "Has no identifier as it was not registered... go yell at the mod owner when you find them! lol") +
 						"\n Biome Registry Name : " + (biomeID != null ? biomeID : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!") +
 						"\n\n JSON info : " + (configuredFeatureJSON.isPresent() ? gson.toJson(configuredFeatureJSON.get()) : "Failed to get JSON somehow.") + "\n\n");
@@ -68,7 +68,7 @@ public class BiomeBlame {
 		// Add extra info to the crash report file.
 		// Note, only structures can do the details part as configuredfeatures always says the ConfiguredFeature class.
 		crashreport.getCategory()
-				.addDetail("\n****************** Blame Report ******************",
+				.addDetail("\n****************** Blame Report " + Blame.VERSION + " ******************",
 						"\n\n Structure Name : " + structureFeature.getStructureName() + // Never null
 						"\n Structure Registry Name : " + (structureID != null ? structureID : "Structure is not registered somehow. Yell at the mod author when found to register their structures!") +
 						"\n Structure Details : " + structureFeature.toString() +

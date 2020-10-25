@@ -55,7 +55,7 @@ public class DynamicRegistriesBlame {
 				stack.getMethodName().equals("onGuiInit")))
 		{
 			Blame.LOGGER.log(Level.ERROR,
-					"\n****************** Blame Report ******************" +
+					"\n****************** Blame Report " + Blame.VERSION + " ******************" +
 							"\n\n Vampirism classloaded the DynamicRegistries class." +
 							"\n However, this should be okay as they do it after the main " +
 							"\n mod initialization is done. Ignore this message and continue on lol.\n");
@@ -64,7 +64,7 @@ public class DynamicRegistriesBlame {
 		}
 
 		Blame.LOGGER.log(Level.ERROR,
-				"\n****************** Blame Report ******************" +
+				"\n****************** Blame Report " + Blame.VERSION + " ******************" +
 						"\n\n Oh no! Oh god! Someone classloaded DynamicRegistries class way too early!" +
 						"\n Most registry entries for other mods is broken now! Please read the following stacktrace" +
 						"\n and see if you can find which mod broke the game badly and please show them this log file." +
@@ -123,7 +123,7 @@ public class DynamicRegistriesBlame {
 
 		if(collectedPossibleIssueMods.size() != 0){
 			// Add extra info to the log.
-			String errorReport = "\n****************** Blame Report ******************" +
+			String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
 					"\n\n This is an experimental report. It is suppose to automatically read" +
 					"\n the JSON of all the unregistered ConfiguredFeatures, ConfiguredStructures," +
 					"\n and ConfiguredCarvers. Then does its best to collect the terms that seem to" +
@@ -254,7 +254,7 @@ public class DynamicRegistriesBlame {
 		for(Map.Entry<String, Set<ResourceLocation>> entry : unregisteredStuffMap.entrySet()){
 
 			// Add extra info to the log.
-			String errorReport = "\n****************** Blame Report ******************" +
+			String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
 					"\n\n This " + type + " was found to be not registered. Look at the JSON info and try to" +
 					"\n find which mod it belongs to. Then go tell that mod owner to register their " + type +
 					"\n as otherwise, it will break other mods or datapacks that registered their stuff." +
