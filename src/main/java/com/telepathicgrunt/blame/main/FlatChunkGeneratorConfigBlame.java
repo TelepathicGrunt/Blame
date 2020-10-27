@@ -32,7 +32,7 @@ public class FlatChunkGeneratorConfigBlame {
 			String extraDetail = rl != null ? (" | " + rl.toString()) : "";
 
 			// Add extra info to the log before crash.
-			String errorReport = "\n****************** Blame Report ******************" +
+			String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
 					"\n\n A crash is most likely going to happen right after this report!" +
 					"\n It seems " + structureEntry.getKey().getName() + extraDetail + " is the cause because it is not added " +
 					"\n to the FlatGenerationSettings.STRUCTURES map. Please let the mod owner " +

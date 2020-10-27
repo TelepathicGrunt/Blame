@@ -56,7 +56,7 @@ public class DynamicRegistryManagerBlame {
 
         if(collected_possible_issue_mods.size() != 0){
             // Add extra info to the log.
-            String errorReport = "\n****************** Blame Report ******************" +
+            String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
                     "\n\n This is an experimental report. It is suppose to automatically read" +
                     "\n the JSON of all the unregistered ConfiguredFeatures, ConfiguredStructures," +
                     "\n and ConfiguredCarvers. Then does its best to collect the terms that seem to" +
@@ -188,7 +188,7 @@ public class DynamicRegistryManagerBlame {
         for(Map.Entry<String, Set<Identifier>> entry : UNREGISTERED_STUFF_MAP.entrySet()){
 
             // Add extra info to the log.
-            String errorReport = "\n****************** Blame Report ******************" +
+            String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
                     "\n\n This " + type + " was found to be not registered. Look at the JSON info and try to" +
                     "\n find which mod it belongs to. Then go tell that mod owner to register their " + type +
                     "\n as otherwise, it will break other mods or datapacks that registered their stuff." +

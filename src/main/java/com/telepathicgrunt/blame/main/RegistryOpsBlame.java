@@ -51,7 +51,7 @@ public class RegistryOpsBlame {
 			}
 
 			Blame.LOGGER.log(Level.ERROR,
-					"\n****************** Blame Report ******************"
+					"\n****************** Blame Report " + Blame.VERSION + " ******************"
 					+ "\n\n Failed to load resource file: "+ CURRENT_IDENTIFIER
 					+ "\n\n Reason stated: " + reason
 					+ "\n\n Possibly helpful hint (hopefully): " + ErrorHints.HINT_MAP.getOrDefault(reason, "If this is a worldgen JSON file, check out slicedlime's example datapack\n   for worldgen to find what's off about the JSON: https://t.co/cm3pJcAHcy?amp=1")
