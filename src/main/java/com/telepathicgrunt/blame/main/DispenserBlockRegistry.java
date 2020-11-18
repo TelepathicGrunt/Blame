@@ -21,9 +21,7 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 
 		if(this.containsKey(item)){
 			Blame.LOGGER.log(Level.ERROR,"\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
-					"\n   Ignore this unless item behavior aren't working with Dispensers. If Dispenser behavior" +
-					"\n   is broken, check out \"Potentially Dangerous alternative prefix `minecraft`\" lines for" +
-					"\n   the item too as registry replacements might break dispenser behaviors as well." +
+					"\n   Ignore this unless item behavior aren't working with Dispensers." +
 					"\n  Dispenser Behavior overridden for " + Registry.ITEM.getKey((Item)item).toString() +
 					"\n  New behavior: " + behavior.getClass().getName() +
 					"\n  Old behavior: " + this.get(item).getClass().getName() +
