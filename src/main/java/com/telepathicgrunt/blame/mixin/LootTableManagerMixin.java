@@ -26,10 +26,10 @@ public class LootTableManagerMixin {
 
 	@Inject(method = "getLootTableFromLocation(Lnet/minecraft/util/ResourceLocation;)Lnet/minecraft/loot/LootTable;",
 			at = @At(value = "HEAD"))
-	private void addMissingLoottableDetails(ResourceLocation ressources, CallbackInfoReturnable<LootTable> cir)
+	private void addMissingLoottableDetails(ResourceLocation rl, CallbackInfoReturnable<LootTable> cir)
 	{
-		if(!registeredLootTables.containsKey(ressources)){
-			MissingLoottableBlame.addMissingLoottableDetails(ressources);
+		if(!registeredLootTables.containsKey(rl)){
+			MissingLoottableBlame.addMissingLoottableDetails(rl);
 		}
 	}
 }

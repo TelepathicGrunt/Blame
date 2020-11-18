@@ -32,14 +32,14 @@ public class BiomeBlame {
 	 * Prints registry name of feature and biome.
 	 * Prints the crashlog to latest.log as well.
 	 */
-	public static void addFeatureDetails(Biome biome, WorldGenRegion worldGenRegion, ConfiguredFeature<?, ?> configuredfeature, CrashReport crashreport)
+	public static void addFeatureDetails(Biome biome, WorldGenRegion worldGenRegion, ConfiguredFeature<?, ?> configuredFeature, CrashReport crashreport)
 	{
 		DynamicRegistries dynamicRegistries = worldGenRegion.func_241828_r();
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-		ResourceLocation configuredFeatureID = dynamicRegistries.getRegistry(Registry.CONFIGURED_FEATURE_KEY).getKey(configuredfeature);
+		ResourceLocation configuredFeatureID = dynamicRegistries.getRegistry(Registry.CONFIGURED_FEATURE_KEY).getKey(configuredFeature);
 		ResourceLocation biomeID = dynamicRegistries.getRegistry(Registry.BIOME_KEY).getKey(biome);
-		Optional<JsonElement> configuredFeatureJSON = ConfiguredFeature.field_236264_b_.encode(() -> configuredfeature, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left();
+		Optional<JsonElement> configuredFeatureJSON = ConfiguredFeature.field_236264_b_.encode(() -> configuredFeature, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left();
 
 		// Add extra info to the crash report file.
 		crashreport.getCategory()
