@@ -1,10 +1,25 @@
-    Made for Minecraft v.1.16.2/3
+    Made for Minecraft v.1.16.2/3/4
     Created by TelepathicGrunt
 
 Gotta blame the broken mods!
 
 ------------------------------------------------
        | Blame Forge changelog |
+
+   (V.2.1.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+      
+    Missing Loot Table:
+•  Will now print out if a non-existent loot table was attempted 
+   to be generated! Check the logs if a chest is empty and this 
+   mod might catch why it was empty!
+   
+    Unregistered worldgen:
+• Removed code for printing out unregistered worldgen stuff due to
+  crash with Cloth that I can't seem to figure out how to workaround.
+
+    Dispenser Behaviors:
+•  Made Dispenser log stuff printed by Blame now match other Blame reports.
+
 
    (V.2.0.0 Changes) (1.16.2/1.16.3 Minecraft)
       

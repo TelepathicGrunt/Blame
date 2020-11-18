@@ -33,7 +33,7 @@ public class FlatChunkGeneratorConfigMixin {
 
 	/**
 	 * Will detect if someone added the structure spacing to the chunkgenerator without adding
-	 * the structure to the FlatGenerationSettings's STRUCTURES map. Doing so will cause a crash.
+	 * the structure to the FlatChunkGeneratorConfig's STRUCTURE_FEATURE map. Doing so will cause a crash.
 	 * This mixin will say what structure it was that triggered it.
 	 */
 	@Inject(method = "createBiome()Lnet/minecraft/world/biome/Biome;",
