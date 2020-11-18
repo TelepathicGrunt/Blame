@@ -1,10 +1,16 @@
-    Made for Minecraft v.1.16.2
+    Made for Minecraft v.1.16.4
     Created by TelepathicGrunt
 
 Gotta blame the broken mods!
 
 ------------------------------------------------
        | Blame Forge changelog |
+
+   (V.1.5.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+        
+    Dispenser Behaviors:
+•
+
 
    (V.1.4.7 Changes) (1.16.2/1.16.3 Minecraft)
         

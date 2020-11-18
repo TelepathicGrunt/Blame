@@ -37,8 +37,8 @@ public class BiomeBlame {
 		DynamicRegistries dynamicRegistries = worldGenRegion.func_241828_r();
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-		ResourceLocation configuredFeatureID = dynamicRegistries.func_243612_b(Registry.field_243552_au).getKey(configuredfeature);
-		ResourceLocation biomeID = dynamicRegistries.func_243612_b(Registry.BIOME_KEY).getKey(biome);
+		ResourceLocation configuredFeatureID = dynamicRegistries.getRegistry(Registry.CONFIGURED_FEATURE_KEY).getKey(configuredfeature);
+		ResourceLocation biomeID = dynamicRegistries.getRegistry(Registry.BIOME_KEY).getKey(biome);
 		Optional<JsonElement> configuredFeatureJSON = ConfiguredFeature.field_236264_b_.encode(() -> configuredfeature, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left();
 
 		// Add extra info to the crash report file.
@@ -62,8 +62,8 @@ public class BiomeBlame {
 	{
 		DynamicRegistries dynamicRegistries = worldGenRegion.func_241828_r();
 
-		ResourceLocation structureID = dynamicRegistries.func_243612_b(Registry.STRUCTURE_FEATURE_KEY).getKey(structureFeature);
-		ResourceLocation biomeID = dynamicRegistries.func_243612_b(Registry.BIOME_KEY).getKey(biome);
+		ResourceLocation structureID = dynamicRegistries.getRegistry(Registry.STRUCTURE_FEATURE_KEY).getKey(structureFeature);
+		ResourceLocation biomeID = dynamicRegistries.getRegistry(Registry.BIOME_KEY).getKey(biome);
 
 		// Add extra info to the crash report file.
 		// Note, only structures can do the details part as configuredfeatures always says the ConfiguredFeature class.

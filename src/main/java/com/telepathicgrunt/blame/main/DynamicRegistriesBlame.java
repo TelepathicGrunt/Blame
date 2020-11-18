@@ -40,7 +40,7 @@ public class DynamicRegistriesBlame {
 			stack.getMethodName().equals("func_243425_a")) ||
 
 			(stack.getClassName().equals("net.minecraft.client.Minecraft") &&
-			stack.getMethodName().equals("func_238191_a_")) ||
+			(stack.getMethodName().equals("func_238191_a_") || stack.getMethodName().equals("loadWorld"))) ||
 
 			(stack.getClassName().equals("net.minecraft.server.Main") &&
 			stack.getMethodName().equals("main")) ||
@@ -98,7 +98,7 @@ public class DynamicRegistriesBlame {
 		Pattern pattern = Pattern.compile("\"(?:Name|type|location)\": *\"([a-z_:]+)\"");
 
 		// ConfiguredFeatures
-		imp.func_230521_a_(Registry.field_243552_au).ifPresent(configuredFeatureRegistry ->
+		imp.func_230521_a_(Registry.CONFIGURED_FEATURE_KEY).ifPresent(configuredFeatureRegistry ->
 		imp.func_230521_a_(Registry.BIOME_KEY).ifPresent(mutableRegistry -> mutableRegistry.getEntries()
 				.forEach(mapEntry -> findUnregisteredConfiguredFeatures(mapEntry, unconfiguredStuffMap, configuredFeatureRegistry, gson))));
 
@@ -106,7 +106,7 @@ public class DynamicRegistriesBlame {
 		extractModNames(unconfiguredStuffMap, collectedPossibleIssueMods, pattern);
 
 		// ConfiguredStructures
-		imp.func_230521_a_(Registry.field_243553_av).ifPresent(configuredStructureRegistry ->
+		imp.func_230521_a_(Registry.CONFIGURED_STRUCTURE_FEATURE_KEY).ifPresent(configuredStructureRegistry ->
 		imp.func_230521_a_(Registry.BIOME_KEY).ifPresent(mutableRegistry -> mutableRegistry.getEntries()
 				.forEach(mapEntry -> findUnregisteredConfiguredStructures(mapEntry, unconfiguredStuffMap, configuredStructureRegistry, gson))));
 
@@ -114,7 +114,7 @@ public class DynamicRegistriesBlame {
 		extractModNames(unconfiguredStuffMap, collectedPossibleIssueMods, pattern);
 
 		// ConfiguredCarvers
-		imp.func_230521_a_(Registry.field_243551_at).ifPresent(configuredCarverRegistry ->
+		imp.func_230521_a_(Registry.CONFIGURED_CARVER_KEY).ifPresent(configuredCarverRegistry ->
 		imp.func_230521_a_(Registry.BIOME_KEY).ifPresent(mutableRegistry -> mutableRegistry.getEntries()
 				.forEach(mapEntry -> findUnregisteredConfiguredCarver(mapEntry, unconfiguredStuffMap, configuredCarverRegistry, gson))));
 
@@ -160,12 +160,12 @@ public class DynamicRegistriesBlame {
 			Gson gson)
 	{
 
-		for(List<Supplier<ConfiguredFeature<?, ?>>> generationStageList : mapEntry.getValue().func_242440_e().func_242498_c()){
+		for(List<Supplier<ConfiguredFeature<?, ?>>> generationStageList : mapEntry.getValue().getGenerationSettings().getFeatures()){
 			for(Supplier<ConfiguredFeature<?, ?>> configuredFeatureSupplier : generationStageList){
 
-				ResourceLocation biomeID = mapEntry.getKey().func_240901_a_();
+				ResourceLocation biomeID = mapEntry.getKey().getLocation();
 				if(configuredFeatureRegistry.getKey(configuredFeatureSupplier.get()) == null &&
-					WorldGenRegistries.field_243653_e.getKey(configuredFeatureSupplier.get()) == null)
+					WorldGenRegistries.CONFIGURED_FEATURE.getKey(configuredFeatureSupplier.get()) == null)
 				{
 					ConfiguredFeature.field_236264_b_
 							.encode(configuredFeatureSupplier, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left()
@@ -189,11 +189,11 @@ public class DynamicRegistriesBlame {
 		MutableRegistry<StructureFeature<?,?>> configuredStructureRegistry,
 		Gson gson)
 	{
-		for(Supplier<StructureFeature<?, ?>> configuredStructureSupplier : mapEntry.getValue().func_242440_e().func_242487_a()){
+		for(Supplier<StructureFeature<?, ?>> configuredStructureSupplier : mapEntry.getValue().getGenerationSettings().getStructures()){
 
-			ResourceLocation biomeID = mapEntry.getKey().func_240901_a_();
+			ResourceLocation biomeID = mapEntry.getKey().getLocation();
 			if(configuredStructureRegistry.getKey(configuredStructureSupplier.get()) == null &&
-				WorldGenRegistries.field_243654_f.getKey(configuredStructureSupplier.get()) == null)
+				WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE.getKey(configuredStructureSupplier.get()) == null)
 			{
 				StructureFeature.field_236267_a_
 						.encode(configuredStructureSupplier.get(), JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left()
@@ -217,11 +217,11 @@ public class DynamicRegistriesBlame {
 		Gson gson)
 	{
 		for(GenerationStage.Carving carvingStage : GenerationStage.Carving.values()) {
-			for (Supplier<ConfiguredCarver<?>> configuredCarverSupplier : mapEntry.getValue().func_242440_e().func_242489_a(carvingStage)) {
+			for (Supplier<ConfiguredCarver<?>> configuredCarverSupplier : mapEntry.getValue().getGenerationSettings().getCarvers(carvingStage)) {
 
-				ResourceLocation biomeID = mapEntry.getKey().func_240901_a_();
+				ResourceLocation biomeID = mapEntry.getKey().getLocation();
 				if(configuredCarverRegistry.getKey(configuredCarverSupplier.get()) == null &&
-					WorldGenRegistries.field_243652_d.getKey(configuredCarverSupplier.get()) == null)
+					WorldGenRegistries.CONFIGURED_CARVER.getKey(configuredCarverSupplier.get()) == null)
 				{
 					ConfiguredCarver.field_236235_a_
 							.encode(configuredCarverSupplier.get(), JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left()
