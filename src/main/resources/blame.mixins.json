@@ -7,7 +7,6 @@
     "BiomeMixin",
     "BootstrapMixin",
     "DispenserBlockAccessor",
-    "DynamicRegistryManagerMixin",
     "FlatChunkGeneratorConfigMixin",
     "RegistryOpsMixin",
     "SinglePoolElementAccessor",

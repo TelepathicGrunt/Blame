@@ -1,0 +1,29 @@
+{
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:jungle_edge": "2020-10-20 12:42:27 -0400",
+      "minecraft:forest": "2020-10-20 12:35:37 -0400",
+      "minecraft:mountains": "2020-10-20 12:37:12 -0400",
+      "minecraft:taiga": "2020-10-20 12:39:36 -0400",
+      "minecraft:desert_hills": "2020-10-20 12:35:22 -0400",
+      "minecraft:snowy_tundra": "2020-10-20 12:42:24 -0400",
+      "minecraft:desert": "2020-10-20 12:34:36 -0400",
+      "minecraft:birch_forest": "2020-10-20 12:37:54 -0400",
+      "minecraft:deep_lukewarm_ocean": "2020-10-20 12:35:50 -0400",
+      "minecraft:savanna_plateau": "2020-10-20 12:41:09 -0400",
+      "minecraft:beach": "2020-10-20 12:35:42 -0400",
+      "minecraft:dark_forest": "2020-10-20 12:37:47 -0400",
+      "minecraft:river": "2020-10-20 12:36:36 -0400",
+      "minecraft:lukewarm_ocean": "2020-10-20 12:35:51 -0400",
+      "minecraft:birch_forest_hills": "2020-10-20 12:38:07 -0400",
+      "minecraft:wooded_mountains": "2020-10-20 12:37:23 -0400",
+      "minecraft:wooded_hills": "2020-10-20 12:37:35 -0400",
+      "minecraft:stone_shore": "2020-10-20 12:38:22 -0400",
+      "minecraft:swamp": "2020-10-20 12:37:17 -0400",
+      "minecraft:savanna": "2020-10-20 12:34:46 -0400",
+      "minecraft:plains": "2020-10-20 12:34:19 -0400"
+    },
+    "done": false
+  },
+  "DataVersion": 2580
+}

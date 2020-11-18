@@ -1,6 +1,5 @@
 package com.telepathicgrunt.blame.mixin;
 
-import com.telepathicgrunt.blame.main.DynamicRegistryManagerBlame;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -8,6 +7,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /*
+ * --------------
+ * Mixin disabled due to crash with Cloth.
+ * Use DebugWorldgenIssues instead to catch unregistered worldgen stuff.
+ * https://github.com/shartte/DebugWorldGenIssues/releases
+ * --------------
+ *
  * Mixin inspired by shartte's DebugWorldGenIssues. Credit goes to him!
  * https://github.com/shartte/DebugWorldGenIssues/blob/d0439df8d43e698863c153bde42eece3318da85c/src/main/java/debugworldgen/mixin/DynamicRegistryManagerMixin.java#L14-L18
  *
@@ -26,6 +31,6 @@ public class DynamicRegistryManagerMixin {
 			at = @At(value = "RETURN"), require = 1)
 	private static void worldCreateHook(CallbackInfoReturnable<DynamicRegistryManager.Impl> cir)
 	{
-		DynamicRegistryManagerBlame.printUnregisteredWorldgenConfiguredStuff(cir.getReturnValue());
+		//DynamicRegistryManagerBlame.printUnregisteredWorldgenConfiguredStuff(cir.getReturnValue());
 	}
 }
