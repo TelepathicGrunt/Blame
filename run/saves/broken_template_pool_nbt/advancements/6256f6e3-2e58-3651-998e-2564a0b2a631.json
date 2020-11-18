@@ -1,0 +1,10 @@
+{
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:lukewarm_ocean": "2020-10-20 13:42:11 -0400",
+      "minecraft:plains": "2020-10-20 13:41:26 -0400"
+    },
+    "done": false
+  },
+  "DataVersion": 2580
+}

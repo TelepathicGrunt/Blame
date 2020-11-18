@@ -1,0 +1,17 @@
+{
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:cold_ocean": "2020-10-20 11:13:33 -0400",
+      "minecraft:taiga": "2020-10-20 11:13:08 -0400",
+      "minecraft:desert": "2020-10-20 11:13:37 -0400",
+      "minecraft:deep_frozen_ocean": "2020-10-20 11:13:42 -0400",
+      "minecraft:beach": "2020-10-20 11:13:52 -0400",
+      "minecraft:dark_forest": "2020-10-20 11:12:53 -0400",
+      "minecraft:bamboo_jungle_hills": "2020-10-20 11:13:21 -0400",
+      "minecraft:wooded_hills": "2020-10-20 11:13:14 -0400",
+      "minecraft:savanna": "2020-10-20 11:12:36 -0400"
+    },
+    "done": false
+  },
+  "DataVersion": 2580
+}

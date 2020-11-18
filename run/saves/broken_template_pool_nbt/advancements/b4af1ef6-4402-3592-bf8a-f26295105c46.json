@@ -1,0 +1,10 @@
+{
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:desert": "2020-10-20 11:07:23 -0400",
+      "minecraft:deep_lukewarm_ocean": "2020-10-20 11:07:45 -0400"
+    },
+    "done": false
+  },
+  "DataVersion": 2580
+}
