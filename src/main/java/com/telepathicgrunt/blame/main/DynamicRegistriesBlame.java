@@ -91,6 +91,14 @@ public class DynamicRegistriesBlame {
 	 */
 	public static void printUnregisteredWorldgenConfiguredStuff(net.minecraft.util.registry.DynamicRegistries.Impl imp)
 	{
+		// Gets where this is firing. We want to not print info multiple times.
+		// Specifically, clientside sync should be ignored as unregistered stuff
+		// is more of a dedicated/integrated server issue.
+		StackTraceElement stack = Thread.currentThread().getStackTrace()[4];
+		if(stack.getClassName().equals("net.minecraft.client.network.play.ClientPlayNetHandler")){
+			return;
+		}
+
 		// Create a store here to minimize memory impact and let it get garbaged collected later.
 		Map<String, Set<ResourceLocation>> unconfiguredStuffMap = new HashMap<>();
 		Set<String> collectedPossibleIssueMods = new HashSet<>();
@@ -123,13 +131,15 @@ public class DynamicRegistriesBlame {
 
 		if(collectedPossibleIssueMods.size() != 0){
 			// Add extra info to the log.
-			String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+			String errorReport = "\n\n-----------------------------------------------------------------------" +
+					"\n****************** Blame Report " + Blame.VERSION + " ******************" +
 					"\n\n This is an experimental report. It is suppose to automatically read" +
 					"\n the JSON of all the unregistered ConfiguredFeatures, ConfiguredStructures," +
 					"\n and ConfiguredCarvers. Then does its best to collect the terms that seem to" +
 					"\n state whose mod the unregistered stuff belongs to." +
-					"\n\n Possible mods responsible for unregistered stuff: \n" +
-					collectedPossibleIssueMods.stream().sorted().collect(Collectors.joining("\n")) + "\n\n";
+					"\n\nPossible mods responsible for unregistered stuff:\n\n" +
+					collectedPossibleIssueMods.stream().sorted().collect(Collectors.joining("\n")) +
+					"\n-----------------------------------------------------------------------\n\n";
 
 			// Log it to the latest.log file as well.
 			Blame.LOGGER.log(Level.ERROR, errorReport);

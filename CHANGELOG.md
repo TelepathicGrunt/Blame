@@ -7,9 +7,14 @@ Gotta blame the broken mods!
        | Blame Forge changelog |
 
    (V.1.5.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
-        
+          
+    Unregistered worldgen:
+•  Now only fires once per world entered to reduce log spam. 
+
+•  Made the possible mod detector log be a bit easier to find. 
+
     Dispenser Behaviors:
-•
+•  Made Dispenser log stuff printed by Blame now match other Blame reports.
 
 
    (V.1.4.7 Changes) (1.16.2/1.16.3 Minecraft)

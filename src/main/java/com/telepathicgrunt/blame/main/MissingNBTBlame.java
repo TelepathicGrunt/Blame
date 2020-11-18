@@ -41,7 +41,8 @@ public class MissingNBTBlame {
 
 		// Add extra info to the log file.
 		String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
-				"\n\n Failed to load structure nbt file from : " + miniRL + " which is resolved to " + fullPath +
+				"\n\n Failed to load structure nbt file from:  " + miniRL +
+				"\n The path represented by this is:  " + fullPath +
 				(parentID != null ? "\n The calling Template Pool is: " + parentID : "") +
 				"\n Most common cause is that the structure nbt file is not actually at that location." +
 				"\n Please let the mod author know about this so they can move their structure nbt file to the correct place." +
