@@ -8,6 +8,11 @@ Gotta blame the broken mods!
 
    (V.1.5.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
           
+    Missing Loot Table:
+•  Will now print out if a non-existent loot table was attempted 
+   to be generated! Check the logs if a chest is empty and this 
+   mod might catch why it was empty!
+    
     Unregistered worldgen:
 •  Now only fires once per world entered to reduce log spam. 
 

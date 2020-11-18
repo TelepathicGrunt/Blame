@@ -17,7 +17,7 @@ import java.util.Set;
  */
 public class MissingNBTBlame {
 
-	// Attempt to mak eit easier to find problematic template pool missing nbt file
+	// Attempt to make it easier to find problematic template pool missing nbt file
 	private static Pair<ResourceLocation, ResourceLocation> CURRENT_RL = null;
 	public static ResourceLocation CALLING_POOL = null;
 
