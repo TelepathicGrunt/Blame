@@ -14,7 +14,7 @@ public class Blame
 {
     public static final String MODID = "blame";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static String VERSION = "1.5.0";
+    public static String VERSION = "1.5.1";
 
     public Blame() {
         ModList.get().getModContainerById(Blame.MODID)
@@ -23,6 +23,7 @@ public class Blame
         // Test detecting unregistered configuredfeatures.
         // MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, this::biomeModification);
     }
+    
     public void biomeModification(final BiomeLoadingEvent event) {
         // Add our structure to all biomes including other modded biomes.
         // You can filter to certain biomes based on stuff like temperature, scale, precipitation, mod id.

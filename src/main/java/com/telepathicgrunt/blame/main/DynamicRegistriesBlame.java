@@ -103,7 +103,7 @@ public class DynamicRegistriesBlame {
 		Map<String, Set<ResourceLocation>> unconfiguredStuffMap = new HashMap<>();
 		Set<String> collectedPossibleIssueMods = new HashSet<>();
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		Pattern pattern = Pattern.compile("\"(?:Name|type|location)\": *\"([a-z_:]+)\"");
+		Pattern pattern = Pattern.compile("\"(?:Name|type|location)\": *\"([a-z0-9_.-:]+)\"");
 
 		// ConfiguredFeatures
 		imp.func_230521_a_(Registry.CONFIGURED_FEATURE_KEY).ifPresent(configuredFeatureRegistry ->

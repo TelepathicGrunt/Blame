@@ -20,7 +20,7 @@ public class MissingLoottableBlame {
 
 	public static void addMissingLoottableDetails(ResourceLocation miniRL)
 	{
-		String fullPath = "data/" + miniRL.getNamespace() + "/loot_tables/" + miniRL.getPath() + ".nbt";
+		String fullPath = "data/" + miniRL.getNamespace() + "/loot_tables/" + miniRL.getPath() + ".json";
 		if(PRINTED_RLS.contains(fullPath)) return;
 
 		StackTraceElement stack = Thread.currentThread().getStackTrace()[4];
