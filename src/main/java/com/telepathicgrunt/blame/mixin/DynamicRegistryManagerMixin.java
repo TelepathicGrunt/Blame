@@ -1,10 +1,11 @@
 package com.telepathicgrunt.blame.mixin;
 
+import net.minecraft.util.dynamic.RegistryOps;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /*
  * --------------
@@ -27,10 +28,10 @@ public class DynamicRegistryManagerMixin {
 	 * The main hook for the parser to work from. This will check every biomes in the
 	 * DynamicRegistry to see if it has exploded due to unregistered stuff added to it.
 	 */
-	@Inject(method = "create()Lnet/minecraft/util/registry/DynamicRegistryManager$Impl;",
+	@Inject(method = "load(Lnet/minecraft/util/registry/DynamicRegistryManager$Impl;Lnet/minecraft/util/dynamic/RegistryOps;)V",
 			at = @At(value = "RETURN"), require = 1)
-	private static void worldCreateHook(CallbackInfoReturnable<DynamicRegistryManager.Impl> cir)
+	private static void worldCreateHook(DynamicRegistryManager.Impl impl, RegistryOps<?> registryOps, CallbackInfo ci)
 	{
-		//DynamicRegistryManagerBlame.printUnregisteredWorldgenConfiguredStuff(cir.getReturnValue());
+		//DynamicRegistryManagerBlame.printUnregisteredWorldgenConfiguredStuff(impl);
 	}
 }

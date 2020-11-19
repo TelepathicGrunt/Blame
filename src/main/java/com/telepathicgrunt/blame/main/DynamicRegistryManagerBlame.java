@@ -22,74 +22,65 @@ import java.util.stream.Collectors;
 
 public class DynamicRegistryManagerBlame {
 
-    /*
-     * --------------
-     * Printing unregistered worldgen stuff is disabled due to crash with Cloth.
-     * Use DebugWorldgenIssues instead to catch unregistered worldgen stuff.
-     * https://github.com/shartte/DebugWorldGenIssues/releases
-     * --------------
-     */
         public static void printUnregisteredWorldgenConfiguredStuff(DynamicRegistryManager.Impl imp){
 
-            if(true) return;
-
             // Create a store here to minimize memory impact and let it get garbaged collected later.
-            Map<String, Set<Identifier>> unconfigured_stuff_map = new HashMap<>();
-            Set<String> collected_possible_issue_mods = new HashSet<>();
+            Map<String, Set<Identifier>> unconfiguredStuffMap = new HashMap<>();
+            Set<String> collectedPossibleIssueMods = new HashSet<>();
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            Pattern pattern = Pattern.compile("\"(?:Name|type|location)\": *\"([a-z_:]+)\"");
+            Pattern pattern = Pattern.compile("\"(?:Name|type|location)\": *\"([a-z0-9_.-:]+)\"");
 
             // ConfiguredFeatures
             imp.getOptional(Registry.CONFIGURED_FEATURE_WORLDGEN).ifPresent(configuredFeatureRegistry ->
                     imp.getOptional(Registry.BIOME_KEY).ifPresent(mutableRegistry -> mutableRegistry.getEntries()
-                            .forEach(mapEntry -> findUnregisteredConfiguredFeatures(mapEntry, unconfigured_stuff_map, configuredFeatureRegistry, gson))));
+                            .forEach(mapEntry -> findUnregisteredConfiguredFeatures(mapEntry, unconfiguredStuffMap, configuredFeatureRegistry, gson))));
 
-            printUnregisteredStuff(unconfigured_stuff_map, "ConfiguredFeature");
-            extractModNames(unconfigured_stuff_map, collected_possible_issue_mods, pattern);
+            printUnregisteredStuff(unconfiguredStuffMap, "ConfiguredFeature");
+            extractModNames(unconfiguredStuffMap, collectedPossibleIssueMods, pattern);
 
             // ConfiguredStructures
             imp.getOptional(Registry.CONFIGURED_STRUCTURE_FEATURE_WORLDGEN).ifPresent(configuredStructureRegistry ->
                     imp.getOptional(Registry.BIOME_KEY).ifPresent(mutableRegistry -> mutableRegistry.getEntries()
-                            .forEach(mapEntry -> findUnregisteredConfiguredStructures(mapEntry, unconfigured_stuff_map, configuredStructureRegistry, gson))));
+                            .forEach(mapEntry -> findUnregisteredConfiguredStructures(mapEntry, unconfiguredStuffMap, configuredStructureRegistry, gson))));
 
-            printUnregisteredStuff(unconfigured_stuff_map, "ConfiguredStructure");
-            extractModNames(unconfigured_stuff_map, collected_possible_issue_mods, pattern);
+            printUnregisteredStuff(unconfiguredStuffMap, "ConfiguredStructure");
+            extractModNames(unconfiguredStuffMap, collectedPossibleIssueMods, pattern);
 
             // ConfiguredCarvers
             imp.getOptional(Registry.CONFIGURED_CARVER_WORLDGEN).ifPresent(configuredCarverRegistry ->
                     imp.getOptional(Registry.BIOME_KEY).ifPresent(mutableRegistry -> mutableRegistry.getEntries()
-                            .forEach(mapEntry -> findUnregisteredConfiguredCarver(mapEntry, unconfigured_stuff_map, configuredCarverRegistry, gson))));
+                            .forEach(mapEntry -> findUnregisteredConfiguredCarver(mapEntry, unconfiguredStuffMap, configuredCarverRegistry, gson))));
 
-            printUnregisteredStuff(unconfigured_stuff_map, "ConfiguredStructure");
-            extractModNames(unconfigured_stuff_map, collected_possible_issue_mods, pattern);
+            printUnregisteredStuff(unconfiguredStuffMap, "ConfiguredStructure");
+            extractModNames(unconfiguredStuffMap, collectedPossibleIssueMods, pattern);
 
-            if(collected_possible_issue_mods.size() != 0){
+            if(collectedPossibleIssueMods.size() != 0){
                 // Add extra info to the log.
                 String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
                         "\n\n This is an experimental report. It is suppose to automatically read" +
                         "\n the JSON of all the unregistered ConfiguredFeatures, ConfiguredStructures," +
                         "\n and ConfiguredCarvers. Then does its best to collect the terms that seem to" +
                         "\n state whose mod the unregistered stuff belongs to." +
-                        "\n\n Possible mods responsible for unregistered stuff: \n" +
-                        collected_possible_issue_mods.stream().sorted().collect(Collectors.joining("\n")) + "\n\n";
+                        "\n\n Possible mods responsible for unregistered stuff:\n\n" +
+                        collectedPossibleIssueMods.stream().sorted().collect(Collectors.joining("\n")) + "\n\n";
 
                 // Log it to the latest.log file as well.
                 Blame.LOGGER.log(Level.ERROR, errorReport);
             }
-            collected_possible_issue_mods.clear();
+            collectedPossibleIssueMods.clear();
         }
 
-        private static void extractModNames(Map<String, Set<Identifier>> unconfigured_stuff_map, Set<String> collected_possible_issue_mods, Pattern pattern) {
-            unconfigured_stuff_map.keySet()
+        private static void extractModNames(Map<String, Set<Identifier>> unconfiguredStuffMap, Set<String> collectedPossibleIssueMods, Pattern pattern) {
+            unconfiguredStuffMap.keySet()
                     .forEach(jsonString -> {
                         Matcher match = pattern.matcher(jsonString);
                         while(match.find()) {
                             if(!match.group(1).contains("minecraft:")){
-                                collected_possible_issue_mods.add(match.group(1));
+                                collectedPossibleIssueMods.add(match.group(1));
                             }
                         }
                     });
-            unconfigured_stuff_map.clear();
+            unconfiguredStuffMap.clear();
         }
 
 
@@ -98,7 +89,7 @@ public class DynamicRegistryManagerBlame {
          */
     private static void findUnregisteredConfiguredFeatures(
             Map.Entry<RegistryKey<Biome>, Biome>  mapEntry,
-            Map<String, Set<Identifier>> unregistered_feature_map,
+            Map<String, Set<Identifier>> unregisteredFeatureMap,
             MutableRegistry<ConfiguredFeature<?,?>> configuredFeatureRegistry,
             Gson gson)
     {
@@ -115,7 +106,7 @@ public class DynamicRegistryManagerBlame {
                             .ifPresent(configuredFeatureJSON ->
                                     cacheUnregisteredObject(
                                             configuredFeatureJSON,
-                                            unregistered_feature_map,
+                                            unregisteredFeatureMap,
                                             biomeID,
                                             gson));
                 }
@@ -128,7 +119,7 @@ public class DynamicRegistryManagerBlame {
      */
     private static void findUnregisteredConfiguredStructures(
             Map.Entry<RegistryKey<Biome>, Biome>  mapEntry,
-            Map<String, Set<Identifier>> unregistered_structure_map,
+            Map<String, Set<Identifier>> unregisteredStructureMap,
             MutableRegistry<ConfiguredStructureFeature<?,?>> configuredStructureRegistry,
             Gson gson)
     {
@@ -143,7 +134,7 @@ public class DynamicRegistryManagerBlame {
                         .ifPresent(configuredStructureJSON ->
                                 cacheUnregisteredObject(
                                         configuredStructureJSON,
-                                        unregistered_structure_map,
+                                        unregisteredStructureMap,
                                         biomeID,
                                         gson));
             }
@@ -155,7 +146,7 @@ public class DynamicRegistryManagerBlame {
      */
     private static void findUnregisteredConfiguredCarver(
             Map.Entry<RegistryKey<Biome>, Biome>  mapEntry,
-            Map<String, Set<Identifier>> unregistered_carver_map,
+            Map<String, Set<Identifier>> unregisteredCarverMap,
             MutableRegistry<ConfiguredCarver<?>> configuredCarverRegistry,
             Gson gson)
     {
@@ -171,7 +162,7 @@ public class DynamicRegistryManagerBlame {
                             .ifPresent(configuredCarverJSON ->
                                     cacheUnregisteredObject(
                                             configuredCarverJSON,
-                                            unregistered_carver_map,
+                                            unregisteredCarverMap,
                                             biomeID,
                                             gson));
                 }
@@ -181,20 +172,20 @@ public class DynamicRegistryManagerBlame {
 
     private static void cacheUnregisteredObject(
             JsonElement configuredObjectJSON,
-            Map<String, Set<Identifier>> unregistered_object_map,
+            Map<String, Set<Identifier>> unregisteredObjectMap,
             Identifier biomeID,
             Gson gson)
     {
         String cfstring = gson.toJson(configuredObjectJSON);
 
-        if(!unregistered_object_map.containsKey(cfstring))
-            unregistered_object_map.put(cfstring, new HashSet<>());
+        if(!unregisteredObjectMap.containsKey(cfstring))
+            unregisteredObjectMap.put(cfstring, new HashSet<>());
 
-        unregistered_object_map.get(cfstring).add(biomeID);
+        unregisteredObjectMap.get(cfstring).add(biomeID);
     }
 
-    private static void printUnregisteredStuff(Map<String, Set<Identifier>> UNREGISTERED_STUFF_MAP, String type){
-        for(Map.Entry<String, Set<Identifier>> entry : UNREGISTERED_STUFF_MAP.entrySet()){
+    private static void printUnregisteredStuff(Map<String, Set<Identifier>> unregisteredStuffMap, String type){
+        for(Map.Entry<String, Set<Identifier>> entry : unregisteredStuffMap.entrySet()){
 
             // Add extra info to the log.
             String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +

@@ -6,6 +6,16 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
 
+   (V.2.1.1 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+      
+    Unregistered worldgen:
+•  Added back in code for unregistered worldgen stuff but put in a new 
+   experimental spot to run... Hopefully this won't hide actual issues.
+
+    Missing Loot Table:
+•  Fixed typo in report.
+
+
    (V.2.1.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       
     Missing Loot Table:

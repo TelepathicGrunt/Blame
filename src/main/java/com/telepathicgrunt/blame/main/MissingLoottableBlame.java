@@ -3,6 +3,7 @@ package com.telepathicgrunt.blame.main;
 import com.telepathicgrunt.blame.Blame;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.Level;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ public class MissingLoottableBlame {
 
 	public static void addMissingLoottableDetails(Identifier miniRL)
 	{
-		String fullPath = "data/" + miniRL.getNamespace() + "/loot_tables/" + miniRL.getPath() + ".nbt";
+		String fullPath = "data/" + miniRL.getNamespace() + "/loot_tables/" + miniRL.getPath() + ".json";
 		if(PRINTED_RLS.contains(fullPath)) return;
 
 		StackTraceElement stack = Thread.currentThread().getStackTrace()[4];

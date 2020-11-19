@@ -2,9 +2,13 @@ package com.telepathicgrunt.blame.mixin;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.DynamicOps;
+import com.telepathicgrunt.blame.main.DynamicRegistryManagerBlame;
 import com.telepathicgrunt.blame.main.RegistryOpsBlame;
+import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.dynamic.RegistryOps;
+import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.registry.SimpleRegistry;
@@ -53,5 +57,16 @@ public class RegistryOpsMixin<E> {
 									  DataResult<SimpleRegistry<E>> dataresult)
 	{
 		RegistryOpsBlame.addBrokenFileDetails(dataresult);
+	}
+
+	/**
+	 * The main hook for the parser to work from. This will check every biomes in the
+	 * DynamicRegistry to see if it has exploded due to unregistered stuff added to it.
+	 */
+	@Inject(method = "of(Lcom/mojang/serialization/DynamicOps;Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/util/registry/DynamicRegistryManager$Impl;)Lnet/minecraft/util/dynamic/RegistryOps;",
+			at = @At(value = "RETURN"), require = 1)
+	private static <T> void worldCreateHook(DynamicOps<T> delegate, ResourceManager resourceManager, DynamicRegistryManager.Impl impl, CallbackInfoReturnable<RegistryOps<T>> cir)
+	{
+		DynamicRegistryManagerBlame.printUnregisteredWorldgenConfiguredStuff(impl);
 	}
 }
