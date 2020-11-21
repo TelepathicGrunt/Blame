@@ -8,7 +8,6 @@
     "BootstrapMixin",
     "DispenserBlockAccessor",
     "FlatChunkGeneratorConfigMixin",
-    "GenerationStageMixin",
     "LootManagerMixin",
     "RegistryOpsMixin",
     "SinglePoolElementAccessor",

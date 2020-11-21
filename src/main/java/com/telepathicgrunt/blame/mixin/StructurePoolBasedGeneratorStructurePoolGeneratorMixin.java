@@ -1,9 +1,17 @@
 package com.telepathicgrunt.blame.mixin;
 
 import com.telepathicgrunt.blame.main.MissingNBTBlame;
+import com.telepathicgrunt.blame.main.MissingTemplatePoolBlame;
 import net.minecraft.structure.PoolStructurePiece;
+import net.minecraft.structure.Structure;
 import net.minecraft.structure.pool.SinglePoolElement;
+import net.minecraft.structure.pool.StructurePool;
 import net.minecraft.structure.pool.StructurePoolElement;
+import net.minecraft.util.BlockRotation;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockBox;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.spongepowered.asm.mixin.Mixin;
@@ -11,6 +19,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import java.util.Iterator;
 
 /* @author - TelepathicGrunt
  *
@@ -40,5 +50,31 @@ public class StructurePoolBasedGeneratorStructurePoolGeneratorMixin {
 								   int minY, int currentSize, boolean bl, CallbackInfo ci)
 	{
 		MissingNBTBlame.CALLING_POOL = null;
+	}
+
+	@Inject(method = "generatePiece(Lnet/minecraft/structure/PoolStructurePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZ)V",
+			at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", ordinal = 0),
+			locals = LocalCapture.CAPTURE_FAILHARD)
+	private void printMissingPoolDetails1(PoolStructurePiece piece, MutableObject mutableObject, int minY, int currentSize,
+										  boolean bl, CallbackInfo ci, StructurePoolElement structurePoolElement, BlockPos blockPos,
+										  BlockRotation blockRotation, StructurePool.Projection projection, boolean bl2,
+										  MutableObject mutableObject2, BlockBox blockBox, int i, Iterator var14,
+										  Structure.StructureBlockInfo structureBlockInfo, Direction direction,
+										  BlockPos blockPos2, BlockPos blockPos3, int j, int k, Identifier targetPoolId)
+	{
+		MissingTemplatePoolBlame.addEmptyPoolDetails(targetPoolId, ((SinglePoolElementAccessor) structurePoolElement).getTemplateID().left().orElse(null));
+	}
+
+	@Inject(method = "generatePiece(Lnet/minecraft/structure/PoolStructurePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZ)V",
+			at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", ordinal = 1),
+			locals = LocalCapture.CAPTURE_FAILHARD)
+	private void printMissingPoolDetails2(PoolStructurePiece piece, MutableObject mutableObject, int minY, int currentSize,
+										  boolean bl, CallbackInfo ci, StructurePoolElement structurePoolElement, BlockPos blockPos,
+										  BlockRotation blockRotation, StructurePool.Projection projection, boolean bl2,
+										  MutableObject mutableObject2, BlockBox blockBox, int i, Iterator var14,
+										  Structure.StructureBlockInfo structureBlockInfo, Direction direction,
+										  BlockPos blockPos2, BlockPos blockPos3, int j, int k, Identifier targetPoolId)
+	{
+		MissingTemplatePoolBlame.addEmptyPoolDetails(targetPoolId, ((SinglePoolElementAccessor) structurePoolElement).getTemplateID().left().orElse(null));
 	}
 }

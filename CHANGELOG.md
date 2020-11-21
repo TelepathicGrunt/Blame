@@ -4,7 +4,20 @@
 Gotta blame the broken mods!
 
 ------------------------------------------------
-       | Blame Forge changelog |
+       | Blame Fabric changelog |
+
+   (V.2.1.2 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+      
+    Missing Template Pools:
+•  Blame will now print out the ID of the empty starting Template Pool that is crashing the game!
+
+•  Will also now print out the ID of the jigsaw piece that has a 
+   Jigsaw Block that is trying to target a missing Template Pool. 
+   That was a mouthful to say lmao.
+
+    Missing nbt file:
+•  Changed wording a bit in report.
+
 
    (V.2.1.1 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       
