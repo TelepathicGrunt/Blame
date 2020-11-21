@@ -28,7 +28,7 @@ public class MissingNBTBlame {
 		CURRENT_RL = pieceRL;
 	}
 
-	public static void addMissingnbtDetails(Identifier miniRL)
+	public static void addMissingNbtDetails(Identifier miniRL)
 	{
 		String fullPath = "data/" + miniRL.getNamespace() + "/structures/" + miniRL.getPath() + ".nbt";
 		Identifier parentID = null;

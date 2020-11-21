@@ -52,13 +52,15 @@ public class StructurePoolBasedGeneratorStructurePoolGeneratorMixin {
 		MissingNBTBlame.CALLING_POOL = null;
 	}
 
+
+	
 	@Inject(method = "generatePiece(Lnet/minecraft/structure/PoolStructurePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZ)V",
 			at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", ordinal = 0),
 			locals = LocalCapture.CAPTURE_FAILHARD)
-	private void printMissingPoolDetails1(PoolStructurePiece piece, MutableObject mutableObject, int minY, int currentSize,
+	private void printMissingPoolDetails1(PoolStructurePiece piece, MutableObject<VoxelShape> mutableObject, int minY, int currentSize,
 										  boolean bl, CallbackInfo ci, StructurePoolElement structurePoolElement, BlockPos blockPos,
 										  BlockRotation blockRotation, StructurePool.Projection projection, boolean bl2,
-										  MutableObject mutableObject2, BlockBox blockBox, int i, Iterator var14,
+										  MutableObject<VoxelShape> mutableObject2, BlockBox blockBox, int i, Iterator<Structure.StructureBlockInfo> var14,
 										  Structure.StructureBlockInfo structureBlockInfo, Direction direction,
 										  BlockPos blockPos2, BlockPos blockPos3, int j, int k, Identifier targetPoolId)
 	{
@@ -68,10 +70,10 @@ public class StructurePoolBasedGeneratorStructurePoolGeneratorMixin {
 	@Inject(method = "generatePiece(Lnet/minecraft/structure/PoolStructurePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZ)V",
 			at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", ordinal = 1),
 			locals = LocalCapture.CAPTURE_FAILHARD)
-	private void printMissingPoolDetails2(PoolStructurePiece piece, MutableObject mutableObject, int minY, int currentSize,
+	private void printMissingPoolDetails2(PoolStructurePiece piece, MutableObject<VoxelShape> mutableObject, int minY, int currentSize,
 										  boolean bl, CallbackInfo ci, StructurePoolElement structurePoolElement, BlockPos blockPos,
 										  BlockRotation blockRotation, StructurePool.Projection projection, boolean bl2,
-										  MutableObject mutableObject2, BlockBox blockBox, int i, Iterator var14,
+										  MutableObject<VoxelShape> mutableObject2, BlockBox blockBox, int i, Iterator<Structure.StructureBlockInfo> var14,
 										  Structure.StructureBlockInfo structureBlockInfo, Direction direction,
 										  BlockPos blockPos2, BlockPos blockPos3, int j, int k, Identifier targetPoolId)
 	{

@@ -23,7 +23,7 @@ public class StructureManagerMixin {
 	private void addMissingnbtDetails(Identifier miniRL, CallbackInfoReturnable<Structure> cir)
 	{
 		if(cir.getReturnValue() == null){
-			MissingNBTBlame.addMissingnbtDetails(miniRL);
+			MissingNBTBlame.addMissingNbtDetails(miniRL);
 		}
 	}
 }
