@@ -1,16 +1,26 @@
 package com.telepathicgrunt.blame.mixin;
 
 import com.telepathicgrunt.blame.main.MissingNBTBlame;
+import com.telepathicgrunt.blame.main.MissingTemplatePoolBlame;
+import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.gen.feature.jigsaw.JigsawPattern;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPiece;
 import net.minecraft.world.gen.feature.jigsaw.SingleJigsawPiece;
 import net.minecraft.world.gen.feature.structure.AbstractVillagePiece;
+import net.minecraft.world.gen.feature.template.Template;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import java.util.Iterator;
 
 /* @author - TelepathicGrunt
  *
@@ -40,5 +50,32 @@ public class JigsawManagerAssemblerMixin {
 								   int i, int i1, boolean b, CallbackInfo ci)
 	{
 		MissingNBTBlame.CALLING_POOL = null;
+	}
+
+
+	@Inject(method = "func_236831_a_(Lnet/minecraft/world/gen/feature/structure/AbstractVillagePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZ)V",
+			at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", ordinal = 0),
+			locals = LocalCapture.CAPTURE_FAILHARD)
+	private void printMissingPoolDetails1(AbstractVillagePiece abstractVillagePiece, MutableObject<VoxelShape> voxelShapeMutableObject,
+										  int i1, int i2, boolean b, CallbackInfo ci, JigsawPiece structurePoolElement, BlockPos blockPos,
+										  Rotation blockRotation, JigsawPattern.PlacementBehaviour projection, boolean bl2,
+										  MutableObject<VoxelShape> mutableObject2, MutableBoundingBox blockBox, int i, Iterator<Template.BlockInfo> var14,
+										  Template.BlockInfo structureBlockInfo, Direction direction,
+										  BlockPos blockPos2, BlockPos blockPos3, int j, int k, ResourceLocation targetPoolId)
+	{
+		MissingTemplatePoolBlame.addEmptyPoolDetails(targetPoolId, ((SingleJigsawPieceAccessor) structurePoolElement).getTemplateRL().left().orElse(null));
+	}
+
+	@Inject(method = "func_236831_a_(Lnet/minecraft/world/gen/feature/structure/AbstractVillagePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZ)V",
+			at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", ordinal = 1),
+			locals = LocalCapture.CAPTURE_FAILHARD)
+	private void printMissingPoolDetails2(AbstractVillagePiece abstractVillagePiece, MutableObject<VoxelShape> voxelShapeMutableObject,
+										  int i1, int i2, boolean b, CallbackInfo ci, JigsawPiece structurePoolElement, BlockPos blockPos,
+										  Rotation blockRotation, JigsawPattern.PlacementBehaviour projection, boolean bl2,
+										  MutableObject<VoxelShape> mutableObject2, MutableBoundingBox blockBox, int i, Iterator<Template.BlockInfo> var14,
+										  Template.BlockInfo structureBlockInfo, Direction direction,
+										  BlockPos blockPos2, BlockPos blockPos3, int j, int k, ResourceLocation targetPoolId)
+	{
+		MissingTemplatePoolBlame.addEmptyPoolDetails(targetPoolId, ((SingleJigsawPieceAccessor) structurePoolElement).getTemplateRL().left().orElse(null));
 	}
 }

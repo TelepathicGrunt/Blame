@@ -7,10 +7,20 @@ Gotta blame the broken mods!
        | Blame Forge changelog |
       
    (V.1.5.1 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
-          
+
     Unregistered worldgen:
 •  Fixed issue where some mod IDs would make the mod not 
   show up in the summary report of unregistered stuff.
+          
+    Missing Template Pools:
+•  Blame will now print out the ID of the empty starting Template Pool that is crashing the game!
+
+•  Will also now print out the ID of the jigsaw piece that has a 
+   Jigsaw Block that is trying to target a missing Template Pool. 
+   That was a mouthful to say lmao.
+
+    Missing nbt file:
+•  Changed wording a bit in report.
          
     Missing Loot Table:
 •  Fixed typo in report.
