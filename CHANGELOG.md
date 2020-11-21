@@ -6,7 +6,7 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
       
-   (V.1.5.1 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+   (V.1.6.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
 
     Unregistered worldgen:
 •  Fixed issue where some mod IDs would make the mod not 

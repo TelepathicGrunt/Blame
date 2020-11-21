@@ -14,7 +14,7 @@ public class Blame
 {
     public static final String MODID = "blame";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static String VERSION = "1.5.1";
+    public static String VERSION = "1.6.0";
 
     public Blame() {
         ModList.get().getModContainerById(Blame.MODID)
