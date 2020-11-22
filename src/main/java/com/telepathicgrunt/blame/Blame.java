@@ -6,6 +6,7 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,7 +19,9 @@ public class Blame
 
     public Blame() {
         ModList.get().getModContainerById(Blame.MODID)
-                .ifPresent(container -> VERSION = container.getModInfo().getVersion().toString());
+                .ifPresent(container -> VERSION = container.getModInfo().getVersion().toString())
+        ;
+        Blame.LOGGER.log(Level.ERROR, "Blame "+VERSION+" initialized");
 
         // Test detecting unregistered configuredfeatures.
         // MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, this::biomeModification);
