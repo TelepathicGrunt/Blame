@@ -6,6 +6,12 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Fabric changelog |
 
+   (V.2.2.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+      
+    Structure Spacing:
+•  Will print out which structure has a spacing of 0 which will crash the game.
+
+
    (V.2.1.2 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       
     Missing Template Pools:
