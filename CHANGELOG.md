@@ -6,6 +6,12 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
       
+   (V.1.7.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+      
+    Structure Spacing:
+•  Will print out which structure has a spacing of 0 which will crash the game.
+
+
    (V.1.6.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
 
     Unregistered worldgen:

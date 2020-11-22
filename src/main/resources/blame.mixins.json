@@ -15,6 +15,7 @@
     "LootTableManagerMixin",
     "SingleJigsawPieceAccessor",
     "SingleJigsawPieceMixin",
+    "StructureMixin",
     "TemplateManagerMixin",
     "WorldSettingsImportMixin"
   ],
