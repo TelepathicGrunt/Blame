@@ -11,6 +11,9 @@ Gotta blame the broken mods!
     Structure Spacing:
 •  Will print out which structure has a spacing of 0 which will crash the game.
 
+    Other:
+•  Blame will print "Blame 1.7.0 initialized" at start so it is clear if Blame is running or not.
+
 
    (V.2.1.2 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       

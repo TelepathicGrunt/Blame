@@ -2,6 +2,7 @@ package com.telepathicgrunt.blame;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,6 +16,8 @@ public class Blame implements ModInitializer
     public void onInitialize() {
         FabricLoader.getInstance().getModContainer(MODID)
                 .ifPresent(container -> VERSION = container.getMetadata().getVersion().toString());
+
+        Blame.LOGGER.log(Level.ERROR, "Blame "+VERSION+" initialized");
 
 
         // Unregistered worldgen test
