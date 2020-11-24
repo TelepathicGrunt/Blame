@@ -5,7 +5,14 @@ Gotta blame the broken mods!
 
 ------------------------------------------------
        | Blame Fabric changelog |
-
+       
+   (V.2.2.1 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+      
+    Missing Loot Table:
+•  Fixed crash when a mod or datapack somehow tries to pass null in for getting a loottable. 
+   There's not enough info for me to find out which mod or datapack the loottable is from it seems.
+   
+   
    (V.2.2.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       
     Structure Spacing:

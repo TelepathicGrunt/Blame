@@ -20,6 +20,8 @@ public class MissingLoottableBlame {
 
 	public static void addMissingLoottableDetails(Identifier miniRL)
 	{
+		if(miniRL == null) return; // Some mods might pass null for the loottable wtf.
+
 		String fullPath = "data/" + miniRL.getNamespace() + "/loot_tables/" + miniRL.getPath() + ".json";
 		if(PRINTED_RLS.contains(fullPath)) return;
 
