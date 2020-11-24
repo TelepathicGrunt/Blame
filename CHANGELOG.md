@@ -6,6 +6,12 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
       
+   (V.1.7.1 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+      
+    Oops:
+•  Fixed missing comma in mcmeta.
+  
+    
    (V.1.7.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       
     Structure Spacing:
