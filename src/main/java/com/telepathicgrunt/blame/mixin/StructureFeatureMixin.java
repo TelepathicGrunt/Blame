@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /* @author - TelepathicGrunt
  *
- * Detect who set their structure spacing to 0
+ * Detect who messed up their structure spacing/separation values
  *
  * LGPLv3
  */
@@ -31,8 +31,8 @@ public class StructureFeatureMixin {
 			at = @At(value = "HEAD"))
 	private void checkSpacing(StructureConfig config, long worldSeed, ChunkRandom placementRandom, int chunkX, int chunkY, CallbackInfoReturnable<ChunkPos> cir)
 	{
-		if(config.getSpacing() == 0){
-			StructureFeatureBlame.printStructureSpacingBlame((StructureFeature<?>)(Object)this);
+		if(config.getSpacing() == 0 || config.getSpacing() - config.getSeparation() <= 0){
+			StructureFeatureBlame.printStructureSpacingBlame((StructureFeature<?>)(Object)this, config);
 		}
 	}
 }
