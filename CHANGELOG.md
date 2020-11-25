@@ -6,6 +6,13 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
       
+   (V.1.7.3 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+      
+    Structure Spacing:
+•  Now will detect if separation value is less than or equal 
+   to spacing value because that will crash structures.
+   
+   
    (V.1.7.2 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       
     Missing Loot Table:
