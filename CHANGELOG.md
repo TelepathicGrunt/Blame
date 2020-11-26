@@ -7,6 +7,12 @@ Gotta blame the broken mods!
        | Blame Fabric changelog |
        
        
+   (V.2.2.3 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+      
+    Unregistered worldgen:
+•  Moved location for detecting unregistered worldgen to now find mods injecting into MinecraftServer.
+   
+       
    (V.2.2.2 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       
     Structure Spacing:

@@ -9,6 +9,7 @@
     "DispenserBlockAccessor",
     "FlatChunkGeneratorConfigMixin",
     "LootManagerMixin",
+    "MinecraftServerMixin",
     "RegistryOpsMixin",
     "SinglePoolElementAccessor",
     "SinglePoolElementMixin",

@@ -10,7 +10,7 @@ public class Blame implements ModInitializer
 {
     public static final String MODID = "blame";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static String VERSION = "2.2.2";
+    public static String VERSION = "2.2.3";
 
     @Override
     public void onInitialize() {

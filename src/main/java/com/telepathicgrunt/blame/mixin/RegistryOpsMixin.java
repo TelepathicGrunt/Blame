@@ -58,15 +58,4 @@ public class RegistryOpsMixin<E> {
 	{
 		RegistryOpsBlame.addBrokenFileDetails(dataresult);
 	}
-
-	/**
-	 * The main hook for the parser to work from. This will check every biomes in the
-	 * DynamicRegistry to see if it has exploded due to unregistered stuff added to it.
-	 */
-	@Inject(method = "of(Lcom/mojang/serialization/DynamicOps;Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/util/registry/DynamicRegistryManager$Impl;)Lnet/minecraft/util/dynamic/RegistryOps;",
-			at = @At(value = "RETURN"), require = 1)
-	private static <T> void worldCreateHook(DynamicOps<T> delegate, ResourceManager resourceManager, DynamicRegistryManager.Impl impl, CallbackInfoReturnable<RegistryOps<T>> cir)
-	{
-		DynamicRegistryManagerBlame.printUnregisteredWorldgenConfiguredStuff(impl);
-	}
 }
