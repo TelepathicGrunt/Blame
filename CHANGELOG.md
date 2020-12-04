@@ -5,7 +5,14 @@ Gotta blame the broken mods!
 
 ------------------------------------------------
        | Blame Forge changelog |
+          
+          
+   (V.1.7.4 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       
+    Dispenser Behaviors:
+•  Reduced the logspam from dispenser registry replacement detection.
+
+
    (V.1.7.3 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       
     Structure Spacing:
