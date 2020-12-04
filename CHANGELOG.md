@@ -6,6 +6,11 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Fabric changelog |
        
+   (V.2.2.4 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+      
+    Dispenser Behaviors:
+•  Reduced the logspam from dispenser registry replacement detection.
+
        
    (V.2.2.3 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       

@@ -20,13 +20,16 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 	public V put(final K item, final V behavior) {
 
 		if(this.containsKey(item)){
-			StackTraceElement stack = Thread.currentThread().getStackTrace()[4];
+			StackTraceElement stack = Thread.currentThread().getStackTrace()[3];
+			StackTraceElement stack2 = Thread.currentThread().getStackTrace()[4];
 			Blame.LOGGER.log(Level.ERROR,"\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
 					"\n   Ignore this unless item behavior aren't working with Dispensers." +
 					"\n  Dispenser Behavior overridden for " + Registry.ITEM.getKey((Item)item).toString() +
 					"\n  New behavior: " + behavior.getClass().getName() +
 					"\n  Old behavior: " + this.get(item).getClass().getName() +
-					"\n  Registration done at: " + stack.toString());
+					"\n  Registration done at: " +
+					"\n    " + stack.toString() +
+					"\n    " + stack2.toString());
 		}
 
 		final int pos = find(item);
