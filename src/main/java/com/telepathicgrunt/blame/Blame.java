@@ -1,11 +1,13 @@
 package com.telepathicgrunt.blame;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,8 +21,10 @@ public class Blame
 
     public Blame() {
         ModList.get().getModContainerById(Blame.MODID)
-                .ifPresent(container -> VERSION = container.getModInfo().getVersion().toString())
-        ;
+                .ifPresent(container -> VERSION = container.getModInfo().getVersion().toString());
+
+        ForgeRegistries.STRUCTURE_FEATURES.getValue(new ResourceLocation("repurposed_structures:stronghold_stonebrick"));
+        ForgeRegistries.STRUCTURE_FEATURES.getValue(new ResourceLocation("repurposed_structures:stronghold_nether"));
         Blame.LOGGER.log(Level.ERROR, "Blame "+VERSION+" initialized");
 
         // Test detecting unregistered configuredfeatures.
