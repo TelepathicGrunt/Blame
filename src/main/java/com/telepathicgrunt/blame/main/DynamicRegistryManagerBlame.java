@@ -56,13 +56,15 @@ public class DynamicRegistryManagerBlame {
 
             if(collectedPossibleIssueMods.size() != 0){
                 // Add extra info to the log.
-                String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+                String errorReport = "\n\n-----------------------------------------------------------------------" +
+                        "\n****************** Blame Report " + Blame.VERSION + " ******************" +
                         "\n\n This is an experimental report. It is suppose to automatically read" +
                         "\n the JSON of all the unregistered ConfiguredFeatures, ConfiguredStructures," +
                         "\n and ConfiguredCarvers. Then does its best to collect the terms that seem to" +
                         "\n state whose mod the unregistered stuff belongs to." +
-                        "\n\n Possible mods responsible for unregistered stuff:\n\n" +
-                        collectedPossibleIssueMods.stream().sorted().collect(Collectors.joining("\n")) + "\n\n";
+                        "\n\nPossible mods responsible for unregistered stuff:\n\n" +
+                        collectedPossibleIssueMods.stream().sorted().collect(Collectors.joining("\n")) +
+                        "\n\n-----------------------------------------------------------------------\n\n";
 
                 // Log it to the latest.log file as well.
                 Blame.LOGGER.log(Level.ERROR, errorReport);
@@ -193,7 +195,7 @@ public class DynamicRegistryManagerBlame {
                     "\n find which mod it belongs to. Then go tell that mod owner to register their " + type +
                     "\n as otherwise, it will break other mods or datapacks that registered their stuff." +
                     "\n\n JSON info : " + entry.getKey() +
-                    "\n\n Biome affected : " + entry.getValue().toString().replaceAll("(([\\w :]*,){9})", "$1\n                  ") + "\n\n";
+                    "\n\n Biome affected : " + entry.getValue().toString().replaceAll("(([\\w :]*,){7})", "$1\n                  ") + "\n\n";
 
             // Log it to the latest.log file as well.
             Blame.LOGGER.log(Level.ERROR, errorReport);

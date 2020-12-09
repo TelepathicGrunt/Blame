@@ -26,12 +26,14 @@ public class MissingLoottableBlame {
 		if(PRINTED_RLS.contains(fullPath)) return;
 
 		StackTraceElement stack = Thread.currentThread().getStackTrace()[4];
+		StackTraceElement stack2 = Thread.currentThread().getStackTrace()[5];
 
 		// Add extra info to the log file.
 		String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
 				"\n\n Found a Loot Table path that does not exist:  " + miniRL +
 				"\n The path represented by this Loot Table is:  " + fullPath +
 				"\n Loot Table method called at:  " + stack.getClassName() + "." + stack.getMethodName() +
+				"\n                               " + stack2.getClassName() + "." + stack2.getMethodName() +
 				"\n Most common cause is that the Loot Table file is not actually at that location." +
 				"\n Please let the mod author know about this so they can check to see if their Loot Table is correct.\n";
 		Blame.LOGGER.log(Level.ERROR, errorReport);

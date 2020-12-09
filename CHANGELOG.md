@@ -11,6 +11,10 @@ Gotta blame the broken mods!
     Dispenser Behaviors:
 •  Reduced the logspam from dispenser registry replacement detection.
 
+    Missing Loot Table:
+•  Added 1 extra stacktrace line to missing loottable reports in case that might help more
+   on finding where it is called.
+
        
    (V.2.2.3 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       
