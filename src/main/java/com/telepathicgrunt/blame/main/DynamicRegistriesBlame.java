@@ -59,7 +59,7 @@ public class DynamicRegistriesBlame {
 							"\n\n Vampirism classloaded the DynamicRegistries class." +
 							"\n However, this should be okay as they do it after the main " +
 							"\n mod initialization is done. Ignore this message and continue on lol.\n");
-			Thread.dumpStack();
+			//Thread.dumpStack();
 			return;
 		}
 
@@ -139,7 +139,7 @@ public class DynamicRegistriesBlame {
 					"\n state whose mod the unregistered stuff belongs to." +
 					"\n\nPossible mods responsible for unregistered stuff:\n\n" +
 					collectedPossibleIssueMods.stream().sorted().collect(Collectors.joining("\n")) +
-					"\n-----------------------------------------------------------------------\n\n";
+					"\n\n-----------------------------------------------------------------------\n\n";
 
 			// Log it to the latest.log file as well.
 			Blame.LOGGER.log(Level.ERROR, errorReport);
@@ -269,7 +269,7 @@ public class DynamicRegistriesBlame {
 					"\n find which mod it belongs to. Then go tell that mod owner to register their " + type +
 					"\n as otherwise, it will break other mods or datapacks that registered their stuff." +
 					"\n\n JSON info : " + entry.getKey() +
-					"\n\n Biome affected : " + entry.getValue().toString().replaceAll("(([\\w :]*,){9})", "$1\n                  ") + "\n\n";
+					"\n\n Biome affected : " + entry.getValue().toString().replaceAll("(([\\w :]*,){7})", "$1\n                  ") + "\n\n";
 
 			// Log it to the latest.log file as well.
 			Blame.LOGGER.log(Level.ERROR, errorReport);
