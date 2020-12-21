@@ -6,6 +6,20 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Fabric changelog |
        
+       
+   (V.2.2.5 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+      
+    Dispenser Behaviors:
+•  Fixed code that crashes any dispensed item that doesn't have a default behavior because I was
+   an idiot and forgot to set default behavior for those items like vanilla does. GG TelepathicGrunt. 
+   
+•  Upgraded registry replacement detection to detect if a new behavior was assigned to Vanilla items without behaviors.
+
+    Missing Loot Table:
+•  Removed logspam from missing loottables for dying mobs or breaking blocks 
+   as those missing loottables appears to be intentional by most mods.
+
+
    (V.2.2.4 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       
     Dispenser Behaviors:

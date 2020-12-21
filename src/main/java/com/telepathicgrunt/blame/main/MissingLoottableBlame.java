@@ -28,6 +28,13 @@ public class MissingLoottableBlame {
 		StackTraceElement stack = Thread.currentThread().getStackTrace()[4];
 		StackTraceElement stack2 = Thread.currentThread().getStackTrace()[5];
 
+		// Skip logspam from missing loottables for mob drops and block break as that seems to be intentional by most mods.
+		if((stack.getClassName().equals("net.minecraft.entity.LivingEntity") && (stack.getMethodName().equals("method_16077") || stack.getMethodName().equals("dropLoot"))) ||
+			(stack.getClassName().equals("net.minecraft.block.AbstractBlock") && (stack.getMethodName().equals("method_9560") || stack.getMethodName().equals("getDroppedStacks"))))
+		{
+			return;
+		}
+
 		// Add extra info to the log file.
 		String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
 				"\n\n Found a Loot Table path that does not exist:  " + miniRL +
