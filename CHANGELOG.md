@@ -7,6 +7,15 @@ Gotta blame the broken mods!
        | Blame Forge changelog |
           
           
+   (V.1.7.5 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+      
+    Dispenser Behaviors:
+•  Fixed code that crashes any dispensed item that doesn't have a default behavior because I was
+   an idiot and forgot to set default behavior for those items like vanilla does. GG TelepathicGrunt. 
+   
+•  Upgraded registry replacement detection to detect if a new behavior was assigned to Vanilla items without behaviors.
+
+          
    (V.1.7.4 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       
     Dispenser Behaviors:

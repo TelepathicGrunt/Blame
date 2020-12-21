@@ -1,8 +1,10 @@
 package com.telepathicgrunt.blame.mixin;
 
 import com.telepathicgrunt.blame.main.DispenserBlockRegistry;
+import net.minecraft.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.dispenser.IDispenseItemBehavior;
 import net.minecraft.item.Item;
+import net.minecraft.util.Util;
 import net.minecraft.util.registry.Bootstrap;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,8 +24,9 @@ public class BootstrapMixin {
 			at = @At(value = "TAIL"))
 	private static void onInit(CallbackInfo ci)
 	{
-		DispenserBlockRegistry<Item, IDispenseItemBehavior> map = new DispenserBlockRegistry<>();
+		DispenserBlockRegistry<Item, IDispenseItemBehavior> map = Util.make(new DispenserBlockRegistry<>(), (behaviour) -> behaviour.defaultReturnValue(new DefaultDispenseItemBehavior()));
 		map.putAll(DispenserBlockAccessor.getDISPENSE_BEHAVIOR_REGISTRY());
+		map.startupIgnore = false; // Finished copying. Now turn on registry replacement detection.
 		DispenserBlockAccessor.setDISPENSE_BEHAVIOR_REGISTRY(map);
 	}
 }
