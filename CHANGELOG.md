@@ -15,6 +15,10 @@ Gotta blame the broken mods!
    
 •  Upgraded registry replacement detection to detect if a new behavior was assigned to Vanilla items without behaviors.
 
+    Missing Loot Table:
+•  Removed logspam from missing loottables for dying mobs or breaking blocks 
+   as those missing loottables appears to be intentional by most mods.
+
           
    (V.1.7.4 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       

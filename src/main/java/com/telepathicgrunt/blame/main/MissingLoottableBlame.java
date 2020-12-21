@@ -30,8 +30,13 @@ public class MissingLoottableBlame {
 
 		// Stop loottable logspam from jeresources as it triggered missing loottable when it
 		// checks other mod's entity's drops which may not have any loottable for them.
-		if(stack.getClassName().equals("jeresources") && stack.getMethodName().equals("compatibility.minecraft.MinecraftCompat.lambda$registerVanillaMobs$0")){
-			return;
+		//
+		// Skip logspam from missing loottables for mob drops and block break as that seems to be intentional by most mods.
+		if((stack.getClassName().equals("jeresources") && stack.getMethodName().equals("compatibility.minecraft.MinecraftCompat.lambda$registerVanillaMobs$0")) ||
+			(stack.getClassName().equals("net.minecraft.entity.LivingEntity") && (stack.getMethodName().equals("func_213354_a") || stack.getMethodName().equals("dropLoot"))) ||
+			(stack.getClassName().equals("block.AbstractBlock") && (stack.getMethodName().equals("func_220076_a") || stack.getMethodName().equals("getDroppedStacks"))))
+		{
+				return;
 		}
 
 		// Add extra info to the log file.
