@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import org.apache.logging.log4j.Level;
 
 import static it.unimi.dsi.fastutil.HashCommon.arraySize;
@@ -23,19 +24,25 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 	@Override
 	public V put(final K item, final V behavior) {
 
-		// Can't use Forge Item Registry as it is null when this method is first called by vanilla.
-		Identifier itemRl = Registry.ITEM.getId((Item)item);
-		if(!startupIgnore && (itemRl.getNamespace().equals("minecraft") || this.containsKey(item))){
-			StackTraceElement stack = Thread.currentThread().getStackTrace()[3];
-			StackTraceElement stack2 = Thread.currentThread().getStackTrace()[4];
-			Blame.LOGGER.log(Level.ERROR,"\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
-					"\n   Ignore this unless item behavior aren't working with Dispensers." +
-					"\n  Dispenser Behavior overridden for " + itemRl.toString() +
-					"\n  New behavior: " + behavior.getClass().getName() +
-					"\n  Old behavior: " + this.get(item).getClass().getName() +
-					"\n  Registration done at: " +
-					"\n    " + stack.toString() +
-					"\n    " + stack2.toString());
+		// Check null as some stuff like ArmorItem triggers Blame before item is registered
+		// Have to check for default air as that is the default value if no entry is found for the item.
+		// Getting the optional RegistryKey always return null even for values that exists. Wth Mojang?
+		if(!Registry.ITEM.getId((Item)item).toString().equals("minecraft:air")) {
+			Identifier itemID = Registry.ITEM.getId((Item) item);
+			if (!startupIgnore && (itemID.getNamespace().equals("minecraft") || this.containsKey(item))) {
+				StackTraceElement stack = Thread.currentThread().getStackTrace()[3];
+				StackTraceElement stack2 = Thread.currentThread().getStackTrace()[4];
+				StackTraceElement stack3 = Thread.currentThread().getStackTrace()[5];
+				Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
+						"\n   Ignore this unless item behavior aren't working with Dispensers." +
+						"\n  Dispenser Behavior overridden for " + itemID.toString() +
+						"\n  New behavior: " + behavior.getClass().getName() +
+						"\n  Old behavior: " + this.get(item).getClass().getName() +
+						"\n  Registration done at: " +
+						"\n    " + stack.toString() +
+						"\n    " + stack2.toString() +
+						"\n    " + stack3.toString() + "\n");
+			}
 		}
 
 		final int pos = find(item);

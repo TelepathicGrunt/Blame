@@ -2,6 +2,11 @@ package com.telepathicgrunt.blame;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.block.DispenserBlock;
+import net.minecraft.block.dispenser.DispenserBehavior;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.util.math.BlockPointer;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,7 +15,7 @@ public class Blame implements ModInitializer
 {
     public static final String MODID = "blame";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static String VERSION = "2.2.5";
+    public static String VERSION = "2.2.6";
 
     @Override
     public void onInitialize() {
@@ -18,7 +23,6 @@ public class Blame implements ModInitializer
                 .ifPresent(container -> VERSION = container.getMetadata().getVersion().toString());
 
         Blame.LOGGER.log(Level.ERROR, "Blame "+VERSION+" initialized");
-
 
         // Unregistered worldgen test
 //        ConfiguredFeature<?,?> well = Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier("tgtr:fdgfg"), Feature.DESERT_WELL.configure(DefaultFeatureConfig.INSTANCE));
