@@ -12,6 +12,14 @@ Gotta blame the broken mods!
     Mob Spawning:
 •  Will detect if mob spawning will crash due to mob entries having a weight of 0 or negative value.
 
+    Dispenser Behaviors:
+•  Fixed Quark check not working to help reduce some logspam.
+
+•  Fixed potential crash due to Dispenser registration not being syncronized by Mojang which makes it harder for Blame to work properly.
+
+    Missing Loottable:
+•  Fixed jeresources check not working to help reduce some logspam.
+
 
    (V.1.7.6 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       

@@ -1,30 +1,19 @@
 package com.telepathicgrunt.blame.main;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.mojang.serialization.JsonOps;
 import com.telepathicgrunt.blame.Blame;
-import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
-import net.minecraft.world.gen.WorldGenRegion;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.server.ServerWorld;
 import org.apache.logging.log4j.Level;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 /* @author - TelepathicGrunt
  *
@@ -32,7 +21,7 @@ import java.util.Optional;
  *
  * LGPLv3
  */
-public class WeightedListBlame {
+public class WorldEntitySpawnerBlame {
 
 	public static void addFeatureDetails(ServerWorld serverWorld, EntityClassification entityClassification, BlockPos pos, Biome biome, List<MobSpawnInfo.Spawners> list)
 	{
@@ -61,7 +50,7 @@ public class WeightedListBlame {
 		StringBuilder contents = new StringBuilder();
 
 		for(MobSpawnInfo.Spawners spawners : list){
-			contents.append("\n    [Type: ").append(spawners.type.toString()).append(", weight: ").append(spawners.itemWeight).append(", min count: ").append(spawners.minCount).append(", max count: ").append(spawners.maxCount).append("]");
+			contents.append("\n    [").append(spawners.toString()).append("]");
 		}
 
 		return contents.toString();

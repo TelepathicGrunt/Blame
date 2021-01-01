@@ -7,6 +7,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.Level;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static it.unimi.dsi.fastutil.HashCommon.arraySize;
 
 /* @author - TelepathicGrunt
@@ -22,17 +25,23 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 	private boolean didNotPrintQuarkEdgeCase = true;
 
 	@Override
-	public V put(final K item, final V behavior) {
+	public synchronized V put(final K item, final V behavior) {
 
 		// Can't use Forge Item Registry as it is null when this method is first called by vanilla.
 		// Have to check for default air as that is the default value if no entry is found for the item.
 		// Getting the optional RegistryKey always return null even for values that exists. Wth Mojang?
 		if(!Registry.ITEM.getKey((Item)item).toString().equals("minecraft:air")){
 			ResourceLocation itemRl = Registry.ITEM.getKey((Item)item);
-			StackTraceElement stack3 = Thread.currentThread().getStackTrace()[5];
+			List<StackTraceElement> stackList = new ArrayList<>();
+			StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+			stackList.add(stacktrace[3]);
+			stackList.add(stacktrace[4]);
+			stackList.add(stacktrace[5]);
 
 			// Prevent Quark's BlockBehaviour stuff from triggering Blame and printing out 7000 lines of registry replacements that they do.
-			if(stack3.getClassName().equals("vazkii.quark.content.automation.module.DispensersPlaceBlocksModule") && stack3.getMethodName().equals("loadComplete")){
+			// Seems quark's code could be in line 2 or 3 in stacktrace. Possibly due to JVM quirks.
+			if(stackList.stream().anyMatch(stack -> stack.getClassName().equals("vazkii.quark.content.automation.module.DispensersPlaceBlocksModule") && stack.getMethodName().equals("loadComplete")))
+			{
 				if(didNotPrintQuarkEdgeCase){
 					Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
 							"\n   Detected Quark registry replacing the Dispenser behavior of all blocks." +
@@ -42,8 +51,6 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 				}
 			}
 			else if(!startupIgnore && (itemRl.getNamespace().equals("minecraft") || this.containsKey(item))){
-				StackTraceElement stack = Thread.currentThread().getStackTrace()[3];
-				StackTraceElement stack2 = Thread.currentThread().getStackTrace()[4];
 				Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
 						"\n   Ignore this unless item behavior aren't working with Dispensers. If Dispenser behavior" +
 						"\n   is broken, check out \"Potentially Dangerous alternative prefix `minecraft`\" lines for" +
@@ -52,9 +59,9 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 						"\n  New behavior: " + behavior.getClass().getName() +
 						"\n  Old behavior: " + this.get(item).getClass().getName() +
 						"\n  Registration done at: " +
-						"\n    " + stack.toString() +
-						"\n    " + stack2.toString() +
-						"\n    " + stack3.toString() + "\n");
+						"\n    " + stackList.get(0).toString() +
+						"\n    " + stackList.get(1).toString() +
+						"\n    " + stackList.get(2).toString() + "\n");
 			}
 		}
 

@@ -13,8 +13,7 @@ import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.StructureFeature;
+import net.minecraft.world.gen.feature.*;
 import org.apache.logging.log4j.Level;
 
 import java.util.*;
@@ -101,6 +100,7 @@ public class DynamicRegistriesBlame {
 
 		// Create a store here to minimize memory impact and let it get garbaged collected later.
 		Map<String, Set<ResourceLocation>> unconfiguredStuffMap = new HashMap<>();
+		HashSet<String> brokenConfiguredStuffSet = new HashSet<>();
 		Set<String> collectedPossibleIssueMods = new HashSet<>();
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		Pattern pattern = Pattern.compile("\"(?:Name|type|location)\": *\"([a-z0-9_.-:]+)\"");
@@ -108,7 +108,7 @@ public class DynamicRegistriesBlame {
 		// ConfiguredFeatures
 		imp.func_230521_a_(Registry.CONFIGURED_FEATURE_KEY).ifPresent(configuredFeatureRegistry ->
 		imp.func_230521_a_(Registry.BIOME_KEY).ifPresent(mutableRegistry -> mutableRegistry.getEntries()
-				.forEach(mapEntry -> findUnregisteredConfiguredFeatures(mapEntry, unconfiguredStuffMap, configuredFeatureRegistry, gson))));
+				.forEach(mapEntry -> findUnregisteredConfiguredFeatures(mapEntry, unconfiguredStuffMap, brokenConfiguredStuffSet, configuredFeatureRegistry, gson))));
 
 		printUnregisteredStuff(unconfiguredStuffMap, "ConfiguredFeature");
 		extractModNames(unconfiguredStuffMap, collectedPossibleIssueMods, pattern);
@@ -166,6 +166,7 @@ public class DynamicRegistriesBlame {
 	private static void findUnregisteredConfiguredFeatures(
 			Map.Entry<RegistryKey<Biome>, Biome>  mapEntry,
 			Map<String, Set<ResourceLocation>> unregisteredFeatureMap,
+			HashSet<String> brokenConfiguredStuffSet,
 			MutableRegistry<ConfiguredFeature<?,?>> configuredFeatureRegistry,
 			Gson gson)
 	{
@@ -177,14 +178,44 @@ public class DynamicRegistriesBlame {
 				if(configuredFeatureRegistry.getKey(configuredFeatureSupplier.get()) == null &&
 					WorldGenRegistries.CONFIGURED_FEATURE.getKey(configuredFeatureSupplier.get()) == null)
 				{
-					ConfiguredFeature.field_236264_b_
-							.encode(configuredFeatureSupplier, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left()
-							.ifPresent(configuredFeatureJSON ->
-									cacheUnregisteredObject(
-											configuredFeatureJSON,
-											unregisteredFeatureMap,
-											biomeID,
-											gson));
+					try{
+						ConfiguredFeature.field_236264_b_
+								.encode(configuredFeatureSupplier, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left()
+								.ifPresent(configuredFeatureJSON ->
+										cacheUnregisteredObject(
+												configuredFeatureJSON,
+												unregisteredFeatureMap,
+												biomeID,
+												gson));
+					}
+					catch(Throwable e){
+						if(!brokenConfiguredStuffSet.contains(configuredFeatureSupplier.toString())){
+							brokenConfiguredStuffSet.add(configuredFeatureSupplier.toString());
+
+							ConfiguredFeature<?,?> cf = configuredFeatureSupplier.get();
+
+							// Getting bottommost cf way is from Quark. Very nice!
+							Feature<?> feature = cf.feature;
+							IFeatureConfig config = cf.config;
+
+							// Get the base feature of the CF. Will not get nested CFs such as trees in Feature.RANDOM_SELECTOR.
+							while(config instanceof DecoratedFeatureConfig) {
+								DecoratedFeatureConfig decoratedConfig = (DecoratedFeatureConfig) config;
+								feature = decoratedConfig.feature.get().feature;
+								config = decoratedConfig.feature.get().config;
+							}
+
+							String errorReport = "\n****************** Experimental Blame Report " + Blame.VERSION + " ******************" +
+									"\n\n Found a ConfiguredFeature that was unabled to be turned into JSON which is... bad." +
+									"\n This is all the info we can get about this strange... object." +
+									"\n Top level cf [feature:" + configuredFeatureSupplier.toString() + " | config: " + configuredFeatureSupplier.get().toString() + "]" +
+									"\n bottomost level cf [feature:" + feature.toString() + " | config: " + config.toString() + "]" +
+									"\n\n";
+
+							// Log it to the latest.log file as well.
+							Blame.LOGGER.log(Level.ERROR, errorReport);
+						}
+					}
 				}
 			}
 		}
@@ -252,12 +283,12 @@ public class DynamicRegistriesBlame {
 			ResourceLocation biomeID,
 			Gson gson)
 	{
-		String cfstring = gson.toJson(configuredObjectJSON);
+		String configuredObjectString = gson.toJson(configuredObjectJSON);
 
-		if(!unregisteredObjectMap.containsKey(cfstring))
-			unregisteredObjectMap.put(cfstring, new HashSet<>());
+		if(!unregisteredObjectMap.containsKey(configuredObjectString))
+			unregisteredObjectMap.put(configuredObjectString, new HashSet<>());
 
-		unregisteredObjectMap.get(cfstring).add(biomeID);
+		unregisteredObjectMap.get(configuredObjectString).add(biomeID);
 	}
 
 	private static void printUnregisteredStuff(Map<String, Set<ResourceLocation>> unregisteredStuffMap, String type){
