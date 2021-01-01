@@ -17,6 +17,7 @@
     "SingleJigsawPieceMixin",
     "StructureMixin",
     "TemplateManagerMixin",
+    "WorldEntitySpawnerMixin",
     "WorldSettingsImportMixin"
   ],
   "client": [

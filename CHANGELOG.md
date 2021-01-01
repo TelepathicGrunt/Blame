@@ -6,6 +6,13 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
            
+           
+   (V.1.8.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+      
+    Mob Spawning:
+•  Will detect if mob spawning will crash due to mob entries having a weight of 0 or negative value.
+
+
    (V.1.7.6 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       
     Dispenser Behaviors:
