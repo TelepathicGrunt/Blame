@@ -13,6 +13,7 @@
     "RegistryOpsMixin",
     "SinglePoolElementAccessor",
     "SinglePoolElementMixin",
+    "SpawnHelperMixin",
     "StructureFeatureMixin",
     "StructureManagerMixin",
     "StructurePoolBasedGeneratorMixin",

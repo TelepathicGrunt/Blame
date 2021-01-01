@@ -8,6 +8,9 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import org.apache.logging.log4j.Level;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static it.unimi.dsi.fastutil.HashCommon.arraySize;
 
 /* @author - TelepathicGrunt
@@ -22,7 +25,7 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 	public Boolean startupIgnore = true;
 
 	@Override
-	public V put(final K item, final V behavior) {
+	public synchronized V put(final K item, final V behavior) {
 
 		// Check null as some stuff like ArmorItem triggers Blame before item is registered
 		// Have to check for default air as that is the default value if no entry is found for the item.
@@ -30,18 +33,21 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 		if(!Registry.ITEM.getId((Item)item).toString().equals("minecraft:air")) {
 			Identifier itemID = Registry.ITEM.getId((Item) item);
 			if (!startupIgnore && (itemID.getNamespace().equals("minecraft") || this.containsKey(item))) {
-				StackTraceElement stack = Thread.currentThread().getStackTrace()[3];
-				StackTraceElement stack2 = Thread.currentThread().getStackTrace()[4];
-				StackTraceElement stack3 = Thread.currentThread().getStackTrace()[5];
+				List<StackTraceElement> stackList = new ArrayList<>();
+				StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+				stackList.add(stacktrace[3]);
+				stackList.add(stacktrace[4]);
+				stackList.add(stacktrace[5]);
+
 				Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
 						"\n   Ignore this unless item behavior aren't working with Dispensers." +
 						"\n  Dispenser Behavior overridden for " + itemID.toString() +
 						"\n  New behavior: " + behavior.getClass().getName() +
 						"\n  Old behavior: " + this.get(item).getClass().getName() +
 						"\n  Registration done at: " +
-						"\n    " + stack.toString() +
-						"\n    " + stack2.toString() +
-						"\n    " + stack3.toString() + "\n");
+						"\n    " + stackList.get(0).toString() +
+						"\n    " + stackList.get(1).toString() +
+						"\n    " + stackList.get(2).toString() + "\n");
 			}
 		}
 
