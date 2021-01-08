@@ -20,6 +20,9 @@ Gotta blame the broken mods!
     Missing Loottable:
 •  Fixed jeresources check not working to help reduce some logspam.
 
+    Structures:
+•  Now will properly print out the structure that is crashing instead of Blame itself crashing lol.
+
 
    (V.1.7.6 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       

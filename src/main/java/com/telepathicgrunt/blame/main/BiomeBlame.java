@@ -13,6 +13,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.WorldGenRegion;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.Level;
 
 import java.util.Optional;
@@ -62,7 +63,7 @@ public class BiomeBlame {
 	{
 		DynamicRegistries dynamicRegistries = worldGenRegion.func_241828_r();
 
-		ResourceLocation structureID = dynamicRegistries.getRegistry(Registry.STRUCTURE_FEATURE_KEY).getKey(structureFeature);
+		ResourceLocation structureID = ForgeRegistries.STRUCTURE_FEATURES.getKey(structureFeature);
 		ResourceLocation biomeID = dynamicRegistries.getRegistry(Registry.BIOME_KEY).getKey(biome);
 
 		// Add extra info to the crash report file.
