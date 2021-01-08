@@ -64,7 +64,7 @@ public class BiomeBlame {
 	{
 		DynamicRegistryManager dynamicRegistryManager = chunkRegion.getRegistryManager();
 
-		Identifier structureID = dynamicRegistryManager.get(Registry.STRUCTURE_FEATURE_KEY).getId(structureFeature);
+		Identifier structureID = Registry.STRUCTURE_FEATURE.getId(structureFeature);
 		Identifier biomeID = dynamicRegistryManager.get(Registry.BIOME_KEY).getId(biome);
 
 		// Add extra info to the crash report file.

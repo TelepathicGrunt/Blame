@@ -7,7 +7,7 @@ Gotta blame the broken mods!
        | Blame Fabric changelog |
        
       
-   (V.2.2.7 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+   (V.2.3.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       
     Mob Spawning:
 •  Will detect if mob spawning will crash due to mob entries having a weight of 0 or negative value.
@@ -17,6 +17,9 @@ Gotta blame the broken mods!
 
     Missing Loottable:
 •  Fixed jeresources check not working to help reduce some logspam.
+  
+    Structures:
+•  Now will properly print out the structure that is crashing instead of Blame itself crashing lol.
 
 
    (V.2.2.6 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
