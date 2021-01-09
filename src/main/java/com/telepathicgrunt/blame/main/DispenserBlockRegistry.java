@@ -32,15 +32,9 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 		// Getting the optional RegistryKey always return null even for values that exists. Wth Mojang?
 		if(!Registry.ITEM.getKey((Item)item).toString().equals("minecraft:air")){
 			ResourceLocation itemRl = Registry.ITEM.getKey((Item)item);
-			List<StackTraceElement> stackList = new ArrayList<>();
-			StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
-			stackList.add(stacktrace[3]);
-			stackList.add(stacktrace[4]);
-			stackList.add(stacktrace[5]);
 
 			// Prevent Quark's BlockBehaviour stuff from triggering Blame and printing out 7000 lines of registry replacements that they do.
-			// Seems quark's code could be in line 2 or 3 in stacktrace. Possibly due to JVM quirks.
-			if(stackList.stream().anyMatch(stack -> stack.getClassName().equals("vazkii.quark.content.automation.module.DispensersPlaceBlocksModule") && stack.getMethodName().equals("loadComplete")))
+			if(behavior.getClass().getName().contains("vazkii.quark.content.automation.module.DispensersPlaceBlocksModule"))
 			{
 				if(didNotPrintQuarkEdgeCase){
 					Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
@@ -51,6 +45,12 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 				}
 			}
 			else if(!startupIgnore && (itemRl.getNamespace().equals("minecraft") || this.containsKey(item))){
+				List<StackTraceElement> stackList = new ArrayList<>();
+				StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+				stackList.add(stacktrace[3]);
+				stackList.add(stacktrace[4]);
+				stackList.add(stacktrace[5]);
+
 				Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
 						"\n   Ignore this unless item behavior aren't working with Dispensers. If Dispenser behavior" +
 						"\n   is broken, check out \"Potentially Dangerous alternative prefix `minecraft`\" lines for" +

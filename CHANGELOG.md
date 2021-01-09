@@ -6,7 +6,12 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
            
-           
+   (V.1.8.1 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+      
+    Dispenser Behaviors:
+•  Fixed Quark check not working again because Quark changed some code. This will now stop the logspam for good! Hopefully...
+
+
    (V.1.8.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       
     Mob Spawning:
