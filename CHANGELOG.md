@@ -6,6 +6,12 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
            
+   (V.1.8.2 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+   
+    JSON file on world loading:
+•  Added extra info about missing block properties from broken ConfiguredFeatures files to help modders fix them better.
+           
+           
    (V.1.8.1 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       
     Dispenser Behaviors:

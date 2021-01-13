@@ -8,6 +8,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.SimpleRegistry;
 import org.apache.logging.log4j.Level;
 
+import java.util.Map;
+
 /* @author - TelepathicGrunt
  *
  * A mixin to make Minecraft actually tell me which
@@ -50,11 +52,26 @@ public class WorldSettingsImportBlame {
 				}
 			}
 
+			// gets the hint that might help with the error
+			String hint = null;
+			if(reason!= null){
+				for(Map.Entry<String, String> hints : ErrorHints.HINT_MAP.entrySet()){
+					if(reason.contains(hints.getKey())){
+						hint = hints.getValue();
+						break;
+					}
+				}
+			}
+			// default hint that covers most basis.
+			if(hint == null){
+				hint = "If this is a worldgen JSON file, check out slicedlime's example datapack\n   for worldgen to find what's off about the JSON: https://t.co/cm3pJcAHcy?amp=1";
+			}
+
 			Blame.LOGGER.log(Level.ERROR,
 					"\n****************** Blame Report " + Blame.VERSION + " ******************"
-					+ "\n\n Failed to load resource file: "+currentResource
+					+ "\n\n Failed to load resource file: " + currentResource
 					+ "\n\n Reason stated: " + reason
-					+ "\n\n Possibly helpful hint (hopefully): " + ErrorHints.HINT_MAP.getOrDefault(reason, "If this is a worldgen JSON file, check out slicedlime's example datapack\n   for worldgen to find what's off about the JSON: https://t.co/cm3pJcAHcy?amp=1")
+					+ "\n\n Possibly helpful hint (hopefully): " + hint
 					+ "\n\n Prettified JSON: \n" + (brokenJSON != null ? PrettyPrintBrokenJSON.prettyPrintJSONAsString(brokenJSON) : " Unable to display JSON. ")
 					+ "\n\n"
 					);
