@@ -23,8 +23,8 @@ public class SingleJigsawPieceMixin {
 			at = @At(value = "HEAD"))
 	private void storeCurrentPool(TemplateManager templateManagerIn, CallbackInfoReturnable<MutableBoundingBox> cir)
 	{
-		if(MissingNBTBlame.CALLING_POOL != null &((SingleJigsawPieceAccessor)this).getTemplateRL().left().isPresent()){
-			MissingNBTBlame.storeCurrentIdentifiers(new Pair<>(MissingNBTBlame.CALLING_POOL, ((SingleJigsawPieceAccessor)this).getTemplateRL().left().get()));
+		if(MissingNBTBlame.CALLING_POOL != null &((SingleJigsawPieceAccessor)this).blame_getTemplateRL().left().isPresent()){
+			MissingNBTBlame.storeCurrentIdentifiers(new Pair<>(MissingNBTBlame.CALLING_POOL, ((SingleJigsawPieceAccessor)this).blame_getTemplateRL().left().get()));
 		}
 		else{
 			MissingNBTBlame.storeCurrentIdentifiers(null);

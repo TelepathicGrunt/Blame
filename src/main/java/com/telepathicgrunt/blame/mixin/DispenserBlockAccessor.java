@@ -16,12 +16,12 @@ import java.util.Map;
 public interface DispenserBlockAccessor {
 
 	@Accessor("DISPENSE_BEHAVIOR_REGISTRY")
-	static void setDISPENSE_BEHAVIOR_REGISTRY(Map<Item, IDispenseItemBehavior> map) {
+	static void blame_setDISPENSE_BEHAVIOR_REGISTRY(Map<Item, IDispenseItemBehavior> map) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Accessor("DISPENSE_BEHAVIOR_REGISTRY")
-	static Map<Item, IDispenseItemBehavior> getDISPENSE_BEHAVIOR_REGISTRY() {
+	static Map<Item, IDispenseItemBehavior> blame_getDISPENSE_BEHAVIOR_REGISTRY() {
 		throw new UnsupportedOperationException();
 	}
 }

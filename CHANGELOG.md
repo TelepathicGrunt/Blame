@@ -14,6 +14,10 @@ Gotta blame the broken mods!
     Template Pools:
 • Will now detect and print out if a mod or datapack has a pool element with an insanely high weight that is eating up all the RAM.
 
+    Backend:
+-Prefixed all my accessor mixins due to this bug in mixins that could cause a crash with other mods for same named mixins.
+ https://github.com/SpongePowered/Mixin/issues/430
+ 
            
    (V.1.8.1 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       

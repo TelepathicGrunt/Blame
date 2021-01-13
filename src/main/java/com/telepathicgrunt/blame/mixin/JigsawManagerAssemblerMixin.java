@@ -38,9 +38,9 @@ public class JigsawManagerAssemblerMixin {
 	private void storeCurrentPool2(AbstractVillagePiece abstractVillagePiece, MutableObject<VoxelShape> voxelShapeMutableObject,
 								   int i1, int i2, boolean b, CallbackInfo ci, JigsawPiece jigsawpiece)
 	{
-		if(jigsawpiece instanceof SingleJigsawPiece && ((SingleJigsawPieceAccessor)jigsawpiece).getTemplateRL().left().isPresent())
+		if(jigsawpiece instanceof SingleJigsawPiece && ((SingleJigsawPieceAccessor)jigsawpiece).blame_getTemplateRL().left().isPresent())
 		{
-			MissingNBTBlame.CALLING_POOL = ((SingleJigsawPieceAccessor) jigsawpiece).getTemplateRL().left().get();
+			MissingNBTBlame.CALLING_POOL = ((SingleJigsawPieceAccessor) jigsawpiece).blame_getTemplateRL().left().get();
 		}
 	}
 
@@ -63,7 +63,7 @@ public class JigsawManagerAssemblerMixin {
 										  Template.BlockInfo structureBlockInfo, Direction direction,
 										  BlockPos blockPos2, BlockPos blockPos3, int j, int k, ResourceLocation targetPoolId)
 	{
-		MissingTemplatePoolBlame.addEmptyPoolDetails(targetPoolId, ((SingleJigsawPieceAccessor) structurePoolElement).getTemplateRL().left().orElse(null));
+		MissingTemplatePoolBlame.addEmptyPoolDetails(targetPoolId, ((SingleJigsawPieceAccessor) structurePoolElement).blame_getTemplateRL().left().orElse(null));
 	}
 
 	@Inject(method = "func_236831_a_(Lnet/minecraft/world/gen/feature/structure/AbstractVillagePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZ)V",
@@ -76,6 +76,6 @@ public class JigsawManagerAssemblerMixin {
 										  Template.BlockInfo structureBlockInfo, Direction direction,
 										  BlockPos blockPos2, BlockPos blockPos3, int j, int k, ResourceLocation targetPoolId)
 	{
-		MissingTemplatePoolBlame.addEmptyPoolDetails(targetPoolId, ((SingleJigsawPieceAccessor) structurePoolElement).getTemplateRL().left().orElse(null));
+		MissingTemplatePoolBlame.addEmptyPoolDetails(targetPoolId, ((SingleJigsawPieceAccessor) structurePoolElement).blame_getTemplateRL().left().orElse(null));
 	}
 }

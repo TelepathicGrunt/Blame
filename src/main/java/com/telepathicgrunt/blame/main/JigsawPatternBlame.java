@@ -8,9 +8,6 @@ import net.minecraft.world.gen.feature.jigsaw.JigsawPiece;
 import net.minecraft.world.gen.feature.jigsaw.SingleJigsawPiece;
 import org.apache.logging.log4j.Level;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /* @author - TelepathicGrunt
  *
  * Make it so any Jigsaw pool with an excessively large weight
@@ -27,7 +24,7 @@ public class JigsawPatternBlame {
 		String fullPath = "data/" + name.getNamespace() + "/worldgen/template_pool/" + name.getPath();
 		String entryName;
 		if(element.getFirst() instanceof SingleJigsawPiece){
-			entryName = (((SingleJigsawPieceAccessor)element.getFirst()).getTemplateRL().left().orElse(new ResourceLocation(""))).toString();
+			entryName = (((SingleJigsawPieceAccessor)element.getFirst()).blame_getTemplateRL().left().orElse(new ResourceLocation(""))).toString();
 		}
 		else {
 			entryName = element.getFirst().toString();
