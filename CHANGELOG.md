@@ -6,6 +6,11 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Fabric changelog |
        
+   (V.2.3.1 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+   
+    JSON file on world loading:
+•  Added extra info about missing block properties from broken ConfiguredFeatures files to help modders fix them better.
+      
       
    (V.2.3.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
       

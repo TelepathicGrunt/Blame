@@ -8,6 +8,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.SimpleRegistry;
 import org.apache.logging.log4j.Level;
 
+import java.util.Map;
+
 /* @author - TelepathicGrunt
  *
  * A mixin to make Minecraft actually tell me which
@@ -45,17 +47,39 @@ public class RegistryOpsBlame {
 					brokenJSON = "{" + parsed[1];
 				}
 				catch(Exception e){
-					brokenJSON = "Failed to turn error msg into string. Please notify " +
-							"TelepathicGrunt (Blame creator) and show him this message:  \n" + dataresult.error().get().message();
+					try{
+						String[] parsed = dataresult.error().get().message().split("\\[", 2);
+						reason = parsed[0];
+						brokenJSON = "[" + parsed[1];
+					}
+					catch(Exception e2){
+						brokenJSON = "Failed to turn error msg into string. Please notify " +
+								"TelepathicGrunt (Blame creator) and show him this message:  \n" + dataresult.error().get().message();
+					}
 				}
+			}
+
+			// gets the hint that might help with the error
+			String hint = null;
+			if(reason!= null){
+				for(Map.Entry<String, String> hints : ErrorHints.HINT_MAP.entrySet()){
+					if(reason.contains(hints.getKey())){
+						hint = hints.getValue();
+						break;
+					}
+				}
+			}
+			// default hint that covers most basis.
+			if(hint == null){
+				hint = "If this is a worldgen JSON file, check out slicedlime's example datapack\n   for worldgen to find what's off about the JSON: https://t.co/cm3pJcAHcy?amp=1";
 			}
 
 			Blame.LOGGER.log(Level.ERROR,
 					"\n****************** Blame Report " + Blame.VERSION + " ******************"
 					+ "\n\n Failed to load resource file: "+ CURRENT_IDENTIFIER
 					+ "\n\n Reason stated: " + reason
-					+ "\n\n Possibly helpful hint (hopefully): " + ErrorHints.HINT_MAP.getOrDefault(reason, "If this is a worldgen JSON file, check out slicedlime's example datapack\n   for worldgen to find what's off about the JSON: https://t.co/cm3pJcAHcy?amp=1")
-					+ "\n\n Prettified JSON: \n" + (brokenJSON != null ? PrettyPrintBrokenJSON.prettyPrintJSONAsString(brokenJSON) : " Unable to display JSON. ")
+					+ "\n\n Possibly helpful hint (hopefully): " + hint
+					+ "\n\n Prettified form of the broken JSON: \n" + (brokenJSON != null ? PrettyPrintBrokenJSON.prettyPrintJSONAsString(brokenJSON) : " Unable to display JSON. ")
 					+ "\n\n"
 					);
 
