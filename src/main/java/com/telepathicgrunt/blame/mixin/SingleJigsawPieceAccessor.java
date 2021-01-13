@@ -18,5 +18,4 @@ public interface SingleJigsawPieceAccessor {
 
 	@Accessor("field_236839_c_")
 	Either<ResourceLocation, Template> getTemplateRL();
-
 }
