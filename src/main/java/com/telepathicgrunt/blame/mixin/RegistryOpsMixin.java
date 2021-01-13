@@ -2,13 +2,9 @@ package com.telepathicgrunt.blame.mixin;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import com.mojang.serialization.DynamicOps;
-import com.telepathicgrunt.blame.main.DynamicRegistryManagerBlame;
 import com.telepathicgrunt.blame.main.RegistryOpsBlame;
-import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.dynamic.RegistryOps;
-import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.registry.SimpleRegistry;

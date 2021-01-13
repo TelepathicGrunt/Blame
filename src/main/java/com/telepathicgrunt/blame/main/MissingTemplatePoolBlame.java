@@ -1,9 +1,7 @@
 package com.telepathicgrunt.blame.main;
 
-import com.mojang.datafixers.util.Pair;
 import com.telepathicgrunt.blame.Blame;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.gen.feature.StructurePoolFeatureConfig;
 import org.apache.logging.log4j.Level;
 
 import java.util.HashSet;

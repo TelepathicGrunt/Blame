@@ -1,7 +1,9 @@
 package com.telepathicgrunt.blame.mixin;
 
+import com.mojang.datafixers.util.Pair;
 import com.telepathicgrunt.blame.main.MissingNBTBlame;
 import com.telepathicgrunt.blame.main.MissingTemplatePoolBlame;
+import com.telepathicgrunt.blame.main.StructurePoolBlame;
 import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.pool.StructurePool;
 import net.minecraft.structure.pool.StructurePoolElement;
@@ -11,8 +13,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -27,6 +31,20 @@ import java.util.Random;
  */
 @Mixin(StructurePool.class)
 public abstract class StructurePoolMixin {
+
+	@Redirect(method = "<init>(Lnet/minecraft/util/Identifier;Lnet/minecraft/util/Identifier;Ljava/util/List;)V",
+			at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Lists;newArrayList()Ljava/util/ArrayList;"))
+	private ArrayList<StructurePoolElement> tooLargePool(Identifier name, Identifier fallback,
+												List<Pair<StructurePoolElement, Integer>> pieceElements)
+	{
+		for(Pair<StructurePoolElement, Integer> element : pieceElements){
+			if(element.getSecond() > 100000){
+				StructurePoolBlame.printExcessiveWeight(name, element);
+			}
+		}
+
+		return new ArrayList<>();
+	}
 
 	@Final
 	@Shadow
