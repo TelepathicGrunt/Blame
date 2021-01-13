@@ -47,8 +47,15 @@ public class WorldSettingsImportBlame {
 					brokenJSON = "{" + parsed[1];
 				}
 				catch(Exception e){
-					Blame.LOGGER.log(Level.ERROR, "Failed to turn error msg into string. Please notify " +
-							"TelepathicGrunt (Blame creator) and show him this message:  " + dataresult.error().get().message());
+					try{
+						String[] parsed = dataresult.error().get().message().split("\\[", 2);
+						reason = parsed[0];
+						brokenJSON = "[" + parsed[1];
+					}
+					catch(Exception e2){
+						brokenJSON = "Failed to turn error msg into string. Please notify " +
+								"TelepathicGrunt (Blame creator) and show him this message:  \n" + dataresult.error().get().message();
+					}
 				}
 			}
 
@@ -72,7 +79,7 @@ public class WorldSettingsImportBlame {
 					+ "\n\n Failed to load resource file: " + currentResource
 					+ "\n\n Reason stated: " + reason
 					+ "\n\n Possibly helpful hint (hopefully): " + hint
-					+ "\n\n Prettified JSON: \n" + (brokenJSON != null ? PrettyPrintBrokenJSON.prettyPrintJSONAsString(brokenJSON) : " Unable to display JSON. ")
+					+ "\n\n Prettified form of the broken JSON: \n" + (brokenJSON != null ? PrettyPrintBrokenJSON.prettyPrintJSONAsString(brokenJSON) : " Unable to display JSON. ")
 					+ "\n\n"
 					);
 
