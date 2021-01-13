@@ -23,8 +23,8 @@ public class SinglePoolElementMixin {
 			at = @At(value = "HEAD"))
 	private void storeCurrentPool(StructureManager structureManager, CallbackInfoReturnable<BlockBox> cir)
 	{
-		if(MissingNBTBlame.CALLING_POOL != null &((SinglePoolElementAccessor)this).getTemplateID().left().isPresent()){
-			MissingNBTBlame.storeCurrentIdentifiers(new Pair<>(MissingNBTBlame.CALLING_POOL, ((SinglePoolElementAccessor)this).getTemplateID().left().get()));
+		if(MissingNBTBlame.CALLING_POOL != null &((SinglePoolElementAccessor)this).blame_getTemplateID().left().isPresent()){
+			MissingNBTBlame.storeCurrentIdentifiers(new Pair<>(MissingNBTBlame.CALLING_POOL, ((SinglePoolElementAccessor)this).blame_getTemplateID().left().get()));
 		}
 		else{
 			MissingNBTBlame.storeCurrentIdentifiers(null);

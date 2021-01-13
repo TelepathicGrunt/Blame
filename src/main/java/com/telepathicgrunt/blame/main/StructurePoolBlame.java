@@ -24,7 +24,7 @@ public class StructurePoolBlame {
 		String fullPath = "data/" + name.getNamespace() + "/worldgen/template_pool/" + name.getPath();
 		String entryName;
 		if(element.getFirst() instanceof SinglePoolElement){
-			entryName = (((SinglePoolElementAccessor)element.getFirst()).getTemplateID().left().orElse(new Identifier(""))).toString();
+			entryName = (((SinglePoolElementAccessor)element.getFirst()).blame_getTemplateID().left().orElse(new Identifier(""))).toString();
 		}
 		else {
 			entryName = element.getFirst().toString();

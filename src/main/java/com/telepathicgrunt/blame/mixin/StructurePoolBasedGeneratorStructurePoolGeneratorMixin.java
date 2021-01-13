@@ -38,9 +38,9 @@ public class StructurePoolBasedGeneratorStructurePoolGeneratorMixin {
 	private void storeCurrentPool2(PoolStructurePiece piece, MutableObject<VoxelShape> mutableObject, int minY, int currentSize,
 								   boolean bl, CallbackInfo ci, StructurePoolElement structurePoolElement)
 	{
-		if(structurePoolElement instanceof SinglePoolElement && ((SinglePoolElementAccessor)structurePoolElement).getTemplateID().left().isPresent())
+		if(structurePoolElement instanceof SinglePoolElement && ((SinglePoolElementAccessor)structurePoolElement).blame_getTemplateID().left().isPresent())
 		{
-			MissingNBTBlame.CALLING_POOL = ((SinglePoolElementAccessor) structurePoolElement).getTemplateID().left().get();
+			MissingNBTBlame.CALLING_POOL = ((SinglePoolElementAccessor) structurePoolElement).blame_getTemplateID().left().get();
 		}
 	}
 
@@ -64,7 +64,7 @@ public class StructurePoolBasedGeneratorStructurePoolGeneratorMixin {
 										  Structure.StructureBlockInfo structureBlockInfo, Direction direction,
 										  BlockPos blockPos2, BlockPos blockPos3, int j, int k, Identifier targetPoolId)
 	{
-		MissingTemplatePoolBlame.addEmptyPoolDetails(targetPoolId, ((SinglePoolElementAccessor) structurePoolElement).getTemplateID().left().orElse(null));
+		MissingTemplatePoolBlame.addEmptyPoolDetails(targetPoolId, ((SinglePoolElementAccessor) structurePoolElement).blame_getTemplateID().left().orElse(null));
 	}
 
 	@Inject(method = "generatePiece(Lnet/minecraft/structure/PoolStructurePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZ)V",
@@ -77,6 +77,6 @@ public class StructurePoolBasedGeneratorStructurePoolGeneratorMixin {
 										  Structure.StructureBlockInfo structureBlockInfo, Direction direction,
 										  BlockPos blockPos2, BlockPos blockPos3, int j, int k, Identifier targetPoolId)
 	{
-		MissingTemplatePoolBlame.addEmptyPoolDetails(targetPoolId, ((SinglePoolElementAccessor) structurePoolElement).getTemplateID().left().orElse(null));
+		MissingTemplatePoolBlame.addEmptyPoolDetails(targetPoolId, ((SinglePoolElementAccessor) structurePoolElement).blame_getTemplateID().left().orElse(null));
 	}
 }

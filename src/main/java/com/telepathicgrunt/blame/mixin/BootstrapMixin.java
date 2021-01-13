@@ -25,8 +25,8 @@ public class BootstrapMixin {
 	private static void onInit(CallbackInfo ci)
 	{
 		DispenserBlockRegistry<Item, DispenserBehavior>  map = Util.make(new DispenserBlockRegistry<>(), (behaviour) -> behaviour.defaultReturnValue(new ItemDispenserBehavior()));
-		map.putAll(DispenserBlockAccessor.getBEHAVIORS());
+		map.putAll(DispenserBlockAccessor.blame_getBEHAVIORS());
 		map.startupIgnore = false; // Finished copying. Now turn on registry replacement detection.
-		DispenserBlockAccessor.setBEHAVIORS(map);
+		DispenserBlockAccessor.blame_setBEHAVIORS(map);
 	}
 }

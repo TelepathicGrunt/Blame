@@ -17,5 +17,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface SinglePoolElementAccessor {
 
 	@Accessor("field_24015")
-	Either<Identifier, Structure> getTemplateID();
+	Either<Identifier, Structure> blame_getTemplateID();
 }
