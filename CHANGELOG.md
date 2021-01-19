@@ -6,10 +6,17 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
            
+   (V.1.9.1 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+   
+    Misc:
+• Make Blame not say servers modlist are incompatible when client with Blame connects to server without Blame. 
+  Clients with Blame could still connect to said servers just fine tho.
+
+         
    (V.1.9.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
    
     JSON file on world loading:
-•  Added extra info about missing block properties from broken ConfiguredFeatures files to help modders fix them better.
+• Added extra info about missing block properties from broken ConfiguredFeatures files to help modders fix them better.
     
     Template Pools:
 • Will now detect and print out if a mod or datapack has a pool element with an insanely high weight that is eating up all the RAM.
