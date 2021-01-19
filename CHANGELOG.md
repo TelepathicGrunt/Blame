@@ -1,4 +1,4 @@
-    Made for Minecraft v.1.16.4
+    Made for Minecraft v.1.16.5
     Created by TelepathicGrunt
 
 Gotta blame the broken mods!
@@ -6,7 +6,7 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
            
-   (V.1.9.1 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+   (V.1.9.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
    
     Misc:
 • Make Blame not say servers modlist are incompatible when client with Blame connects to server without Blame. 
