@@ -12,12 +12,15 @@ Gotta blame the broken mods!
 • Hardened error reporting so that broken configuredfeatures that cannot be turned to JSON doesn't crash Blame and Blame reports them now.
 
     Dispenser Behaviors:
-• Exposed a new method for other mods to hook into and use in order to condense Blame's Registry Replacement messages about their mods if it is excessive.
-  The method is DispenserBlockRegistry.addCondensedMessage. Mod authors, READ THE JAVADOC FOR THE METHOD CAREFULLY.
+• Added code to make adding code condensing easier in Blame. Mod Authors, PLEASE CONTACT ME if your mod register replaces 
+ dispenser behaviors for more than 10 items. There will be no exposed method as it would be too easy for mods to abuse and
+ ruin the entire point of Blame as a diagnosis tool. Instead, message condensing will be done on a case-by-case basis manually.
+ 
+• Dispenser Configurator now won't have massive log entries when using a datapack that registry replaces a ton of item's Dispenser Behaviors.
 
     Structures/Features:
 • Hardened error reporting so broken features/structures/registries are less likely to crash Blame before Blame can report. 
-  Should make running Blame in dev environment less likely to mask actual errors.
+ Should make running Blame in dev environment less likely to mask actual errors.
 
 
    (V.2.4.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)

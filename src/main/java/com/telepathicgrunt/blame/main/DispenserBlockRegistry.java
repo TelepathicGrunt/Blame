@@ -24,20 +24,19 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 
 	/**
 	 * For any mod to make Blame not print thousands of lines about their Dispenser Behavior registry replacement.
-	 * ONLY USE THIS IF YOUR MOD IS REPLACING 10+ BEHAVIORS. BY CONDENSING THE MESSAGES TO A SINGLE ENTRY, YOU
-	 * COULD BE HIDING INFO THAT MIGHT ACTUALLY HELP PEOPLE FIGURE OUT WHY AN ITEM DISPENSER BEHAVIOR IS BROKEN.
+	 * ONLY FOR MODS REPLACING 10+ BEHAVIORS. BY CONDENSING THE MESSAGES TO A SINGLE ENTRY, IT COULD END UP
+	 * HIDING INFO THAT MIGHT ACTUALLY HELP PEOPLE FIGURE OUT WHY AN ITEM DISPENSER BEHAVIOR IS BROKEN.
 	 *
 	 * Please be VERY detailed for summaryOfItemsAffected and reasonForBehaviorChange.
-	 * If this method is abused by other mods to hide info or for condensing less than 10 dispenser behaviors,
-	 * I will remove this exposed method in the future.
+	 * This method can easily be abused by other mods to hide info or for condensing
+	 * less than 10 dispenser behaviors which is why this method will remain not exposed.
 	 *
 	 * Remember, Blame is not supposed to be on 24/7. It is purely a diagnosis mod for weird worldgen crashes and bugs.
-	 * Make sure you call this method before you do the item dispenser behavior registry replacements.
 	 *
-	 * @param modID The ID of your mod that wants to condense Blame's Dispenser Behavior messages about it.
+	 * @param modID The ID of the mod that wants to condense Blame's Dispenser Behavior messages about it.
 	 * @param stacktraceLineToDetect The line for Blame to look for in the stacktrace to know when to condense. Example: "vazkii.quark.content.automation.module.DispensersPlaceBlocksModule"
-	 * @param summaryOfItemsAffected Sentences describing what items your mod will be targeting to replace the behaviors of. If your mod has a config option to change what items are targeted, STATE THAT THE CONIG OPTION EXISTS HERE TOO.
-	 * @param reasonForBehaviorChange Sentences stating why your mod is replacing a ton of block's dispenser behaviors so users know what your mod is trying to do.
+	 * @param summaryOfItemsAffected Sentences describing what items the mod will be targeting to replace the behaviors of. If the mod has a config option to change what items are targeted, STATE THAT THE CONIG OPTION EXISTS HERE TOO.
+	 * @param reasonForBehaviorChange Sentences stating why the mod is replacing a ton of item's dispenser behaviors so users know what the mod is trying to do.
 	 */
 	public static void addCondensedMessage(String modID, String stacktraceLineToDetect, String summaryOfItemsAffected, String reasonForBehaviorChange){
 		MESSAGE_CONDENSER_MAP.put(stacktraceLineToDetect, new MessageCondenserEntry(modID, summaryOfItemsAffected, reasonForBehaviorChange));
@@ -47,7 +46,12 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 	// Turn on registry replacement detection only after startup's putAll I do is done.
 	public Boolean startupIgnore = true;
 	private static final Map<String, MessageCondenserEntry> MESSAGE_CONDENSER_MAP = new HashMap<>();
-	//static{ addCondensedMessage("quark", "vazkii.quark.content.automation.module.DispensersPlaceBlocksModule", "Detected Quark registry replacing the Dispenser behavior of all blocks.", "This is part of their DispensersPlaceBlocksModule which has config options."); }
+	static{
+		addCondensedMessage("dispenser_configurator",
+				"net.sssubtlety.dispenser_configurator.dispenserBehaviors.GenericDispenserBehavior",
+				"All items specified with Dispenser Configurator's datapack will have their behavior changed. See the world's datapack folder for what item are affected by that mod.",
+				"Dispenser Configurator register replaces the item's dispenser behavior to allow users to change the behavior of any item possible.");
+	}
 
 
 	@Override
