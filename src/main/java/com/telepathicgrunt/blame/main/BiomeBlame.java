@@ -7,6 +7,7 @@ import com.mojang.serialization.JsonOps;
 import com.telepathicgrunt.blame.Blame;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.crash.CrashReport;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.ChunkRegion;
@@ -15,6 +16,7 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.StructureFeature;
 import org.apache.logging.log4j.Level;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 /* @author - TelepathicGrunt
@@ -37,18 +39,43 @@ public class BiomeBlame {
 	{
 		DynamicRegistryManager dynamicRegistryManager = chunkRegion.getRegistryManager();
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		Identifier configuredFeatureID = null;
+		Identifier biomeID = null;
+		Optional<JsonElement> configuredFeatureJSON = Optional.empty();
+		StackTraceElement[] trace = null;
 
-		Identifier configuredFeatureID = dynamicRegistryManager.get(Registry.CONFIGURED_FEATURE_WORLDGEN).getId(configuredFeature);
-		Identifier biomeID = dynamicRegistryManager.get(Registry.BIOME_KEY).getId(biome);
-		Optional<JsonElement> configuredFeatureJSON = ConfiguredFeature.REGISTRY_CODEC.encode(() -> configuredFeature, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left();
+		try{
+			configuredFeatureID = dynamicRegistryManager.get(Registry.CONFIGURED_FEATURE_WORLDGEN).getId(configuredFeature);
+			if(configuredFeatureID == null){
+				configuredFeatureID = BuiltinRegistries.CONFIGURED_FEATURE.getId(configuredFeature);
+			}
+			biomeID = dynamicRegistryManager.get(Registry.BIOME_KEY).getId(biome);
+		}
+		catch (Throwable ignored){ }
+
+		try{
+			configuredFeatureJSON = ConfiguredFeature.REGISTRY_CODEC.encode(() -> configuredFeature, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left();
+		}
+		catch (Throwable e){
+			trace = e.getStackTrace();
+		}
 
 		// Add extra info to the crash report file.
-		crashreport.getSystemDetailsSection()
-				.add("\n****************** Blame Report " + Blame.VERSION + " ******************",
-					"\n\n ConfiguredFeature Registry Name : " + (configuredFeatureID != null ? configuredFeatureID : "Has no identifier as it was not registered... go yell at the mod owner when you find them! lol") +
-						"\n Biome Registry Name : " + (biomeID != null ? biomeID : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!") +
-						"\n\n JSON info : " + (configuredFeatureJSON.isPresent() ? gson.toJson(configuredFeatureJSON.get()) : "Failed to get JSON somehow.") + "\n\n");
-
+		if(configuredFeatureID == null){
+			crashreport.getSystemDetailsSection()
+					.add("\n****************** Blame Report " + Blame.VERSION + " ******************",
+							"\n\n ConfiguredFeature name was unable to be found due to either the configuredfeature registry or " +
+									"\n biome registry missing somehow. Or that the configuredfeature is not in any registries." +
+									"\n Sorry but Blame isn't really able to get much info but..."  +
+									"\n Here's the best attempt at turning the configuredfeature to JSON for analysis: \n" + (configuredFeatureJSON.isPresent() ? gson.toJson(configuredFeatureJSON.get()) : ""));
+		}
+		else{
+			crashreport.getSystemDetailsSection()
+					.add("\n****************** Blame Report " + Blame.VERSION + " ******************",
+							"\n\n ConfiguredFeature Registry Name : " + configuredFeatureID +
+									"\n Biome Registry Name : " + (biomeID != null ? biomeID : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!") +
+									"\n\n JSON info : " + (configuredFeatureJSON.isPresent() ? gson.toJson(configuredFeatureJSON.get()) : "Failed to get JSON somehow. Stacktrace of error:\n" + Arrays.toString(trace)) + "\n\n");
+		}
 		// Log it to the latest.log file as well.
 		Blame.LOGGER.log(Level.ERROR, crashreport.getMessage());
 	}
@@ -64,8 +91,14 @@ public class BiomeBlame {
 	{
 		DynamicRegistryManager dynamicRegistryManager = chunkRegion.getRegistryManager();
 
-		Identifier structureID = Registry.STRUCTURE_FEATURE.getId(structureFeature);
-		Identifier biomeID = dynamicRegistryManager.get(Registry.BIOME_KEY).getId(biome);
+		Identifier structureID = null;
+		Identifier biomeID = null;
+
+		try{
+			structureID = Registry.STRUCTURE_FEATURE.getId(structureFeature);
+			biomeID = dynamicRegistryManager.get(Registry.BIOME_KEY).getId(biome);
+		}
+		catch (Throwable ignored){ }
 
 		// Add extra info to the crash report file.
 		// Note, only structures can do the details part as configuredfeatures always says the ConfiguredFeature class.
