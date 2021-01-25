@@ -7,7 +7,10 @@ Gotta blame the broken mods!
        | Blame Fabric changelog |
                  
    (V.2.4.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
-   
+        
+    Unregistered worldgen:
+• Hardened error reporting so that broken configuredfeatures that cannot be turned to JSON doesn't crash Blame and Blame reports them now.
+
     Dispenser Behaviors:
 • Exposed a new method for other mods to hook into and use in order to condense Blame's Registry Replacement messages about their mods if it is excessive.
   The method is DispenserBlockRegistry.addCondensedMessage. Mod authors, READ THE JAVADOC FOR THE METHOD CAREFULLY.

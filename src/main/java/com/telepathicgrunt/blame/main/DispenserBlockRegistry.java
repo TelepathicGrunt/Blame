@@ -32,6 +32,7 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 	 * I will remove this exposed method in the future.
 	 *
 	 * Remember, Blame is not supposed to be on 24/7. It is purely a diagnosis mod for weird worldgen crashes and bugs.
+	 * Make sure you call this method before you do the item dispenser behavior registry replacements.
 	 *
 	 * @param modID The ID of your mod that wants to condense Blame's Dispenser Behavior messages about it.
 	 * @param stacktraceLineToDetect The line for Blame to look for in the stacktrace to know when to condense. Example: "vazkii.quark.content.automation.module.DispensersPlaceBlocksModule"
@@ -39,13 +40,13 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 	 * @param reasonForBehaviorChange Sentences stating why your mod is replacing a ton of block's dispenser behaviors so users know what your mod is trying to do.
 	 */
 	public static void addCondensedMessage(String modID, String stacktraceLineToDetect, String summaryOfItemsAffected, String reasonForBehaviorChange){
-		messageCondenserMap.put(stacktraceLineToDetect, new MessageCondenserEntry(modID, summaryOfItemsAffected, reasonForBehaviorChange));
+		MESSAGE_CONDENSER_MAP.put(stacktraceLineToDetect, new MessageCondenserEntry(modID, summaryOfItemsAffected, reasonForBehaviorChange));
 	}
 
 
 	// Turn on registry replacement detection only after startup's putAll I do is done.
 	public Boolean startupIgnore = true;
-	private static final Map<String, MessageCondenserEntry> messageCondenserMap = new HashMap<>();
+	private static final Map<String, MessageCondenserEntry> MESSAGE_CONDENSER_MAP = new HashMap<>();
 	//static{ addCondensedMessage("quark", "vazkii.quark.content.automation.module.DispensersPlaceBlocksModule", "Detected Quark registry replacing the Dispenser behavior of all blocks.", "This is part of their DispensersPlaceBlocksModule which has config options."); }
 
 
@@ -59,9 +60,9 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 			Identifier itemID = Registry.ITEM.getId((Item) item);
 			String behaviorClassName = behavior.getClass().getName();
 
-			if(messageCondenserMap.containsKey(behaviorClassName))
+			if(MESSAGE_CONDENSER_MAP.containsKey(behaviorClassName))
 			{
-				MessageCondenserEntry entry = messageCondenserMap.get(behaviorClassName);
+				MessageCondenserEntry entry = MESSAGE_CONDENSER_MAP.get(behaviorClassName);
 				if(entry.itemBehaviorsReplaced == 0){
 					Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
 							"\n   Condensed Dispenser message mode activated for " + entry.modID +
