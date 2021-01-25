@@ -54,11 +54,11 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 				MessageCondenserEntry entry = MESSAGE_CONDENSER_MAP.get(behaviorClassName);
 				if(entry.itemBehaviorsReplaced == 0){
 					Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
-							"\n   Condensed Dispenser message mode activated for " + entry.modID +
+							"\n   Condensed Dispenser message mode activated for " + entry.modID + "." +
 							"\n   Dispenser behavior registry replacement was detected." +
-							"\n   Reason for the change: " + entry.reasonForBehaviorChange +
-							"\n   The kinds of items affected: " + entry.summaryOfItemsAffected +
-							"\n   Ignore this log entry unless block behaviors aren't working with Dispensers for some reason.\n");
+							"\n   Reason for the change:  " + entry.reasonForBehaviorChange +
+							"\n   The kinds of items affected:  " + entry.summaryOfItemsAffected +
+							"\n   Ignore this log entry unless item behaviors aren't working with Dispensers for some reason.\n");
 				}
 				entry.itemBehaviorsReplaced++;
 			}
