@@ -6,6 +6,13 @@ Gotta blame the broken mods!
 ------------------------------------------------
        | Blame Forge changelog |
            
+   (V.1.9.2 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
+   
+    Structures/Features:
+• Hardened error reporting so broken features/structures/registries are less likely to crash Blame before Blame can report. 
+  Should make running Blame in dev environment less likely to mask actual errors.
+
+     
    (V.1.9.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
    
     Misc:
