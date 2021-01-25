@@ -10,9 +10,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.function.BiPredicate;
-import java.util.function.Supplier;
-
 @Mod(Blame.MODID)
 public class Blame
 {

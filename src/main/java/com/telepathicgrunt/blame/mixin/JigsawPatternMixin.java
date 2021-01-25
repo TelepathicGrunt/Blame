@@ -1,6 +1,5 @@
 package com.telepathicgrunt.blame.mixin;
 
-import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 import com.telepathicgrunt.blame.main.JigsawPatternBlame;
 import com.telepathicgrunt.blame.main.MissingNBTBlame;
@@ -12,10 +11,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /* @author - TelepathicGrunt

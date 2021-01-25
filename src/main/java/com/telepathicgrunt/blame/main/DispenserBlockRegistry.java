@@ -8,7 +8,9 @@ import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static it.unimi.dsi.fastutil.HashCommon.arraySize;
 
@@ -20,9 +22,40 @@ import static it.unimi.dsi.fastutil.HashCommon.arraySize;
  */
 public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>{
 
+	/**
+	 * For any mod to make Blame not print thousands of lines about their Dispenser Behavior registry replacement.
+	 * ONLY USE THIS IF YOUR MOD IS REPLACING 10+ BEHAVIORS. BY CONDENSING THE MESSAGES TO A SINGLE ENTRY, YOU
+	 * COULD BE HIDING INFO THAT MIGHT ACTUALLY HELP PEOPLE FIGURE OUT WHY AN ITEM DISPENSER BEHAVIOR IS BROKEN.
+	 *
+	 * Please be VERY detailed for summaryOfItemsAffected and reasonForBehaviorChange.
+	 * If this method is abused by other mods to hide info or for condensing less than 10 dispenser behaviors,
+	 * I will remove this exposed method in the future.
+	 *
+	 * Remember, Blame is not supposed to be on 24/7. It is purely a diagnosis mod for weird worldgen crashes and bugs.
+	 *
+	 * @param modID The ID of your mod that wants to condense Blame's Dispenser Behavior messages about it.
+	 * @param stacktraceLineToDetect The line for Blame to look for in the stacktrace to know when to condense. Example: "vazkii.quark.content.automation.module.DispensersPlaceBlocksModule"
+	 * @param summaryOfItemsAffected Sentences describing what items your mod will be targeting to replace the behaviors of. If your mod has a config option to change what items are targeted, STATE THAT THE CONIG OPTION EXISTS HERE TOO.
+	 * @param reasonForBehaviorChange Sentences stating why your mod is replacing a ton of item's dispenser behaviors so users know what your mod is trying to do.
+	 */
+	public static void addCondensedMessage(String modID, String stacktraceLineToDetect, String summaryOfItemsAffected, String reasonForBehaviorChange){
+		messageCondenserMap.put(stacktraceLineToDetect, new MessageCondenserEntry(modID, summaryOfItemsAffected, reasonForBehaviorChange));
+	}
+
+
+
+
 	// Turn on registry replacement detection only after startup's putAll I do is done.
 	public Boolean startupIgnore = true;
-	private boolean didNotPrintQuarkEdgeCase = true;
+	private static final Map<String, MessageCondenserEntry> messageCondenserMap = new HashMap<>();
+	static{
+		// Prevent Quark's BlockBehaviour stuff from triggering Blame and printing out 7000 lines of registry replacements that they do.
+		addCondensedMessage("quark",
+				"vazkii.quark.content.automation.module.DispensersPlaceBlocksModule",
+				"Detected Quark registry replacing the Dispenser behavior of all blocks.",
+				"This is part of their DispensersPlaceBlocksModule which has config options."
+				);
+	}
 
 	@Override
 	public synchronized V put(final K item, final V behavior) {
@@ -32,17 +65,20 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 		// Getting the optional RegistryKey always return null even for values that exists. Wth Mojang?
 		if(!Registry.ITEM.getKey((Item)item).toString().equals("minecraft:air")){
 			ResourceLocation itemRl = Registry.ITEM.getKey((Item)item);
+			String behaviorClassName = behavior.getClass().getName();
 
-			// Prevent Quark's BlockBehaviour stuff from triggering Blame and printing out 7000 lines of registry replacements that they do.
-			if(behavior.getClass().getName().contains("vazkii.quark.content.automation.module.DispensersPlaceBlocksModule"))
+			if(messageCondenserMap.containsKey(behaviorClassName))
 			{
-				if(didNotPrintQuarkEdgeCase){
+				MessageCondenserEntry entry = messageCondenserMap.get(behaviorClassName);
+				if(entry.itemBehaviorsReplaced == 0){
 					Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
-							"\n   Detected Quark registry replacing the Dispenser behavior of all blocks." +
-							"\n   This is part of their DispensersPlaceBlocksModule which has config options." +
+							"\n   Condensed Dispenser message mode activated for " + entry.modID +
+							"\n   Dispenser behavior registry replacement was detected." +
+							"\n   Reason for the change: " + entry.reasonForBehaviorChange +
+							"\n   The kinds of items affected: " + entry.summaryOfItemsAffected +
 							"\n   Ignore this log entry unless block behaviors aren't working with Dispensers for some reason.\n");
-							didNotPrintQuarkEdgeCase = false;
 				}
+				entry.itemBehaviorsReplaced++;
 			}
 			else if(!startupIgnore && (itemRl.getNamespace().equals("minecraft") || this.containsKey(item))){
 				List<StackTraceElement> stackList = new ArrayList<>();
@@ -56,7 +92,7 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 						"\n   is broken, check out \"Potentially Dangerous alternative prefix `minecraft`\" lines for" +
 						"\n   the item too as registry replacements might break dispenser behaviors as well." +
 						"\n  Dispenser Behavior overridden for " + itemRl.toString() +
-						"\n  New behavior: " + behavior.getClass().getName() +
+						"\n  New behavior: " + behaviorClassName +
 						"\n  Old behavior: " + this.get(item).getClass().getName() +
 						"\n  Registration done at: " +
 						"\n    " + stackList.get(0).toString() +
@@ -104,4 +140,17 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 			rehash(arraySize(size + 1, f));
 	}
 
+
+	private static class MessageCondenserEntry{
+		private int itemBehaviorsReplaced = 0;
+		private final String modID;
+		private final String summaryOfItemsAffected;
+		private final String reasonForBehaviorChange;
+
+		public MessageCondenserEntry(String modID, String summaryOfItemsAffected, String reasonForBehaviorChange){
+			this.modID = modID;
+			this.summaryOfItemsAffected = summaryOfItemsAffected;
+			this.reasonForBehaviorChange = reasonForBehaviorChange;
+		}
+	}
 }
