@@ -1,5 +1,6 @@
 package com.telepathicgrunt.blame.main;
 
+import com.google.common.collect.ImmutableMap;
 import com.telepathicgrunt.blame.Blame;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.item.Item;
@@ -22,39 +23,22 @@ import static it.unimi.dsi.fastutil.HashCommon.arraySize;
  */
 public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>{
 
-	/**
-	 * For any mod to make Blame not print thousands of lines about their Dispenser Behavior registry replacement.
-	 * ONLY FOR MODS REPLACING 10+ BEHAVIORS. BY CONDENSING THE MESSAGES TO A SINGLE ENTRY, IT COULD END UP
-	 * HIDING INFO THAT MIGHT ACTUALLY HELP PEOPLE FIGURE OUT WHY AN ITEM DISPENSER BEHAVIOR IS BROKEN.
-	 *
-	 * Please be VERY detailed for summaryOfItemsAffected and reasonForBehaviorChange.
-	 * This method can easily be abused by other mods to hide info or for condensing
-	 * less than 10 dispenser behaviors which is why this method will remain not exposed.
-	 *
-	 * Remember, Blame is not supposed to be on 24/7. It is purely a diagnosis mod for weird worldgen crashes and bugs.
-	 *
-	 * @param modID The ID of the mod that wants to condense Blame's Dispenser Behavior messages about it.
-	 * @param stacktraceLineToDetect The line for Blame to look for in the stacktrace to know when to condense. Example: "vazkii.quark.content.automation.module.DispensersPlaceBlocksModule"
-	 * @param summaryOfItemsAffected Sentences describing what items the mod will be targeting to replace the behaviors of. If the mod has a config option to change what items are targeted, STATE THAT THE CONIG OPTION EXISTS HERE TOO.
-	 * @param reasonForBehaviorChange Sentences stating why the mod is replacing a ton of item's dispenser behaviors so users know what the mod is trying to do.
-	 */
-	private static void addCondensedMessage(String modID, String stacktraceLineToDetect, String summaryOfItemsAffected, String reasonForBehaviorChange){
-		MESSAGE_CONDENSER_MAP.put(stacktraceLineToDetect, new MessageCondenserEntry(modID, summaryOfItemsAffected, reasonForBehaviorChange));
-	}
-
-
-
-
 	// Turn on registry replacement detection only after startup's putAll I do is done.
 	public Boolean startupIgnore = true;
-	private static final Map<String, MessageCondenserEntry> MESSAGE_CONDENSER_MAP = new HashMap<>();
+	private static final Map<String, MessageCondenserEntry> MESSAGE_CONDENSER_MAP;
 	static{
+		Map<String, MessageCondenserEntry> tempMap = new HashMap<>();
+
 		// Prevent Quark's BlockBehaviour stuff from triggering Blame and printing out 7000 lines of registry replacements that they do.
-		addCondensedMessage("quark",
+		addCondensedMessage(tempMap,
+				"quark",
 				"vazkii.quark.content.automation.module.DispensersPlaceBlocksModule",
 				"Detected Quark registry replacing the Dispenser behavior of all blocks.",
 				"This is part of their DispensersPlaceBlocksModule which has config options."
 				);
+
+		// Make immutable to make it less likely someone will reflect or mixin to add their own entry. They should contact me directly instead.
+		MESSAGE_CONDENSER_MAP = ImmutableMap.copyOf(tempMap);
 	}
 
 	@Override
@@ -140,6 +124,26 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 			rehash(arraySize(size + 1, f));
 	}
 
+
+	/**
+	 * For any mod to make Blame not print thousands of lines about their Dispenser Behavior registry replacement.
+	 * ONLY FOR MODS REPLACING 10+ BEHAVIORS. BY CONDENSING THE MESSAGES TO A SINGLE ENTRY, IT COULD END UP
+	 * HIDING INFO THAT MIGHT ACTUALLY HELP PEOPLE FIGURE OUT WHY AN ITEM DISPENSER BEHAVIOR IS BROKEN.
+	 *
+	 * Please be VERY detailed for summaryOfItemsAffected and reasonForBehaviorChange.
+	 * This method can easily be abused by other mods to hide info or for condensing
+	 * less than 10 dispenser behaviors which is why this method will remain not exposed.
+	 *
+	 * Remember, Blame is not supposed to be on 24/7. It is purely a diagnosis mod for weird worldgen crashes and bugs.
+	 *
+	 * @param modID The ID of the mod that wants to condense Blame's Dispenser Behavior messages about it.
+	 * @param stacktraceLineToDetect The line for Blame to look for in the stacktrace to know when to condense. Example: "vazkii.quark.content.automation.module.DispensersPlaceBlocksModule"
+	 * @param summaryOfItemsAffected Sentences describing what items the mod will be targeting to replace the behaviors of. If the mod has a config option to change what items are targeted, STATE THAT THE CONIG OPTION EXISTS HERE TOO.
+	 * @param reasonForBehaviorChange Sentences stating why the mod is replacing a ton of item's dispenser behaviors so users know what the mod is trying to do.
+	 */
+	private static void addCondensedMessage(Map<String, MessageCondenserEntry> tempMap, String modID, String stacktraceLineToDetect, String summaryOfItemsAffected, String reasonForBehaviorChange){
+		tempMap.put(stacktraceLineToDetect, new MessageCondenserEntry(modID, summaryOfItemsAffected, reasonForBehaviorChange));
+	}
 
 	private static class MessageCondenserEntry{
 		private int itemBehaviorsReplaced = 0;
