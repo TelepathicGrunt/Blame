@@ -8,6 +8,10 @@ Gotta blame the broken mods!
                  
    (V.2.4.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
    
+    Dispenser Behaviors:
+• Exposed a new method for other mods to hook into and use in order to condense Blame's Registry Replacement messages about their mods if it is excessive.
+  The method is DispenserBlockRegistry.addCondensedMessage. Mod authors, READ THE JAVADOC FOR THE METHOD CAREFULLY.
+
     Structures/Features:
 • Hardened error reporting so broken features/structures/registries are less likely to crash Blame before Blame can report. 
   Should make running Blame in dev environment less likely to mask actual errors.
