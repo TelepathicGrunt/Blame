@@ -32,7 +32,7 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 		// Prevent Quark's BlockBehaviour stuff from triggering Blame and printing out 7000 lines of registry replacements that they do.
 		addCondensedMessage(tempMap,
 				"quark",
-				"vazkii.quark.content.automation.module.DispensersPlaceBlocksModule",
+				"vazkii.quark.content.automation.module.DispensersPlaceBlocksModule$BlockBehaviour",
 				"Detected Quark registry replacing the Dispenser behavior of all blocks.",
 				"This is part of their DispensersPlaceBlocksModule which has config options."
 				);
@@ -56,11 +56,11 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 				MessageCondenserEntry entry = MESSAGE_CONDENSER_MAP.get(behaviorClassName);
 				if(entry.itemBehaviorsReplaced == 0){
 					Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
-							"\n   Condensed Dispenser message mode activated for " + entry.modID +
+							"\n   Condensed Dispenser message mode activated for " + entry.modID + "." +
 							"\n   Dispenser behavior registry replacement was detected." +
-							"\n   Reason for the change: " + entry.reasonForBehaviorChange +
-							"\n   The kinds of items affected: " + entry.summaryOfItemsAffected +
-							"\n   Ignore this log entry unless block behaviors aren't working with Dispensers for some reason.\n");
+							"\n   Reason for the change:  " + entry.reasonForBehaviorChange +
+							"\n   The kinds of items affected:  " + entry.summaryOfItemsAffected +
+							"\n   Ignore this log entry unless item behaviors aren't working with Dispensers for some reason.\n");
 				}
 				entry.itemBehaviorsReplaced++;
 			}
