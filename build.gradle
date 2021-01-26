@@ -15,9 +15,9 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = mod_version
+version = "${mc_version}-${mod_version}-forge"
 group = "com.telepathicgrunt.${modid}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "${modid}-${mc_version}"
+archivesBaseName = "${modid}"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
@@ -31,12 +31,14 @@ minecraft {
         client {
             workingDirectory project.file('run')
             arg "-mixin.config="+archivesBaseName+".mixins.json"
+            property 'mixin.env.disableRefMap', 'true'
             mods { blame { source sourceSets.main } }
         }
 
         server {
             workingDirectory project.file('run')
             arg "-mixin.config="+archivesBaseName+".mixins.json"
+            property 'mixin.env.disableRefMap', 'true'
             mods { blame { source sourceSets.main } }
         }
     }
