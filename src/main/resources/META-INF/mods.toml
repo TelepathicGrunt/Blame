@@ -1,15 +1,13 @@
 modLoader="javafml" #mandatory
 loaderVersion="[28,)" #mandatory (28 is current forge version)
-issueTrackerURL="http://my.issue.tracker/" #optional
+issueTrackerURL="https://github.com/TelepathicGrunt/Blame/issues" #optional
 license="GNU Lesser General Public License v3.0"
 
 [[mods]] #mandatory
 modId="blame" #mandatory
 version="${file.jarVersion}" #mandatory
 displayName="Blame!" #mandatory
-#displayURL="http://example.com/" #optional
-#logoFile="blame_icon.png" #optional
-credits="inslkhufdnjkfdnsljkfdnbhfsjbnlgkj" #optional
+logoFile="blame_icon.png" #optional
 authors="TelepathicGrunt" #optional
 description='''
 Crashing due to a feature or structure from a mod? Don't worry!
