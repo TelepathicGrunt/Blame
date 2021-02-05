@@ -64,6 +64,9 @@ repositories{
 
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
+
+    implementation fg.deobf("ignored:AutoRegLib:1.6-47")
+    implementation fg.deobf("ignored:Quark-r2.4:303")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

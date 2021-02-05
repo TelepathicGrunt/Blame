@@ -56,18 +56,25 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 		// Getting the optional RegistryKey always return null even for values that exists. Wth Mojang?
 		if(!Registry.ITEM.getKey((Item)item).toString().equals("minecraft:air")){
 			ResourceLocation itemRl = Registry.ITEM.getKey((Item)item);
+			String behaviorClassName = behavior.getClass().getName();
 
 			List<StackTraceElement> stackList = new ArrayList<>();
 			StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
 			stackList.add(stacktrace[3]);
 			stackList.add(stacktrace[4]);
 			stackList.add(stacktrace[5]);
-			if(stackList.stream().anyMatch(line -> MESSAGE_CONDENSER_MAP.containsKey(line.getClassName() + "." + line.getMethodName())))
+
+			if(MESSAGE_CONDENSER_MAP.containsKey(behaviorClassName) || stackList.stream().anyMatch(line -> MESSAGE_CONDENSER_MAP.containsKey(line.getClassName() + "." + line.getMethodName())))
 			{
 				// Should be safe as we already checked above that it does contain the line
-				MessageCondenserEntry entry = stackList.stream()
-						.filter(line -> MESSAGE_CONDENSER_MAP.containsKey(line.getClassName() + "." + line.getMethodName()))
-						.findFirst().map(line -> MESSAGE_CONDENSER_MAP.get(line.getClassName() + "." + line.getMethodName())).get();
+				MessageCondenserEntry entry;
+				if(MESSAGE_CONDENSER_MAP.containsKey(behaviorClassName)){
+					entry = MESSAGE_CONDENSER_MAP.get(behaviorClassName);
+				}
+				else{
+					entry = stackList.stream().filter(line -> MESSAGE_CONDENSER_MAP.containsKey(line.getClassName() + "." + line.getMethodName()))
+							.findFirst().map(line -> MESSAGE_CONDENSER_MAP.get(line.getClassName() + "." + line.getMethodName())).get();
+				}
 
 				if(entry.itemBehaviorsReplaced == 0){
 					Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
@@ -86,7 +93,7 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 						"\n   is broken, check out \"Potentially Dangerous alternative prefix `minecraft`\" lines for" +
 						"\n   the item too as registry replacements might break dispenser behaviors as well." +
 						"\n  Dispenser Behavior overridden for " + itemRl.toString() +
-						"\n  New behavior: " + behavior.getClass().getName() +
+						"\n  New behavior: " + behaviorClassName +
 						"\n  Old behavior: " + this.get(item).getClass().getName() +
 						"\n  Registration done at: " +
 						"\n    " + stackList.get(0).toString() +
