@@ -31,7 +31,7 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 
 		addCondensedMessage(tempMap,
 				"dispenser_configurator",
-				"net.sssubtlety.dispenser_configurator.dispenserBehaviors.GenericDispenserBehavior",
+				"net.sssubtlety.dispenser_configurator.dispenserBehaviors.GenericDispenserBehavior.registerForItems",
 				"All items specified with Dispenser Configurator's datapack will have their behavior changed. See the world's datapack folder for what item are affected by that mod.",
 				"Dispenser Configurator register replaces the item's dispenser behavior to allow users to change the behavior of any item possible.");
 
