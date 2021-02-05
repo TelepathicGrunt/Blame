@@ -37,6 +37,13 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 				"This is part of their DispensersPlaceBlocksModule which has config options."
 				);
 
+		// Condense the banner item printing as it's all banners and it's implementation is safe.
+		addCondensedMessage(tempMap,
+				"savageandravage",
+				"com.minecraftabnormals.savageandravage.core.other.SRCompat.lambda$registerDispenserBehaviors$1",
+				"All items that are BannerItem are affected.",
+				"SavageAndRavage now makes all Banners now be able to be dispensed onto mobs with a Dispenser. They do revert to default behavior if no entity accepts the banner nearby.");
+
 		// Make immutable to make it less likely someone will reflect or mixin to add their own entry. They should contact me directly instead.
 		MESSAGE_CONDENSER_MAP = ImmutableMap.copyOf(tempMap);
 	}
@@ -49,11 +56,20 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 		// Getting the optional RegistryKey always return null even for values that exists. Wth Mojang?
 		if(!Registry.ITEM.getKey((Item)item).toString().equals("minecraft:air")){
 			ResourceLocation itemRl = Registry.ITEM.getKey((Item)item);
-			String behaviorClassName = behavior.getClass().getName();
 
-			if(MESSAGE_CONDENSER_MAP.containsKey(behaviorClassName))
+			List<StackTraceElement> stackList = new ArrayList<>();
+			StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+			stackList.add(stacktrace[3]);
+			stackList.add(stacktrace[4]);
+			stackList.add(stacktrace[5]);
+
+			if(stackList.stream().anyMatch(line -> MESSAGE_CONDENSER_MAP.containsKey(line.getClassName() + "." + line.getMethodName())))
 			{
-				MessageCondenserEntry entry = MESSAGE_CONDENSER_MAP.get(behaviorClassName);
+				// Should be safe as we already checked above that it does contain the line
+				MessageCondenserEntry entry = stackList.stream()
+						.filter(line -> MESSAGE_CONDENSER_MAP.containsKey(line.getClassName() + "." + line.getMethodName()))
+						.findFirst().map(line -> MESSAGE_CONDENSER_MAP.get(line.getClassName() + "." + line.getMethodName())).get();
+
 				if(entry.itemBehaviorsReplaced == 0){
 					Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
 							"\n   Condensed Dispenser message mode activated for " + entry.modID + "." +
@@ -65,18 +81,13 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 				entry.itemBehaviorsReplaced++;
 			}
 			else if(!startupIgnore && (itemRl.getNamespace().equals("minecraft") || this.containsKey(item))){
-				List<StackTraceElement> stackList = new ArrayList<>();
-				StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
-				stackList.add(stacktrace[3]);
-				stackList.add(stacktrace[4]);
-				stackList.add(stacktrace[5]);
 
 				Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
 						"\n   Ignore this unless item behavior aren't working with Dispensers. If Dispenser behavior" +
 						"\n   is broken, check out \"Potentially Dangerous alternative prefix `minecraft`\" lines for" +
 						"\n   the item too as registry replacements might break dispenser behaviors as well." +
 						"\n  Dispenser Behavior overridden for " + itemRl.toString() +
-						"\n  New behavior: " + behaviorClassName +
+						"\n  New behavior: " + behavior.getClass().getName() +
 						"\n  Old behavior: " + this.get(item).getClass().getName() +
 						"\n  Registration done at: " +
 						"\n    " + stackList.get(0).toString() +

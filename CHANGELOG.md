@@ -5,7 +5,13 @@ Gotta blame the broken mods!
 
 ------------------------------------------------
        | Blame Forge changelog |
-           
+            
+   (V.1.9.3 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
+   
+    Dispenser Behaviors:
+• Condensed Savage and Ravage's Banner Dispenser Behavior registry replacements messages.
+
+      
    (V.1.9.2 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
    
     Dispenser Behaviors:
