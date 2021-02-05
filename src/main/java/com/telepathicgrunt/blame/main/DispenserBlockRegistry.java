@@ -5,6 +5,7 @@ import com.telepathicgrunt.blame.Blame;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.Level;
 
@@ -25,9 +26,7 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 
 	// Turn on registry replacement detection only after startup's putAll I do is done.
 	public Boolean startupIgnore = true;
-	//public Boolean delayedStart = true;
-	private static final Map<String, MessageCondenserEntry> MESSAGE_CONDENSER_MAP;
-	static{
+	private static final Map<String, MessageCondenserEntry> MESSAGE_CONDENSER_MAP = Util.make(() -> {
 		Map<String, MessageCondenserEntry> tempMap = new HashMap<>();
 
 		addCondensedMessage(tempMap,
@@ -37,8 +36,8 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 				"Dispenser Configurator register replaces the item's dispenser behavior to allow users to change the behavior of any item possible.");
 
 		// Make immutable to make it less likely someone will reflect or mixin to add their own entry. They should contact me directly instead.
-		MESSAGE_CONDENSER_MAP = ImmutableMap.copyOf(tempMap);
-	}
+		return ImmutableMap.copyOf(tempMap);
+	});
 
 	@Override
 	public synchronized V put(final K item, final V behavior) {
