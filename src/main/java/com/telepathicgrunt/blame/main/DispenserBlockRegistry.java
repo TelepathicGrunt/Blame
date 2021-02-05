@@ -31,7 +31,7 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 
 		addCondensedMessage(tempMap,
 				"dispenser_configurator",
-				"net.sssubtlety.dispenser_configurator.dispenserBehaviors.GenericDispenserBehavior.registerForItems",
+				"net.sssubtlety.dispenser_configurator.dispenserBehaviors.GenericDispenserBehavior",
 				"All items specified with Dispenser Configurator's datapack will have their behavior changed. See the world's datapack folder for what item are affected by that mod.",
 				"Dispenser Configurator register replaces the item's dispenser behavior to allow users to change the behavior of any item possible.");
 
@@ -48,18 +48,11 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 		if(!Registry.ITEM.getId((Item)item).toString().equals("minecraft:air")) {
 			Identifier itemID = Registry.ITEM.getId((Item) item);
 
-			StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
-			List<StackTraceElement> stackList = new ArrayList<>();
-			stackList.add(stacktrace[3]);
-			stackList.add(stacktrace[4]);
-			stackList.add(stacktrace[5]);
+			String behaviorClassName = behavior.getClass().getName();
 
-			if(stackList.stream().anyMatch(line -> MESSAGE_CONDENSER_MAP.containsKey(line.getClassName() + "." + line.getMethodName())))
-			{
+			if(MESSAGE_CONDENSER_MAP.containsKey(behaviorClassName)){
 				// Should be safe as we already checked above that it does contain the line
-				MessageCondenserEntry entry = stackList.stream()
-						.filter(line -> MESSAGE_CONDENSER_MAP.containsKey(line.getClassName() + "." + line.getMethodName()))
-						.findFirst().map(line -> MESSAGE_CONDENSER_MAP.get(line.getClassName() + "." + line.getMethodName())).get();
+				MessageCondenserEntry entry = MESSAGE_CONDENSER_MAP.get(behaviorClassName);
 
 				if(entry.itemBehaviorsReplaced == 0){
 					Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
@@ -72,6 +65,11 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 				entry.itemBehaviorsReplaced++;
 			}
 			else if (!startupIgnore && (itemID.getNamespace().equals("minecraft") || this.containsKey(item))) {
+				StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+				List<StackTraceElement> stackList = new ArrayList<>();
+				stackList.add(stacktrace[3]);
+				stackList.add(stacktrace[4]);
+				stackList.add(stacktrace[5]);
 
 				Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
 						"\n   Ignore this unless item behavior aren't working with Dispensers." +
