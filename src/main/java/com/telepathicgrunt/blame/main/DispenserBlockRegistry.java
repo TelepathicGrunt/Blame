@@ -5,6 +5,7 @@ import com.telepathicgrunt.blame.Blame;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Util;
 import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.Level;
 
@@ -25,8 +26,7 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 
 	// Turn on registry replacement detection only after startup's putAll I do is done.
 	public Boolean startupIgnore = true;
-	private static final Map<String, MessageCondenserEntry> MESSAGE_CONDENSER_MAP;
-	static{
+	private static final Map<String, MessageCondenserEntry> MESSAGE_CONDENSER_MAP = Util.make(() -> {
 		Map<String, MessageCondenserEntry> tempMap = new HashMap<>();
 
 		// Prevent Quark's BlockBehaviour stuff from triggering Blame and printing out 7000 lines of registry replacements that they do.
@@ -45,8 +45,8 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 				"SavageAndRavage now makes all Banners now be able to be dispensed onto mobs with a Dispenser. They do revert to default behavior if no entity accepts the banner nearby.");
 
 		// Make immutable to make it less likely someone will reflect or mixin to add their own entry. They should contact me directly instead.
-		MESSAGE_CONDENSER_MAP = ImmutableMap.copyOf(tempMap);
-	}
+		return ImmutableMap.copyOf(tempMap);
+	});
 
 	@Override
 	public synchronized V put(final K item, final V behavior) {
@@ -62,7 +62,6 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 			stackList.add(stacktrace[3]);
 			stackList.add(stacktrace[4]);
 			stackList.add(stacktrace[5]);
-
 			if(stackList.stream().anyMatch(line -> MESSAGE_CONDENSER_MAP.containsKey(line.getClassName() + "." + line.getMethodName())))
 			{
 				// Should be safe as we already checked above that it does contain the line
