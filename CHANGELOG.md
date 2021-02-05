@@ -5,6 +5,13 @@ Gotta blame the broken mods!
 
 ------------------------------------------------
        | Blame Fabric changelog |
+           
+                 
+   (V.2.4.2 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
+   
+    Dispenser Behaviors:
+•    
+
                  
    (V.2.4.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
         

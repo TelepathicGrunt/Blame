@@ -25,6 +25,7 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 
 	// Turn on registry replacement detection only after startup's putAll I do is done.
 	public Boolean startupIgnore = true;
+	//public Boolean delayedStart = true;
 	private static final Map<String, MessageCondenserEntry> MESSAGE_CONDENSER_MAP;
 	static{
 		Map<String, MessageCondenserEntry> tempMap = new HashMap<>();
@@ -47,11 +48,20 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 		// Getting the optional RegistryKey always return null even for values that exists. Wth Mojang?
 		if(!Registry.ITEM.getId((Item)item).toString().equals("minecraft:air")) {
 			Identifier itemID = Registry.ITEM.getId((Item) item);
-			String behaviorClassName = behavior.getClass().getName();
 
-			if(MESSAGE_CONDENSER_MAP.containsKey(behaviorClassName))
+			StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+			List<StackTraceElement> stackList = new ArrayList<>();
+			stackList.add(stacktrace[3]);
+			stackList.add(stacktrace[4]);
+			stackList.add(stacktrace[5]);
+
+			if(stackList.stream().anyMatch(line -> MESSAGE_CONDENSER_MAP.containsKey(line.getClassName() + "." + line.getMethodName())))
 			{
-				MessageCondenserEntry entry = MESSAGE_CONDENSER_MAP.get(behaviorClassName);
+				// Should be safe as we already checked above that it does contain the line
+				MessageCondenserEntry entry = stackList.stream()
+						.filter(line -> MESSAGE_CONDENSER_MAP.containsKey(line.getClassName() + "." + line.getMethodName()))
+						.findFirst().map(line -> MESSAGE_CONDENSER_MAP.get(line.getClassName() + "." + line.getMethodName())).get();
+
 				if(entry.itemBehaviorsReplaced == 0){
 					Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
 							"\n   Condensed Dispenser message mode activated for " + entry.modID + "." +
@@ -63,11 +73,6 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
 				entry.itemBehaviorsReplaced++;
 			}
 			else if (!startupIgnore && (itemID.getNamespace().equals("minecraft") || this.containsKey(item))) {
-				List<StackTraceElement> stackList = new ArrayList<>();
-				StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
-				stackList.add(stacktrace[3]);
-				stackList.add(stacktrace[4]);
-				stackList.add(stacktrace[5]);
 
 				Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
 						"\n   Ignore this unless item behavior aren't working with Dispensers." +

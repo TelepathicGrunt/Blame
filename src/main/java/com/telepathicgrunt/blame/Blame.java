@@ -6,6 +6,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Optional;
+
 public class Blame implements ModInitializer
 {
     public static final String MODID = "blame";
@@ -17,7 +19,7 @@ public class Blame implements ModInitializer
         FabricLoader.getInstance().getModContainer(MODID)
                 .ifPresent(container -> VERSION = container.getMetadata().getVersion().toString());
 
-        Blame.LOGGER.log(Level.ERROR, "Blame "+VERSION+" initialized");
+        Blame.LOGGER.log(Level.WARN, "Blame " + VERSION + " initialized");
 
         // Unregistered worldgen test
 //        ConfiguredFeature<?,?> well = Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier("tgtr:fdgfg"), Feature.DESERT_WELL.configure(DefaultFeatureConfig.INSTANCE));
