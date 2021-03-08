@@ -43,6 +43,9 @@ public class MissingLoottableBlame {
 				return;
 		}
 
+//		Loot Table method called at:  jeresources.compatibility.minecraft.MinecraftCompat.lambda$registerDungeonLoot$1
+//		jeresources.compatibility.minecraft.MinecraftCompat$$Lambda$19589/1394161651.apply
+
 		// Add extra info to the log file.
 		String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
 				"\n\n Found a Loot Table path that does not exist:  " + miniRL +
