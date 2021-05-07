@@ -1,21 +1,32 @@
 package com.telepathicgrunt.blame;
 
+import com.google.common.collect.ImmutableMap;
+import net.minecraft.util.registry.WorldGenRegistries;
+import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.gen.settings.StructureSeparationSettings;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.FMLNetworkConstants;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Mod(Blame.MODID)
 public class Blame
 {
     public static final String MODID = "blame";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static String VERSION = "1.9.2";
+    public static String VERSION = "1.10.0";
 
     public Blame() {
         ModList.get().getModContainerById(Blame.MODID)
@@ -26,12 +37,23 @@ public class Blame
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST,
                 () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
 
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(EventPriority.LOWEST, this::afterModStartups);
+
         // Test detecting dispenser registry replacements
         // DispenserBlock.registerDispenseBehavior(Items.HONEY_BOTTLE, new DefaultDispenseItemBehavior());
 
         // Test detecting unregistered configuredfeatures.
         // MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, this::biomeModification);
     }
+
+    public static boolean MAIN_MOD_STARTUPS_FINISHED = false;
+    public void afterModStartups(final FMLCommonSetupEvent event)
+    {
+        event.enqueueWork(() -> {
+            MAIN_MOD_STARTUPS_FINISHED = true;
+        });
+    }
+
     
 //    public void biomeModification(final BiomeLoadingEvent event) {
 //        // Add our structure to all biomes including other modded biomes.
