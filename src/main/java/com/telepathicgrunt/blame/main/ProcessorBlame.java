@@ -31,12 +31,11 @@ import java.util.Set;
  */
 public class ProcessorBlame {
 
-	public static Template.BlockInfo findBrokenProcessor(StructureProcessor structureProcessor, IWorldReader world, BlockPos blockPos1, BlockPos blockPos2, Template.BlockInfo blockInfo1, Template.BlockInfo blockInfo2, PlacementSettings placementSettings, Template template) throws Exception {
+	public static Template.BlockInfo findBrokenProcessor(StructureProcessor structureProcessor, IWorldReader world, BlockPos blockPos1, BlockPos blockPos2, Template.BlockInfo blockInfo1, Template.BlockInfo blockInfo2, PlacementSettings placementSettings, Template template) {
 		try{
 			return structureProcessor.process(world, blockPos1, blockPos2, blockInfo1, blockInfo2, placementSettings, template);
 		}
 		catch (Exception e){
-			e.printStackTrace();
 			MinecraftServer minecraftServer = ServerLifecycleHooks.getCurrentServer();
 			TemplateManager templateManager = ((MinecraftServerAccessor)minecraftServer).blame_gettemplateManager();
 			Map<ResourceLocation, Template> templateMap = ((TemplateManagerAccessor)templateManager).blame_gettemplates();
@@ -61,8 +60,7 @@ public class ProcessorBlame {
 					"\n Block being processed: " + blockBeingProcessed +
 					"\n NBT of the block being processed: " + blockNBT;
 			Blame.LOGGER.log(Level.ERROR, errorReport);
+			throw e;
 		}
-
-		throw new Exception("Blame " + Blame.VERSION + ": Processor file blew up. See entire latest.log file for more info and possible cause.");
 	}
 }

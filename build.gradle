@@ -30,14 +30,14 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
-            arg "-mixin.config=${modid}.mixins.json"
+            arg '-mixin.config=' + project.getProperty('modid') + '.mixins.json'
             property 'mixin.env.disableRefMap', 'true'
             mods { blame { source sourceSets.main } }
         }
 
         server {
             workingDirectory project.file('run')
-            arg "-mixin.config=${modid}.mixins.json"
+            arg '-mixin.config=' + project.getProperty('modid') + '.mixins.json'
             property 'mixin.env.disableRefMap', 'true'
             mods { blame { source sourceSets.main } }
         }
