@@ -25,6 +25,13 @@ public class ErrorHints {
                 "\n           }," +
                 "\n           \"Name\": \"minecraft:grass_block\"" +
                 "\n        },");
+
+        errorMap.put("Base value out of range",
+                "\n     This error means that a value was given that was either too large or too small." +
+                "\n     The allowed range should be specified below in \"Prettified form of the broken JSON:\"" +
+                "\n     The two values are separated by a - dash. That means -10-256 means between -10 and 256." +
+                "\n     Let the modder know to correct their out-of-bounds value.");
+
         return errorMap;
     }
 }
