@@ -16,6 +16,7 @@
     "SpawnHelperMixin",
     "StructureFeatureMixin",
     "StructureManagerMixin",
+    "StructureMixin",
     "StructurePoolBasedGeneratorMixin",
     "StructurePoolBasedGeneratorStructurePoolGeneratorMixin",
     "StructurePoolMixin"
