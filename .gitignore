@@ -19,8 +19,9 @@ build
 
 # other
 eclipse
-run/*
-!run/saves
+run
+.gitattributes
+/deps
 classes
 
 # Files from Forge MDK
