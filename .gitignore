@@ -19,10 +19,10 @@ build
 
 # other
 eclipse
-run/*
-!run/saves
+run
+.gitattributes
+/deps
 classes
-deps
 
 # Files from Forge MDK
 forge*changelog.txt
