@@ -37,8 +37,8 @@ public class MissingLoottableBlame {
 		// Skip logspam from missing loottables for mob drops and block break as that seems to be intentional by most mods.
 		if(stackList.stream().anyMatch(stack ->
 			(stack.getClassName().equals("jeresources.compatibility.minecraft.MinecraftCompat") && stack.getMethodName().contains("registerVanillaMobs")) ||
-			(stack.getClassName().equals("net.minecraft.entity.LivingEntity") && (stack.getMethodName().equals("func_213354_a") || stack.getMethodName().equals("dropLoot"))) ||
-			(stack.getClassName().equals("net.minecraft.block.AbstractBlock") && (stack.getMethodName().equals("func_220076_a") || stack.getMethodName().equals("getDrops")))))
+			(stack.getClassName().equals("net.minecraft.entity.LivingEntity") && (stack.getMethodName().equals("dropFromLootTable") || stack.getMethodName().equals("dropLoot"))) ||
+			(stack.getClassName().equals("net.minecraft.block.AbstractBlock") && (stack.getMethodName().equals("getDrops") || stack.getMethodName().equals("getDrops")))))
 		{
 				return;
 		}

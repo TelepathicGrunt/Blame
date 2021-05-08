@@ -28,7 +28,7 @@ import static com.telepathicgrunt.blame.main.WorldEntitySpawnerBlame.addFeatureD
 @Mixin(WorldEntitySpawner.class)
 public class WorldEntitySpawnerMixin {
 
-	@Inject(method = "func_234977_a_(Lnet/minecraft/world/server/ServerWorld;Lnet/minecraft/world/gen/feature/structure/StructureManager;Lnet/minecraft/world/gen/ChunkGenerator;Lnet/minecraft/entity/EntityClassification;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/world/biome/MobSpawnInfo$Spawners;",
+	@Inject(method = "getRandomSpawnMobAt(Lnet/minecraft/world/server/ServerWorld;Lnet/minecraft/world/gen/feature/structure/StructureManager;Lnet/minecraft/world/gen/ChunkGenerator;Lnet/minecraft/entity/EntityClassification;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/world/biome/MobSpawnInfo$Spawners;",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/util/WeightedRandom;getRandomItem(Ljava/util/Random;Ljava/util/List;)Lnet/minecraft/util/WeightedRandom$Item;", ordinal = 0),
 			locals = LocalCapture.CAPTURE_FAILHARD)
 	private static void checkIfMobSpawnWillCrash(ServerWorld serverWorld, StructureManager structureManager,

@@ -36,8 +36,8 @@ public class BiomeMixin {
 	 * Prints registry name of feature and biome.
 	 * Prints the crashlog to latest.log as well.
 	 */
-	@Inject(method = "generateFeatures(Lnet/minecraft/world/gen/feature/structure/StructureManager;Lnet/minecraft/world/gen/ChunkGenerator;Lnet/minecraft/world/gen/WorldGenRegion;JLnet/minecraft/util/SharedSeedRandom;Lnet/minecraft/util/math/BlockPos;)V",
-			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/crash/CrashReport;makeCategory(Ljava/lang/String;)Lnet/minecraft/crash/CrashReportCategory;", ordinal = 1),
+	@Inject(method = "generate(Lnet/minecraft/world/gen/feature/structure/StructureManager;Lnet/minecraft/world/gen/ChunkGenerator;Lnet/minecraft/world/gen/WorldGenRegion;JLnet/minecraft/util/SharedSeedRandom;Lnet/minecraft/util/math/BlockPos;)V",
+			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/crash/CrashReport;addCategory(Ljava/lang/String;)Lnet/minecraft/crash/CrashReportCategory;", ordinal = 1),
 			locals = LocalCapture.CAPTURE_FAILHARD)
 	private void addFeatureDetails(StructureManager structureManager, ChunkGenerator chunkGenerator,
 								   WorldGenRegion worldGenRegion, long seed, SharedSeedRandom random, BlockPos pos,
@@ -55,8 +55,8 @@ public class BiomeMixin {
 	 * Prints registry name of feature and biome.
 	 * Prints the crashlog to latest.log as well.
 	 */
-	@Inject(method = "generateFeatures(Lnet/minecraft/world/gen/feature/structure/StructureManager;Lnet/minecraft/world/gen/ChunkGenerator;Lnet/minecraft/world/gen/WorldGenRegion;JLnet/minecraft/util/SharedSeedRandom;Lnet/minecraft/util/math/BlockPos;)V",
-			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/crash/CrashReport;makeCategory(Ljava/lang/String;)Lnet/minecraft/crash/CrashReportCategory;", ordinal = 0),
+	@Inject(method = "generate(Lnet/minecraft/world/gen/feature/structure/StructureManager;Lnet/minecraft/world/gen/ChunkGenerator;Lnet/minecraft/world/gen/WorldGenRegion;JLnet/minecraft/util/SharedSeedRandom;Lnet/minecraft/util/math/BlockPos;)V",
+			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/crash/CrashReport;addCategory(Ljava/lang/String;)Lnet/minecraft/crash/CrashReportCategory;", ordinal = 0),
 			locals = LocalCapture.CAPTURE_FAILHARD)
 	private void addStructureDetails(StructureManager structureManager, ChunkGenerator chunkGenerator,
 									 WorldGenRegion worldGenRegion, long seed, SharedSeedRandom random, BlockPos pos,

@@ -22,13 +22,13 @@ import java.util.Map;
 public class LootTableManagerMixin {
 
 	@Shadow
-	private Map<ResourceLocation, LootTable> registeredLootTables;
+	private Map<ResourceLocation, LootTable> tables;
 
-	@Inject(method = "getLootTableFromLocation(Lnet/minecraft/util/ResourceLocation;)Lnet/minecraft/loot/LootTable;",
+	@Inject(method = "get(Lnet/minecraft/util/ResourceLocation;)Lnet/minecraft/loot/LootTable;",
 			at = @At(value = "HEAD"))
 	private void addMissingLoottableDetails(ResourceLocation rl, CallbackInfoReturnable<LootTable> cir)
 	{
-		if(!registeredLootTables.containsKey(rl)){
+		if(!tables.containsKey(rl)){
 			MissingLoottableBlame.addMissingLoottableDetails(rl);
 		}
 	}

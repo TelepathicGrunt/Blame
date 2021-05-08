@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(SingleJigsawPiece.class)
 public class SingleJigsawPieceMixin {
 
-	@Inject(method = "func_236843_a_(Lnet/minecraft/world/gen/feature/template/TemplateManager;)Lnet/minecraft/world/gen/feature/template/Template;",
+	@Inject(method = "getTemplate(Lnet/minecraft/world/gen/feature/template/TemplateManager;)Lnet/minecraft/world/gen/feature/template/Template;",
 			at = @At(value = "HEAD"))
 	private void storeCurrentPool(TemplateManager templateManagerIn, CallbackInfoReturnable<MutableBoundingBox> cir)
 	{

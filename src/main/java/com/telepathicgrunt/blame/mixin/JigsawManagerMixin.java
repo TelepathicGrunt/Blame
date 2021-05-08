@@ -29,8 +29,8 @@ import java.util.Random;
 @Mixin(JigsawManager.class)
 public class JigsawManagerMixin {
 
-	@Inject(method = "func_242837_a(Lnet/minecraft/util/registry/DynamicRegistries;Lnet/minecraft/world/gen/feature/structure/VillageConfig;Lnet/minecraft/world/gen/feature/jigsaw/JigsawManager$IPieceFactory;Lnet/minecraft/world/gen/ChunkGenerator;Lnet/minecraft/world/gen/feature/template/TemplateManager;Lnet/minecraft/util/math/BlockPos;Ljava/util/List;Ljava/util/Random;ZZ)V",
-			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/gen/feature/jigsaw/JigsawPattern;getRandomPiece(Ljava/util/Random;)Lnet/minecraft/world/gen/feature/jigsaw/JigsawPiece;"),
+	@Inject(method = "addPieces(Lnet/minecraft/util/registry/DynamicRegistries;Lnet/minecraft/world/gen/feature/structure/VillageConfig;Lnet/minecraft/world/gen/feature/jigsaw/JigsawManager$IPieceFactory;Lnet/minecraft/world/gen/ChunkGenerator;Lnet/minecraft/world/gen/feature/template/TemplateManager;Lnet/minecraft/util/math/BlockPos;Ljava/util/List;Ljava/util/Random;ZZ)V",
+			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/gen/feature/jigsaw/JigsawPattern;getRandomTemplate(Ljava/util/Random;)Lnet/minecraft/world/gen/feature/jigsaw/JigsawPiece;"),
 			locals = LocalCapture.CAPTURE_FAILHARD)
 	private static void storeCurrentPool(DynamicRegistries dynamicRegistries, VillageConfig villageConfig,
 											 JigsawManager.IPieceFactory iPieceFactory, ChunkGenerator chunkGenerator,

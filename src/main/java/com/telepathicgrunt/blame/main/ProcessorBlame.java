@@ -2,7 +2,6 @@ package com.telepathicgrunt.blame.main;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mojang.datafixers.util.Pair;
 import com.telepathicgrunt.blame.Blame;
 import com.telepathicgrunt.blame.mixin.MinecraftServerAccessor;
 import com.telepathicgrunt.blame.mixin.TemplateManagerAccessor;
@@ -17,10 +16,8 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import org.apache.logging.log4j.Level;
 
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 /* @author - TelepathicGrunt
  *
@@ -37,8 +34,8 @@ public class ProcessorBlame {
 		}
 		catch (Exception e){
 			MinecraftServer minecraftServer = ServerLifecycleHooks.getCurrentServer();
-			TemplateManager templateManager = ((MinecraftServerAccessor)minecraftServer).blame_gettemplateManager();
-			Map<ResourceLocation, Template> templateMap = ((TemplateManagerAccessor)templateManager).blame_gettemplates();
+			TemplateManager templateManager = ((MinecraftServerAccessor)minecraftServer).blame_getStructureManager();
+			Map<ResourceLocation, Template> templateMap = ((TemplateManagerAccessor)templateManager).blame_getStructureRepository();
 			String brokenNBTFile = "";
 			if(template != null){
 				Optional<Map.Entry<ResourceLocation, Template>> optional = templateMap.entrySet().stream().filter((entry)-> entry.getValue().equals(template)).findFirst();

@@ -36,10 +36,10 @@ public class DynamicRegistriesBlame {
 		// vanilla loaded DynamicRegistries safely. No panic.
 		// Did you know clients have 3 places that classloads DynamicRegistries but server has only 1?
 		if((stack.getClassName().equals("net.minecraft.client.gui.screen.CreateWorldScreen") &&
-			stack.getMethodName().equals("func_243425_a")) ||
+			stack.getMethodName().equals("create")) ||
 
 			(stack.getClassName().equals("net.minecraft.client.Minecraft") &&
-			(stack.getMethodName().equals("func_238191_a_") || stack.getMethodName().equals("loadWorld"))) ||
+			(stack.getMethodName().equals("loadLevel") || stack.getMethodName().equals("loadWorld"))) ||
 
 			(stack.getClassName().equals("net.minecraft.server.Main") &&
 			stack.getMethodName().equals("main")) ||
@@ -106,24 +106,24 @@ public class DynamicRegistriesBlame {
 		Pattern pattern = Pattern.compile("\"(?:Name|type|location)\": *\"([a-z0-9_.-:]+)\"");
 
 		// ConfiguredFeatures
-		imp.func_230521_a_(Registry.CONFIGURED_FEATURE_KEY).ifPresent(configuredFeatureRegistry ->
-		imp.func_230521_a_(Registry.BIOME_KEY).ifPresent(mutableRegistry -> mutableRegistry.getEntries()
+		imp.registry(Registry.CONFIGURED_FEATURE_REGISTRY).ifPresent(configuredFeatureRegistry ->
+		imp.registry(Registry.BIOME_REGISTRY).ifPresent(mutableRegistry -> mutableRegistry.entrySet()
 				.forEach(mapEntry -> findUnregisteredConfiguredFeatures(mapEntry, unconfiguredStuffMap, brokenConfiguredStuffSet, configuredFeatureRegistry, gson))));
 
 		printUnregisteredStuff(unconfiguredStuffMap, "ConfiguredFeature");
 		extractModNames(unconfiguredStuffMap, collectedPossibleIssueMods, pattern);
 
 		// ConfiguredStructures
-		imp.func_230521_a_(Registry.CONFIGURED_STRUCTURE_FEATURE_KEY).ifPresent(configuredStructureRegistry ->
-		imp.func_230521_a_(Registry.BIOME_KEY).ifPresent(mutableRegistry -> mutableRegistry.getEntries()
+		imp.registry(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY).ifPresent(configuredStructureRegistry ->
+		imp.registry(Registry.BIOME_REGISTRY).ifPresent(mutableRegistry -> mutableRegistry.entrySet()
 				.forEach(mapEntry -> findUnregisteredConfiguredStructures(mapEntry, unconfiguredStuffMap, configuredStructureRegistry, gson))));
 
 		printUnregisteredStuff(unconfiguredStuffMap, "ConfiguredStructure");
 		extractModNames(unconfiguredStuffMap, collectedPossibleIssueMods, pattern);
 
 		// ConfiguredCarvers
-		imp.func_230521_a_(Registry.CONFIGURED_CARVER_KEY).ifPresent(configuredCarverRegistry ->
-		imp.func_230521_a_(Registry.BIOME_KEY).ifPresent(mutableRegistry -> mutableRegistry.getEntries()
+		imp.registry(Registry.CONFIGURED_CARVER_REGISTRY).ifPresent(configuredCarverRegistry ->
+		imp.registry(Registry.BIOME_REGISTRY).ifPresent(mutableRegistry -> mutableRegistry.entrySet()
 				.forEach(mapEntry -> findUnregisteredConfiguredCarver(mapEntry, unconfiguredStuffMap, configuredCarverRegistry, gson))));
 
 		printUnregisteredStuff(unconfiguredStuffMap, "ConfiguredStructure");
@@ -171,15 +171,15 @@ public class DynamicRegistriesBlame {
 			Gson gson)
 	{
 
-		for(List<Supplier<ConfiguredFeature<?, ?>>> generationStageList : mapEntry.getValue().getGenerationSettings().getFeatures()){
+		for(List<Supplier<ConfiguredFeature<?, ?>>> generationStageList : mapEntry.getValue().getGenerationSettings().features()){
 			for(Supplier<ConfiguredFeature<?, ?>> configuredFeatureSupplier : generationStageList){
 
-				ResourceLocation biomeID = mapEntry.getKey().getLocation();
+				ResourceLocation biomeID = mapEntry.getKey().location();
 				if(configuredFeatureRegistry.getKey(configuredFeatureSupplier.get()) == null &&
 					WorldGenRegistries.CONFIGURED_FEATURE.getKey(configuredFeatureSupplier.get()) == null)
 				{
 					try{
-						ConfiguredFeature.field_236264_b_
+						ConfiguredFeature.CODEC
 								.encode(configuredFeatureSupplier, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left()
 								.ifPresent(configuredFeatureJSON ->
 										cacheUnregisteredObject(
@@ -230,13 +230,13 @@ public class DynamicRegistriesBlame {
 		MutableRegistry<StructureFeature<?,?>> configuredStructureRegistry,
 		Gson gson)
 	{
-		for(Supplier<StructureFeature<?, ?>> configuredStructureSupplier : mapEntry.getValue().getGenerationSettings().getStructures()){
+		for(Supplier<StructureFeature<?, ?>> configuredStructureSupplier : mapEntry.getValue().getGenerationSettings().structures()){
 
-			ResourceLocation biomeID = mapEntry.getKey().getLocation();
+			ResourceLocation biomeID = mapEntry.getKey().location();
 			if(configuredStructureRegistry.getKey(configuredStructureSupplier.get()) == null &&
 				WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE.getKey(configuredStructureSupplier.get()) == null)
 			{
-				StructureFeature.field_236267_a_
+				StructureFeature.DIRECT_CODEC
 						.encode(configuredStructureSupplier.get(), JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left()
 						.ifPresent(configuredStructureJSON ->
 								cacheUnregisteredObject(
@@ -260,11 +260,11 @@ public class DynamicRegistriesBlame {
 		for(GenerationStage.Carving carvingStage : GenerationStage.Carving.values()) {
 			for (Supplier<ConfiguredCarver<?>> configuredCarverSupplier : mapEntry.getValue().getGenerationSettings().getCarvers(carvingStage)) {
 
-				ResourceLocation biomeID = mapEntry.getKey().getLocation();
+				ResourceLocation biomeID = mapEntry.getKey().location();
 				if(configuredCarverRegistry.getKey(configuredCarverSupplier.get()) == null &&
 					WorldGenRegistries.CONFIGURED_CARVER.getKey(configuredCarverSupplier.get()) == null)
 				{
-					ConfiguredCarver.field_236235_a_
+					ConfiguredCarver.DIRECT_CODEC
 							.encode(configuredCarverSupplier.get(), JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left()
 							.ifPresent(configuredCarverJSON ->
 									cacheUnregisteredObject(

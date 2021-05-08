@@ -35,7 +35,7 @@ public class FlatGenerationSettingsBlame {
 			// Add extra info to the log before crash.
 			String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
 					"\n\n A crash is most likely going to happen right after this report!" +
-					"\n It seems " + structureEntry.getKey().getStructureName() + extraDetail + " is the cause because it is not added " +
+					"\n It seems " + structureEntry.getKey().getFeatureName() + extraDetail + " is the cause because it is not added " +
 					"\n to the FlatGenerationSettings.STRUCTURES map. Please let the mod owner " +
 					"\n of that structure know about this crash. That way they can add their structure " +
 					"\n to that map since someone is trying to spawn it in a flat/custom dimension. \n\n";

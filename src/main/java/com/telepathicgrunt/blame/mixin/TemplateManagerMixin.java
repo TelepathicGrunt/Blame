@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(TemplateManager.class)
 public class TemplateManagerMixin {
 
-	@Inject(method = "loadTemplateResource(Lnet/minecraft/util/ResourceLocation;)Lnet/minecraft/world/gen/feature/template/Template;",
+	@Inject(method = "loadFromResource(Lnet/minecraft/util/ResourceLocation;)Lnet/minecraft/world/gen/feature/template/Template;",
 			at = @At(value = "RETURN"))
 	private void addMissingnbtDetails(ResourceLocation miniRL, CallbackInfoReturnable<Template> cir)
 	{

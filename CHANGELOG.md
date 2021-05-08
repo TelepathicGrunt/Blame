@@ -11,7 +11,14 @@ Gotta blame the broken mods!
     Dispenser Behaviors:
 • Condensed Savage and Ravage's Banner Dispenser Behavior registry replacements messages.
 
-      
+    Tag Manager:
+• Will print out if a mod classloads TagCollectionManager too early and can risk blowing up the tags of 
+  other mods that register their tag afterwards.
+
+    Processor:
+• Will print out what block, its nbt, and what nbt file crashed a processor during structure generation.
+
+
    (V.1.9.2 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
    
     Dispenser Behaviors:

@@ -20,13 +20,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Bootstrap.class)
 public class BootstrapMixin {
 
-	@Inject(method = "register()V",
+	@Inject(method = "bootStrap()V",
 			at = @At(value = "TAIL"))
 	private static void onInit(CallbackInfo ci)
 	{
 		DispenserBlockRegistry<Item, IDispenseItemBehavior> map = Util.make(new DispenserBlockRegistry<>(), (behaviour) -> behaviour.defaultReturnValue(new DefaultDispenseItemBehavior()));
-		map.putAll(DispenserBlockAccessor.blame_getDISPENSE_BEHAVIOR_REGISTRY());
+		map.putAll(DispenserBlockAccessor.blame_getDISPENSER_REGISTRY());
 		map.startupIgnore = false; // Finished copying. Now turn on registry replacement detection.
-		DispenserBlockAccessor.blame_setDISPENSE_BEHAVIOR_REGISTRY(map);
+		DispenserBlockAccessor.blame_setDISPENSER_REGISTRY(map);
 	}
 }

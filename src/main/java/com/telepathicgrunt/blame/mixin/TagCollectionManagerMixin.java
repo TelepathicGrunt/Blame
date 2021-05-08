@@ -36,7 +36,7 @@ import java.util.function.Supplier;
 @Mixin(TagCollectionManager.class)
 public class TagCollectionManagerMixin {
 
-	@Inject(method = "getManager",
+	@Inject(method = "getInstance",
 			at = @At(value = "TAIL"),
 			locals = LocalCapture.CAPTURE_FAILHARD)
 	private static void possibleClassloadPoint1(CallbackInfoReturnable<ITagCollectionSupplier> cir)
@@ -51,7 +51,7 @@ public class TagCollectionManagerMixin {
 		}
 	}
 
-	@Inject(method = "setManager",
+	@Inject(method = "bind",
 			at = @At(value = "TAIL"),
 			locals = LocalCapture.CAPTURE_FAILHARD)
 	private static void possibleClassloadPoint2(ITagCollectionSupplier managerIn, CallbackInfo ci)

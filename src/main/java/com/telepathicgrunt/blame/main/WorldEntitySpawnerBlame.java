@@ -29,14 +29,14 @@ public class WorldEntitySpawnerBlame {
 		int totalWeight = WeightedRandom.getTotalWeight(list);
 		if(totalWeight <= 0){
 
-			RegistryKey<World> worldID = serverWorld.getDimensionKey();
-			ResourceLocation biomeID = serverWorld.func_241828_r().getRegistry(Registry.BIOME_KEY).getKey(biome);
+			RegistryKey<World> worldID = serverWorld.dimension();
+			ResourceLocation biomeID = serverWorld.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome);
 
 			// Add extra info to the log file.
 			Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report " + Blame.VERSION + " ******************",
 					"\n  Detected total weight of mob list is 0 or negative which will crash the game! " +
 						"\n  See info below to find which mob is the problem and where it is attempting to spawn at." +
-						"\n World Registry Name : " + worldID.getLocation().toString() +
+						"\n World Registry Name : " + worldID.location().toString() +
 						"\n Biome Registry Name : " + (biomeID != null ? biomeID.toString() : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!") +
 						"\n Classification of entity being spawned : " + entityClassification.getName() +
 						"\n Entity position : " + pos.toString() +

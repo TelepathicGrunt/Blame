@@ -19,6 +19,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(MinecraftServer.class)
 public interface MinecraftServerAccessor {
 
-	@Accessor("templateManager")
-	TemplateManager blame_gettemplateManager();
+	@Accessor("structureManager")
+	TemplateManager blame_getStructureManager();
 }

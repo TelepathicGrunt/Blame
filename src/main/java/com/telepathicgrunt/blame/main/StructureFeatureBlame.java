@@ -22,11 +22,11 @@ public class StructureFeatureBlame {
 		// Add extra info to the log file.
 		String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
 				"\n\n Detected a structure with invalid values for spacing/separation which will cause a crash." +
-				"\n Attempt 1 to find structure name:  " + structureFeature.getStructureName() +
+				"\n Attempt 1 to find structure name:  " + structureFeature.getFeatureName() +
 				"\n Attempt 2 to find structure name:  " + structureRL +
 				"\n Specifically, the crash happens when spacing - separation is 0 or less." +
-				"\n Spacing value found: " + separationSettings.func_236668_a_() +
-				"\n Separation value found: " + separationSettings.func_236671_b_() +
+				"\n Spacing value found: " + separationSettings.spacing() +
+				"\n Separation value found: " + separationSettings.separation() +
 				"\n Check the mod's config to make sure the structure spacing/separation entries " +
 				"\n aren't set to 0 and that separation value is greater than spacing value." +
 				"\n If you cannot find or fix the spacing/separation with the config, please let " +
