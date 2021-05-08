@@ -12,6 +12,10 @@ Gotta blame the broken mods!
     Processors:
 • Will now print out which block and its nbt was crashing a structure processor. 
 
+    Commands:
+• Will detect and print out all broken commands when starting up a world.
+  Commands that called .executes() outside a .then() call will be found as they won't work.
+
                  
    (V.2.4.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
         

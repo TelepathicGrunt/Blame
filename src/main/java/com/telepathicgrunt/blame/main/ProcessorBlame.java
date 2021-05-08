@@ -3,18 +3,12 @@ package com.telepathicgrunt.blame.main;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.telepathicgrunt.blame.Blame;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.structure.Structure;
-import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.structure.processor.StructureProcessor;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.apache.logging.log4j.Level;
-
-import java.util.Map;
-import java.util.Optional;
 
 /* @author - TelepathicGrunt
  *
