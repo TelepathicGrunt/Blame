@@ -6,6 +6,7 @@
   "mixins": [
     "BiomeMixin",
     "BootstrapMixin",
+    "CommandsMixin",
     "DispenserBlockAccessor",
     "DynamicRegistriesMixin",
     "FlatGenerationSettingsMixin",
