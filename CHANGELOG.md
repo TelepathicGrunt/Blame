@@ -1,4 +1,4 @@
-    Made for Minecraft v.1.16.2/3/4
+    Made for Minecraft v.1.16.2/3/4/5
     Created by TelepathicGrunt
 
 Gotta blame the broken mods!
@@ -7,10 +7,10 @@ Gotta blame the broken mods!
        | Blame Fabric changelog |
            
                  
-   (V.2.4.2 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
+   (V.3.0.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
    
-    Dispenser Behaviors:
-•    
+    Processors:
+• Will now print out which block and its nbt was crashing a structure processor. 
 
                  
    (V.2.4.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
