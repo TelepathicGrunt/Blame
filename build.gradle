@@ -1,3 +1,5 @@
+import net.fabricmc.loom.task.RemapJarTask
+
 plugins {
 	id 'fabric-loom' version '0.7-SNAPSHOT'
 	id 'maven-publish'
@@ -40,4 +42,61 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 
 jar {
 	from "LICENSE"
+}
+
+
+task apiJar(type: Jar, dependsOn: classes) {
+	from(sourceSets.main.output)
+	include 'blame/**'
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			artifact(remapJar) {
+				builtBy remapJar
+			}
+			artifact(sourcesJar) {
+				builtBy remapSourcesJar
+			}
+
+			pom {
+				name = 'Blame-Fabric'
+				description = 'Gotta find the broken mods!'
+				url = 'https://github.com/TelepathicGrunt/Blame/tree/Fabric-1.16.2'
+
+				scm {
+					connection = 'git:https://github.com/TelepathicGrunt/Blame/tree/Fabric-1.16.2.git'
+					developerConnection = 'git:https://github.com/TelepathicGrunt/Blame/tree/Fabric-1.16.2.git'
+					url = 'https://github.com/TelepathicGrunt/Blame/tree/Fabric-1.16.2'
+				}
+
+				licenses {
+					license {
+						name = 'GNU Lesser General Public License v3.0'
+						url = 'https://github.com/TelepathicGrunt/Blame/blob/Fabric-1.16.2/LICENSE'
+					}
+				}
+
+				developers {
+					developer {
+						id = 'telepathic_grunt'
+						name = 'TelepathicGrunt'
+						email = 'asarnesespam@gmail.com'
+					}
+				}
+			}
+
+		}
+	}
+
+	repositories {
+		maven {
+			url = uri("https://nexus.resourcefulbees.com/repository/telepathicgrunt/")
+			credentials {
+				username "$System.env.MAVEN_USER"
+				password "$System.env.MAVEN_PASS"
+			}
+		}
+	}
 }

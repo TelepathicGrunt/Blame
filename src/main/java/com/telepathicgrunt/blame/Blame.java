@@ -12,14 +12,14 @@ public class Blame implements ModInitializer
 {
     public static final String MODID = "blame";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static String VERSION = "2.4.1";
+    public static String VERSION = "N/A";
 
     @Override
     public void onInitialize() {
         FabricLoader.getInstance().getModContainer(MODID)
                 .ifPresent(container -> VERSION = container.getMetadata().getVersion().toString());
 
-        Blame.LOGGER.log(Level.WARN, "Blame " + VERSION + " initialized");
+        Blame.LOGGER.log(Level.ERROR, "Blame " + VERSION + " initialized");
 
         // Unregistered worldgen test
 //        ConfiguredFeature<?,?> well = Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier("tgtr:fdgfg"), Feature.DESERT_WELL.configure(DefaultFeatureConfig.INSTANCE));
