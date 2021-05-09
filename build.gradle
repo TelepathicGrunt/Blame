@@ -13,6 +13,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
+apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 version = "${mc_version}-${mod_version}-forge"
@@ -82,6 +83,61 @@ jar {
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 "MixinConfigs": "${modid}.mixins.json"
         ])
+    }
+}
+
+def reobfFile = file("$buildDir/reobfJar/output.jar")
+def reobfArtifact = artifacts.add('default', reobfFile) {
+    type 'jar'
+    builtBy 'reobfJar'
+}
+
+def releasesRepoUrl = "https://nexus.resourcefulbees.com/repository/maven-releases/"
+def snapshotsRepoUrl = "https://nexus.resourcefulbees.com/repository/maven-snapshots/"
+def ENV = System.getenv()
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact reobfArtifact
+
+            pom {
+                name = 'Blame-Forge'
+                description = 'Gotta find the broken mods!'
+                url = 'https://github.com/TelepathicGrunt/Blame'
+
+                scm {
+                    connection = 'git:https://github.com/TelepathicGrunt/Blame.git'
+                    developerConnection = 'git:https://github.com/TelepathicGrunt/Blame.git'
+                    url = 'https://github.com/TelepathicGrunt/Blame'
+                }
+
+                licenses {
+                    license {
+                        name = 'GNU Lesser General Public License v3.0'
+                        url = 'https://github.com/TelepathicGrunt/Blame/blob/Forge-1.16.2/LICENSE'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'telepathic_grunt'
+                        name = 'TelepathicGrunt'
+                        email = 'asarnesespam@gmail.com'
+                    }
+                }
+            }
+
+        }
+    }
+
+    repositories {
+        maven {
+            url = rootProject.version.endsWith("-SNAPSHOT") ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username ENV.MAVEN_USER
+                password ENV.MAVEN_PASS
+            }
+        }
     }
 }
 
