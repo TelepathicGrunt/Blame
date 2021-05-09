@@ -23,8 +23,8 @@ run
 .gitattributes
 /deps
 classes
+key.properties
 
 # Files from Forge MDK
 testdatapack
 deps
-src/key.properties
