@@ -2,9 +2,11 @@ package com.telepathicgrunt.blame.main;
 
 import com.mojang.datafixers.util.Pair;
 import com.telepathicgrunt.blame.Blame;
+import net.minecraft.tileentity.StructureBlockTileEntity;
 import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.Level;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,6 +33,13 @@ public class MissingNBTBlame {
 
 	public static void addMissingnbtDetails(ResourceLocation miniRL)
 	{
+		// Skip structure block saving as it is a false positive.
+		// We grab class name at runtime to make sure it works in both prod and dev.
+		String structureBlockname = StructureBlockTileEntity.class.getName();
+		if(Arrays.stream(Thread.currentThread().getStackTrace()).anyMatch(element -> element.getClassName().equals(structureBlockname))){
+			return;
+		}
+
 		String fullPath = "data/" + miniRL.getNamespace() + "/structures/" + miniRL.getPath() + ".nbt";
 		ResourceLocation parentID = null;
 

@@ -24,6 +24,10 @@ Gotta blame the broken mods!
     Processor:
 • Will print out what block, its nbt, and what nbt file crashed a processor during structure generation.
 
+    Missing NBT structure files:
+• Will no longer print a false positive report when saving new NBT files with Structure Blocks.
+
+
 
    (V.1.9.2 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
    
