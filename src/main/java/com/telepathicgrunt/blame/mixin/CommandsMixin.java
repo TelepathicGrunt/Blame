@@ -1,11 +1,15 @@
 package com.telepathicgrunt.blame.mixin;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.telepathicgrunt.blame.main.BrokenCommandBlame;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
+import net.minecraft.util.text.IFormattableTextComponent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -13,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 /* @author - TelepathicGrunt
  *
@@ -27,11 +32,27 @@ public class CommandsMixin<S> {
 	@Final
 	private CommandDispatcher<CommandSource> dispatcher;
 
+	@Shadow
+	@Final
+	private static Logger LOGGER;
+
 	@Inject(method = "<init>",
-			at = @At(value = "RETURN"),
-			remap = false)
+			at = @At(value = "RETURN"))
 	private void onInit(Commands.EnvironmentType p_i232148_1_, CallbackInfo ci)
 	{
 		BrokenCommandBlame.detectBrokenCommand(dispatcher);
+	}
+
+	@Inject(method = "performCommand(Lnet/minecraft/command/CommandSource;Ljava/lang/String;)I",
+			at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;isDebugEnabled()Z"),
+			locals = LocalCapture.CAPTURE_FAILHARD)
+	private void printFailedCommandStacktrace(CommandSource commandSource, String commandString, CallbackInfoReturnable<Integer> cir,
+											  StringReader stringreader, Exception exception,
+											  IFormattableTextComponent iformattabletextcomponent)
+	{
+		if(!LOGGER.isDebugEnabled())
+		{
+			BrokenCommandBlame.printStacktrace(commandString, LOGGER, exception, iformattabletextcomponent);
+		}
 	}
 }

@@ -86,6 +86,7 @@ public class Blame
 //    }
 //
 //    private static int locateBiome(CommandSource p_241049_0_, ResourceLocation p_241049_1_) throws CommandSyntaxException {
+        // throw new RuntimeException("example exception");
 //        Biome biome = p_241049_0_.getServer().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getOptional(p_241049_1_).orElseThrow(() -> {
 //            return ERROR_INVALID_BIOME.create(p_241049_1_);
 //        });

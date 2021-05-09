@@ -15,6 +15,8 @@ Gotta blame the broken mods!
 • Will detect and print out all broken commands when starting up a world. 
   Commands that called .executes() outside a .then() call will be found as they won't work.
 
+• Will print stacktrace of the command that broke when executed instead of letting Minecraft fail silently.
+
     Tag Manager:
 • Will print out if a mod classloads TagCollectionManager too early and can risk blowing up the tags of 
   other mods that register their tag afterwards.
