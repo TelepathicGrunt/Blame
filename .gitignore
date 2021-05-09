@@ -27,3 +27,4 @@ classes
 # Files from Forge MDK
 testdatapack
 deps
+src/key.properties
