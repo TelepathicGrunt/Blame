@@ -16,6 +16,8 @@ Gotta blame the broken mods!
 • Will detect and print out all broken commands when starting up a world.
   Commands that called .executes() outside a .then() call will be found as they won't work.
 
+• Will print stacktrace of the command that broke when executed instead of letting Minecraft fail silently.
+
                  
    (V.2.4.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
         

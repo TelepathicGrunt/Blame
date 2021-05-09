@@ -6,7 +6,9 @@ import com.mojang.brigadier.tree.RootCommandNode;
 import com.telepathicgrunt.blame.Blame;
 import com.telepathicgrunt.blame.utils.GeneralUtils;
 import net.minecraft.command.CommandSource;
+import net.minecraft.text.MutableText;
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -14,7 +16,7 @@ import java.util.Stack;
 
 /* @author - TelepathicGrunt
  *
- * Detect if a command registered is broken due to calling execute() outside a then() call.
+ * Detect if a command registered is broken due to calling .executes() outside an .then() call.
  *
  * LGPLv3
  */
@@ -80,6 +82,19 @@ public class BrokenCommandBlame {
 					"\n****************** Blame Report " + Blame.VERSION + " ******************" +
 					"\n\n Detected a command that is broken. The command may have called .executes() outside a .then() call by mistake " +
 					"\n The broken command is : " + currentCommandPath);
+		}
+	}
+
+	public static void printStacktrace(String commandString, Logger logger, Exception exception, MutableText mutableText) {
+		Blame.LOGGER.log(Level.ERROR,
+		"\n****************** Blame Report " + Blame.VERSION + " ******************" +
+				"\n\n A command broke. Here's the stacktrace of the failed command execution:\n");
+
+		logger.error("Command exception: {}", commandString, exception);
+		StackTraceElement[] astacktraceelement = exception.getStackTrace();
+
+		for(int i = 0; i < Math.min(astacktraceelement.length, 5); ++i) {
+			mutableText.append("\n\n").append(astacktraceelement[i].getMethodName()).append("\n ").append(astacktraceelement[i].getFileName()).append(":").append(String.valueOf(astacktraceelement[i].getLineNumber()));
 		}
 	}
 }
