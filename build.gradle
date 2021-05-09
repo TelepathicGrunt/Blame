@@ -13,8 +13,9 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
-apply plugin: 'maven'
 apply plugin: 'maven-publish'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 version = "${mc_version}-${mod_version}-forge"
 group = "com.telepathicgrunt"
@@ -86,15 +87,14 @@ jar {
     }
 }
 
+def releasesRepoUrl = "https://nexus.resourcefulbees.com/repository/telepathicgrunt/"
+def ENV = System.getenv()
 def reobfFile = file("$buildDir/reobfJar/output.jar")
 def reobfArtifact = artifacts.add('default', reobfFile) {
     type 'jar'
     builtBy 'reobfJar'
 }
 
-def releasesRepoUrl = "https://nexus.resourcefulbees.com/repository/maven-releases/"
-def snapshotsRepoUrl = "https://nexus.resourcefulbees.com/repository/maven-snapshots/"
-def ENV = System.getenv()
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -132,7 +132,7 @@ publishing {
 
     repositories {
         maven {
-            url = rootProject.version.endsWith("-SNAPSHOT") ? snapshotsRepoUrl : releasesRepoUrl
+            url = releasesRepoUrl
             credentials {
                 username ENV.MAVEN_USER
                 password ENV.MAVEN_PASS
