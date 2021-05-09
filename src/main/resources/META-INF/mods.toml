@@ -5,7 +5,7 @@ license="GNU Lesser General Public License v3.0"
 
 [[mods]] #mandatory
 modId="blame" #mandatory
-version="${file.jarVersion}" #mandatory
+version="${version}" #mandatory
 displayName="Blame!" #mandatory
 logoFile="blame_icon.png" #optional
 authors="TelepathicGrunt" #optional

@@ -40,7 +40,7 @@ public class Blame
 {
     public static final String MODID = "blame";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static String VERSION = "1.10.0";
+    public static String VERSION = "N/A";
 
     public Blame() {
         ModList.get().getModContainerById(Blame.MODID)
