@@ -1,0 +1,52 @@
+
+def reobfFile = file("$buildDir/reobfJar/output.jar")
+def reobfArtifact = artifacts.add('default', reobfFile) {
+    type 'jar'
+    builtBy 'reobfJar'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact reobfArtifact
+
+            pom {
+                name = 'Blame-Forge'
+                description = 'Gotta find the broken mods!'
+                url = 'https://github.com/TelepathicGrunt/Blame'
+
+                scm {
+                    connection = 'git:https://github.com/TelepathicGrunt/Blame.git'
+                    developerConnection = 'git:https://github.com/TelepathicGrunt/Blame.git'
+                    url = 'https://github.com/TelepathicGrunt/Blame'
+                }
+
+                licenses {
+                    license {
+                        name = 'GNU Lesser General Public License v3.0'
+                        url = 'https://github.com/TelepathicGrunt/Blame/blob/Forge-1.16.2/LICENSE'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'telepathic_grunt'
+                        name = 'TelepathicGrunt'
+                        email = 'asarnesespam@gmail.com'
+                    }
+                }
+            }
+
+        }
+    }
+
+    repositories {
+        maven {
+            url = uri("https://nexus.resourcefulbees.com/repository/telepathicgrunt/")
+            credentials {
+                username "$System.env.MAVEN_USER"
+                password "$System.env.MAVEN_PASS"
+            }
+        }
+    }
+}

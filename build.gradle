@@ -1,38 +1,37 @@
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
-        jcenter()
         mavenCentral()
+        jcenter()
         maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
-        maven { url  = 'https://plugins.gradle.org/m2/' }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1+', changing: true
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-        classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.4.0'
+        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
+        classpath group: 'gradle.plugin.com.modrinth.minotaur', name: 'Minotaur', version: '1.1.0'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
-apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'maven'
-apply plugin: 'signing'
-apply plugin: 'com.matthewprenger.cursegradle'
-plugins {
-    id "com.modrinth.minotaur" version "1.1.0"
-}
+apply plugin: 'org.spongepowered.mixin'
+
+apply from: 'gradle/processresources.gradle'
+apply from: 'gradle/manifest.gradle'
+apply from: 'gradle/maven.gradle'
+apply from: 'gradle/curseforge.gradle'
+apply from: 'gradle/modrinth.gradle'
 
 version = "${mc_version}-${mod_version}-forge"
 group = "com.telepathicgrunt"
 archivesBaseName = "${modid}"
-
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 minecraft {
-    mappings channel:"official", version:"1.16.5"
+    mappings channel: "official", version: "1.16.5"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-
     //accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
@@ -53,157 +52,18 @@ minecraft {
 }
 
 repositories{
-    maven {
-        // location of the maven that hosts JEI files
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
-    maven {
-        // location of a maven mirror for JEI files, as a fallback
-        name = "ModMaven"
-        url = "https://modmaven.k-4u.nl"
-    }
     flatDir {
         dirs 'deps'
     }
-    jcenter()
-    mavenCentral()
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
     //implementation fg.deobf("ignored:AutoRegLib:1.6-47")
-   // implementation fg.deobf("ignored:Quark-r2.4:303")
+    //implementation fg.deobf("ignored:Quark-r2.4:303")
 }
 
-// Example for how to get properties into the manifest for reading by the runtime..
-jar {
-    manifest {
-        attributes([
-                "Specification-Title": "${modid}",
-                "Specification-Vendor": "TelepathicGrunt",
-                "Specification-Version": "1", // We are version 1 of ourselves
-                "Implementation-Title": project.name,
-                "Implementation-Version": "${mod_version}",
-                "Implementation-Vendor" :"TelepathicGrunt",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs": "${modid}.mixins.json"
-        ])
-    }
-}
-
-def reobfFile = file("$buildDir/reobfJar/output.jar")
-def reobfArtifact = artifacts.add('default', reobfFile) {
-    type 'jar'
-    builtBy 'reobfJar'
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact reobfArtifact
-
-            pom {
-                name = 'Blame-Forge'
-                description = 'Gotta find the broken mods!'
-                url = 'https://github.com/TelepathicGrunt/Blame'
-
-                scm {
-                    connection = 'git:https://github.com/TelepathicGrunt/Blame.git'
-                    developerConnection = 'git:https://github.com/TelepathicGrunt/Blame.git'
-                    url = 'https://github.com/TelepathicGrunt/Blame'
-                }
-
-                licenses {
-                    license {
-                        name = 'GNU Lesser General Public License v3.0'
-                        url = 'https://github.com/TelepathicGrunt/Blame/blob/Forge-1.16.2/LICENSE'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id = 'telepathic_grunt'
-                        name = 'TelepathicGrunt'
-                        email = 'asarnesespam@gmail.com'
-                    }
-                }
-            }
-
-        }
-    }
-
-    repositories {
-        maven {
-            url = uri("https://nexus.resourcefulbees.com/repository/telepathicgrunt/")
-            credentials {
-                username "$System.env.MAVEN_USER"
-                password "$System.env.MAVEN_PASS"
-            }
-        }
-    }
-}
-
-processResources {
-    // This will ensure that this task is redone when the versions change.
-    inputs.property 'version', project.version
-
-    // Replace stuff in mods.toml, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'META-INF/mods.toml'
-
-        // Replace version
-        expand 'version': project.version
-    }
-
-    // Copy everything else except the mods.toml
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'META-INF/mods.toml'
-    }
-}
-
-import com.modrinth.minotaur.TaskModrinthUpload
-// Make sure it runs after build!
-task publishModrinth (type: TaskModrinthUpload){
-    onlyIf {
-        $System.env.MODRINTH != null
-    }
-
-    token = "$System.env.MODRINTH"
-    projectId = 'kMcXd3F5'
-    versionNumber = project.version
-    // On fabric, use 'remapJar' instead of 'jar'
-    uploadFile = jar // This is the java jar task. If it can't find the jar, try 'jar.outputs.getFiles().asPath' in place of 'jar'
-    addGameVersion('1.16.2')
-    addGameVersion('1.16.3')
-    addGameVersion('1.16.4')
-    addGameVersion('1.16.5')
-    addLoader('forge')
-}
-
-if (file('key.properties').exists()) {
-    curseforge {
-        def curseProp = new Properties()
-        File secretPropsFile = file("key.properties")
-        curseProp.load(secretPropsFile.newInputStream())
-
-        project {
-            apiKey = curseProp.getProperty('curseKey')
-            id = "${curse_id}"
-            releaseType = "${curse_release}"
-            changelogType = 'markdown'
-            changelog = file('CHANGELOG.md')
-            addGameVersion("1.16.2")
-            addGameVersion("1.16.3")
-            addGameVersion("1.16.4")
-            addGameVersion("1.16.5")
-            addGameVersion("Forge")
-        }
-    }
-}
-
-apply plugin: 'org.spongepowered.mixin'
 mixin {
     add sourceSets.main, "${modid}.refmap.json"
 }
