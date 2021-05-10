@@ -1,0 +1,3 @@
+gradlew publish
+gradlew curseforge
+gradlew publishModrinth
