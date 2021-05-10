@@ -1,8 +1,17 @@
 import net.fabricmc.loom.task.RemapJarTask
 
+buildscript {
+	repositories {
+		maven { url "https://plugins.gradle.org/m2/" }
+	}
+	dependencies {
+		classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
+		classpath group: 'gradle.plugin.com.modrinth.minotaur', name: 'Minotaur', version: '1.1.0'
+	}
+}
+
 plugins {
 	id 'fabric-loom' version '0.7-SNAPSHOT'
-	id 'maven-publish'
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -18,19 +27,6 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 }
 
-processResources {
-	inputs.property "version", project.version
-
-	from(sourceSets.main.resources.srcDirs) {
-		include "fabric.mod.json"
-		expand "version": project.version
-	}
-
-	from(sourceSets.main.resources.srcDirs) {
-		exclude "fabric.mod.json"
-	}
-}
-
 tasks.withType(JavaCompile) {
 	options.encoding = "UTF-8"
 }
@@ -44,59 +40,7 @@ jar {
 	from "LICENSE"
 }
 
-
-task apiJar(type: Jar, dependsOn: classes) {
-	from(sourceSets.main.output)
-	include 'blame/**'
-}
-
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			artifact(remapJar) {
-				builtBy remapJar
-			}
-			artifact(sourcesJar) {
-				builtBy remapSourcesJar
-			}
-
-			pom {
-				name = 'Blame-Fabric'
-				description = 'Gotta find the broken mods!'
-				url = 'https://github.com/TelepathicGrunt/Blame/tree/Fabric-1.16.2'
-
-				scm {
-					connection = 'git:https://github.com/TelepathicGrunt/Blame/tree/Fabric-1.16.2.git'
-					developerConnection = 'git:https://github.com/TelepathicGrunt/Blame/tree/Fabric-1.16.2.git'
-					url = 'https://github.com/TelepathicGrunt/Blame/tree/Fabric-1.16.2'
-				}
-
-				licenses {
-					license {
-						name = 'GNU Lesser General Public License v3.0'
-						url = 'https://github.com/TelepathicGrunt/Blame/blob/Fabric-1.16.2/LICENSE'
-					}
-				}
-
-				developers {
-					developer {
-						id = 'telepathic_grunt'
-						name = 'TelepathicGrunt'
-						email = 'asarnesespam@gmail.com'
-					}
-				}
-			}
-
-		}
-	}
-
-	repositories {
-		maven {
-			url = uri("https://nexus.resourcefulbees.com/repository/telepathicgrunt/")
-			credentials {
-				username "$System.env.MAVEN_USER"
-				password "$System.env.MAVEN_PASS"
-			}
-		}
-	}
-}
+apply from: 'gradle/processresources.gradle'
+apply from: 'gradle/maven.gradle'
+apply from: 'gradle/curseforge.gradle'
+apply from: 'gradle/modrinth.gradle'

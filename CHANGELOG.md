@@ -1,12 +1,3 @@
-    Made for Minecraft v.1.16.2/3/4/5
-    Created by TelepathicGrunt
-
-Gotta blame the broken mods!
-
-------------------------------------------------
-       | Blame Fabric changelog |
-           
-                 
    (V.3.0.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
    
     Processors:
