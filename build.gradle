@@ -53,6 +53,7 @@ repositories{
 
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
+    annotationProcessor 'org.spongepowered:mixin:0.8.2:processor'
 
     //implementation fg.deobf("ignored:AutoRegLib:1.6-47")
     //implementation fg.deobf("ignored:Quark-r2.4:303")
