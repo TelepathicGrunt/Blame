@@ -36,8 +36,7 @@ public class CommandManagerMixin {
 
 	@Inject(method = "<init>",
 			at = @At(value = "RETURN"))
-	private void onInit(CommandManager.RegistrationEnvironment environment, CallbackInfo ci)
-	{
+	private void onInit(CommandManager.RegistrationEnvironment environment, CallbackInfo ci) {
 		BrokenCommandBlame.detectBrokenCommand(dispatcher);
 	}
 
@@ -45,11 +44,9 @@ public class CommandManagerMixin {
 			at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;isDebugEnabled()Z"),
 			locals = LocalCapture.CAPTURE_FAILHARD)
 	private void printFailedCommandStacktrace(ServerCommandSource commandSource, String commandString, CallbackInfoReturnable<Integer> cir,
-											  StringReader stringreader, Exception exception,
-											  MutableText mutableText)
+											  StringReader stringreader, Exception exception, MutableText mutableText)
 	{
-		if(!LOGGER.isDebugEnabled())
-		{
+		if(!LOGGER.isDebugEnabled()) {
 			BrokenCommandBlame.printStacktrace(commandString, LOGGER, exception, mutableText);
 		}
 	}
