@@ -1,3 +1,9 @@
+## (V.3.0.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
+
+    Commands:
+• Fixed CommandManagerMixin crashing 24/7. Major oops.
+
+
 ## (V.3.0.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
    
     Processors:

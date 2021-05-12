@@ -27,6 +27,18 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 }
 
+if (project.use_third_party_mods) {
+	repositories {
+		maven { url "https://maven.fabricmc.net" }
+		maven { url = "https://jitpack.io" }
+	}
+
+	dependencies {
+		modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+		modImplementation "io.github.prospector:modmenu:${project.mod_menu_version}"
+	}
+}
+
 tasks.withType(JavaCompile) {
 	options.encoding = "UTF-8"
 }

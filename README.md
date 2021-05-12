@@ -96,13 +96,13 @@ repositories {
 }
 ```
 
-Now add this to the dependency block. Replace <version> with the Blame version you want to use such as `1.16.5-3.0.0-fabric`. Check the CurseForge page for what the latest version is.
+Now add this to the dependency block. Replace <version> with the Blame version you want to use such as `1.16.5-3.0.1-fabric`. Check the CurseForge page for what the latest version is.
 ```
 dependencies {
   ...
-  modImplementation "com.telepathicgrunt:Blame-Fabric:1.16.5-3.0.0-fabric"
+  modImplementation "com.telepathicgrunt:Blame-Fabric:1.16.5-3.0.1-fabric"
 }
 ```
 
 Launch the game and Blame should be running! You can tell as Blame will print something like this to the IDE console and latest.log file:
-`[18:25:48] [main/ERROR] (Blame) Blame 1.16.5-3.0.0-fabric initialized`
+`[18:25:48] [main/ERROR] (Blame) Blame 1.16.5-3.0.1-fabric initialized`
