@@ -11,13 +11,15 @@ apply plugin: "com.modrinth.minotaur"
 
 import com.modrinth.minotaur.TaskModrinthUpload
 
+String fileContents = new File(file('CHANGELOG.md')).text
+
 // Make sure it runs after build!
 task publishModrinth (type: TaskModrinthUpload){
     token = "$System.env.MODRINTH"
     projectId = 'kMcXd3F5'
     versionNumber = project.version
     uploadFile = jar
-    changelog = file('CHANGELOG.md')
+    changelog = fileContents
     addGameVersion('1.16.2')
     addGameVersion('1.16.3')
     addGameVersion('1.16.4')
