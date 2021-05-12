@@ -17,6 +17,7 @@ task publishModrinth (type: TaskModrinthUpload){
     projectId = 'kbYX74kg'
     versionNumber = project.version
     uploadFile = remapJar
+    changelog = file('CHANGELOG.md')
     addGameVersion('1.16.2')
     addGameVersion('1.16.3')
     addGameVersion('1.16.4')
