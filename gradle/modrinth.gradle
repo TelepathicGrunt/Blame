@@ -17,6 +17,7 @@ String fileContents = new File(file('CHANGELOG.md')).text
 task publishModrinth (type: TaskModrinthUpload){
     token = "$System.env.MODRINTH"
     projectId = 'kMcXd3F5'
+    name = "Blame"
     versionNumber = project.version
     uploadFile = jar
     changelog = fileContents
