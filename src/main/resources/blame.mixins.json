@@ -2,6 +2,7 @@
   "required": true,
   "package": "com.telepathicgrunt.blame.mixin",
   "compatibilityLevel": "JAVA_8",
+  "plugin": "com.telepathicgrunt.blame.mixin.BlameMixinPlugin",
   "refmap": "blame.refmap.json",
   "mixins": [
     "BiomeMixin",

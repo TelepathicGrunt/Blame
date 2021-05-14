@@ -1,3 +1,9 @@
+## (V.3.0.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
+
+### Flat Chunk Generator:
+• Fixed crash with Forge v1.16.5-36.1.18 as they implemented a fix for the Flat Chunk Generator crash that Blame used to detect.
+
+
 ## (V.3.0.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
 
 ### Maven:

@@ -1,18 +1,8 @@
 package com.telepathicgrunt.blame.mixin;
 
 import com.telepathicgrunt.blame.Blame;
-import com.telepathicgrunt.blame.main.BiomeBlame;
-import net.minecraft.crash.CrashReport;
 import net.minecraft.tags.ITagCollectionSupplier;
 import net.minecraft.tags.TagCollectionManager;
-import net.minecraft.util.SharedSeedRandom;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.WorldGenRegion;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.structure.Structure;
-import net.minecraft.world.gen.feature.structure.StructureManager;
 import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,11 +10,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.function.Supplier;
 
 /* @author - TelepathicGrunt
  *
