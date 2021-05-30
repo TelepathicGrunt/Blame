@@ -1,14 +1,19 @@
 package com.telepathicgrunt.blame.main;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Supplier;
+
+import org.apache.logging.log4j.Level;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
+
 import com.mojang.serialization.DataResult;
 import com.telepathicgrunt.blame.Blame;
 import com.telepathicgrunt.blame.utils.ErrorHints;
 import com.telepathicgrunt.blame.utils.PrettyPrintBrokenJSON;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.SimpleRegistry;
-import org.apache.logging.log4j.Level;
-
-import java.util.Map;
 
 /* @author - TelepathicGrunt
  *
@@ -17,73 +22,72 @@ import java.util.Map;
  *
  * LGPLv3
  */
-public class WorldSettingsImportBlame {
+public class WorldSettingsImportBlame
+{
+	private static final Set<RegistryKey<?>> erroredResources = new HashSet<>();
 
-	private static ResourceLocation currentResource;
-
-	/**
-	 * Grabs the current file we are at to pass to next mixin in case file explodes.
-	 */
-	public static void getCurrentFile(ResourceLocation resourceLocation)
+	public static <E> void addBrokenFileDetails(RegistryKey<? extends Registry<E>> registryKey, ResourceLocation id, DataResult<Supplier<E>> result)
 	{
-		currentResource = resourceLocation;
-	}
+		result.error().ifPresent(partial -> {
+			// Avoid logging the same resources twice, as this method is invoked for already-parsed resources, in which case it calls the internal resource cache. Since that is private we maintain a shallow copy, by recording the resources we print as errored.
+			RegistryKey<?> fullKey = RegistryKey.create(registryKey, id);
+			if (erroredResources.contains(fullKey))
+			{
+				return;
+			}
+			erroredResources.add(fullKey);
 
-	/**
-	 * Checks if the loaded datapack file errored and print it's resource location if it did
-	 */
-	public static <E> void addBrokenFileDetails(DataResult<SimpleRegistry<E>> dataresult)
-	{
-		if(dataresult.error().isPresent()){
-			String brokenJSON = null;
-			String reason = null;
+			String currentResource = id + ".json";
+			String reason = null, brokenJSON;
 
-			// Attempt to pull the JSON out of the error message if it exists.
-			// Has a try/catch in case there's an error message that somehow breaks the string split.
-			if(dataresult.error().isPresent()){
-				try{
-					String[] parsed = dataresult.error().get().message().split(": \\{", 2);
+			try
+			{
+				String[] parsed = partial.message().split(": \\{", 2);
+				reason = parsed[0];
+				brokenJSON = "{" + parsed[1];
+			}
+			catch (Exception e)
+			{
+				try
+				{
+					String[] parsed = partial.message().split("\\[", 2);
 					reason = parsed[0];
-					brokenJSON = "{" + parsed[1];
+					brokenJSON = "[" + parsed[1];
 				}
-				catch(Exception e){
-					try{
-						String[] parsed = dataresult.error().get().message().split("\\[", 2);
-						reason = parsed[0];
-						brokenJSON = "[" + parsed[1];
-					}
-					catch(Exception e2){
-						brokenJSON = "Failed to turn error msg into string. Please notify " +
-								"TelepathicGrunt (Blame creator) and show him this message:  \n" + dataresult.error().get().message();
-					}
+				catch (Exception e2)
+				{
+					brokenJSON = "Failed to turn error msg into string. Please notify " +
+						"TelepathicGrunt (Blame creator) and show him this message:  \n" + partial.message();
 				}
 			}
 
-			// gets the hint that might help with the error
 			String hint = null;
-			if(reason!= null){
-				for(Map.Entry<String, String> hints : ErrorHints.HINT_MAP.entrySet()){
-					if(reason.contains(hints.getKey())){
+			if (reason != null)
+			{
+				for (Map.Entry<String, String> hints : ErrorHints.HINT_MAP.entrySet())
+				{
+					if (reason.contains(hints.getKey()))
+					{
 						hint = hints.getValue();
 						break;
 					}
 				}
 			}
+
 			// default hint that covers most basis.
-			if(hint == null){
+			if (hint == null)
+			{
 				hint = "If this is a worldgen JSON file, check out slicedlime's example datapack\n   for worldgen to find what's off about the JSON: https://t.co/cm3pJcAHcy?amp=1";
 			}
 
 			Blame.LOGGER.log(Level.ERROR,
-					"\n****************** Blame Report " + Blame.VERSION + " ******************"
+				"\n****************** Blame Report " + Blame.VERSION + " ******************"
 					+ "\n\n Failed to load resource file: " + currentResource
 					+ "\n\n Reason stated: " + reason
 					+ "\n\n Possibly helpful hint (hopefully): " + hint
-					+ "\n\n Prettified form of the broken JSON: \n" + (brokenJSON != null ? PrettyPrintBrokenJSON.prettyPrintJSONAsString(brokenJSON) : " Unable to display JSON. ")
+					+ "\n\n Prettified form of the broken JSON: \n" + PrettyPrintBrokenJSON.prettyPrintJSONAsString(brokenJSON)
 					+ "\n\n"
-					);
-
-		}
+			);
+		});
 	}
-
 }
