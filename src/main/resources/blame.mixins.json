@@ -16,6 +16,7 @@
     "JigsawPatternMixin",
     "LootTableManagerMixin",
     "MinecraftServerAccessor",
+    "RecipeManagerMixin",
     "SingleJigsawPieceAccessor",
     "SingleJigsawPieceMixin",
     "StructureMixin",
