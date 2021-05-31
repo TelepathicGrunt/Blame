@@ -12,6 +12,10 @@
 • Fixes MC-190122 bug so that the actual true number of recipes loaded is correct to help debugging recipes.
   https://bugs.mojang.com/browse/MC-190122
 
+### Missing NBT files:
+• When faced with a missing NBT file, blame will print stacktrace if the Template Pool was unable to be found so we can know what is trying to get the file.
+  From that, I'll be able to figure out a better solution than a stacktrace. Please give me reports if stacktrace is printed for missing NBT files.
+
 
 ## (V.3.0.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
 

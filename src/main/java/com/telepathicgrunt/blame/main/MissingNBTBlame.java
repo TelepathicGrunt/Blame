@@ -52,7 +52,9 @@ public class MissingNBTBlame {
                 (parentID != null ? "\n The calling Template Pool is: " + parentID : "") +
                 "\n Most common cause is that there is a typo in this path to the nbt file." +
                 "\n Please let the mod author know about this so they can double check to make sure the path is correct." +
-                "\n A common mistake is putting the structure nbt file in the asset folder when it needs to go in data/structures folder.\n";
+                "\n A common mistake is putting the structure nbt file in the asset folder when it needs to go in data/structures folder." +
+                (parentID == null ? "\n  Stacktrace of where this NBT file is being called by: " + Arrays.toString(Thread.currentThread().getStackTrace()) : "") +
+                "\n";
         Blame.LOGGER.log(Level.ERROR, errorReport);
 
         PRINTED_RLS.add(parentID + fullPath);
