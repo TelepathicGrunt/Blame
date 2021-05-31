@@ -15,6 +15,6 @@ import java.util.Map;
 @Mixin(TemplateManager.class)
 public interface TemplateManagerAccessor {
 
-	@Accessor("structureRepository")
-	Map<ResourceLocation, Template> blame_getStructureRepository();
+    @Accessor("structureRepository")
+    Map<ResourceLocation, Template> blame_getStructureRepository();
 }

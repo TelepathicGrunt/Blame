@@ -21,33 +21,31 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(TagCollectionManager.class)
 public class TagCollectionManagerMixin {
 
-	@Inject(method = "getInstance",
-			at = @At(value = "TAIL"),
-			locals = LocalCapture.CAPTURE_FAILHARD)
-	private static void possibleClassloadPoint1(CallbackInfoReturnable<ITagCollectionSupplier> cir)
-	{
-		if(!Blame.MAIN_MOD_STARTUPS_FINISHED){
-			Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report " + Blame.VERSION + " ******************" +
-					"\n   TagCollectionManager was classloaded too early! " +
-					"\n This can break any tag registered by other mods in code after this point." +
-					"\n Please check this stacktrace and notify whoever is classloading to early to move their code later." +
-					"\n TagCollectionManager should only be called after the server is made as only then, the actual tags exists.");
-			Thread.dumpStack();
-		}
-	}
+    @Inject(method = "getInstance",
+            at = @At(value = "TAIL"),
+            locals = LocalCapture.CAPTURE_FAILHARD)
+    private static void possibleClassloadPoint1(CallbackInfoReturnable<ITagCollectionSupplier> cir) {
+        if (!Blame.MAIN_MOD_STARTUPS_FINISHED) {
+            Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+                    "\n   TagCollectionManager was classloaded too early! " +
+                    "\n This can break any tag registered by other mods in code after this point." +
+                    "\n Please check this stacktrace and notify whoever is classloading to early to move their code later." +
+                    "\n TagCollectionManager should only be called after the server is made as only then, the actual tags exists.");
+            Thread.dumpStack();
+        }
+    }
 
-	@Inject(method = "bind",
-			at = @At(value = "TAIL"),
-			locals = LocalCapture.CAPTURE_FAILHARD)
-	private static void possibleClassloadPoint2(ITagCollectionSupplier managerIn, CallbackInfo ci)
-	{
-		if(!Blame.MAIN_MOD_STARTUPS_FINISHED){
-			Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report " + Blame.VERSION + " ******************" +
-					"\n   TagCollectionManager was classloaded too early! " +
-					"\n This can break any tag registered by other mods in code after this point." +
-					"\n Please check this stacktrace and notify whoever is classloading to early to move their code later." +
-					"\n TagCollectionManager should only be called after the server is made as only then, the actual tags exists.");
-			Thread.dumpStack();
-		}
-	}
+    @Inject(method = "bind",
+            at = @At(value = "TAIL"),
+            locals = LocalCapture.CAPTURE_FAILHARD)
+    private static void possibleClassloadPoint2(ITagCollectionSupplier managerIn, CallbackInfo ci) {
+        if (!Blame.MAIN_MOD_STARTUPS_FINISHED) {
+            Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+                    "\n   TagCollectionManager was classloaded too early! " +
+                    "\n This can break any tag registered by other mods in code after this point." +
+                    "\n Please check this stacktrace and notify whoever is classloading to early to move their code later." +
+                    "\n TagCollectionManager should only be called after the server is made as only then, the actual tags exists.");
+            Thread.dumpStack();
+        }
+    }
 }

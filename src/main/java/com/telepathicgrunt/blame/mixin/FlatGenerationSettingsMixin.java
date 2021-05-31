@@ -28,22 +28,21 @@ import java.util.Map;
 @Mixin(FlatGenerationSettings.class)
 public class FlatGenerationSettingsMixin {
 
-	@Shadow
-	@Final
-	private static Map<Structure<?>, StructureFeature<?, ?>> STRUCTURE_FEATURES;
+    @Shadow
+    @Final
+    private static Map<Structure<?>, StructureFeature<?, ?>> STRUCTURE_FEATURES;
 
-	/**
-	 * Will detect if someone added the structure spacing to the chunkgenerator without adding
-	 * the structure to the FlatGenerationSettings's STRUCTURES map. Doing so will cause a crash.
-	 * This mixin will say what structure it was that triggered it.
-	 */
-	@Inject(method = "getBiomeFromSettings()Lnet/minecraft/world/biome/Biome;",
-			at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"),
-			locals = LocalCapture.CAPTURE_FAILHARD)
-	private void addCrashDetails(CallbackInfoReturnable<Biome> cir, Biome biome, BiomeGenerationSettings biomegenerationsettings,
-								 BiomeGenerationSettings.Builder biomegenerationsettings$builder, Iterator<?> var4,
-								 Map.Entry<Structure<?>, StructureSeparationSettings> structureEntry)
-	{
-		FlatGenerationSettingsBlame.addCrashDetails(STRUCTURE_FEATURES, structureEntry);
-	}
+    /**
+     * Will detect if someone added the structure spacing to the chunkgenerator without adding
+     * the structure to the FlatGenerationSettings's STRUCTURES map. Doing so will cause a crash.
+     * This mixin will say what structure it was that triggered it.
+     */
+    @Inject(method = "getBiomeFromSettings()Lnet/minecraft/world/biome/Biome;",
+            at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"),
+            locals = LocalCapture.CAPTURE_FAILHARD)
+    private void addCrashDetails(CallbackInfoReturnable<Biome> cir, Biome biome, BiomeGenerationSettings biomegenerationsettings,
+                                 BiomeGenerationSettings.Builder biomegenerationsettings$builder, Iterator<?> var4,
+                                 Map.Entry<Structure<?>, StructureSeparationSettings> structureEntry) {
+        FlatGenerationSettingsBlame.addCrashDetails(STRUCTURE_FEATURES, structureEntry);
+    }
 }

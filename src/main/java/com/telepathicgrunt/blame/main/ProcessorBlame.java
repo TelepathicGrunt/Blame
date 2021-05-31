@@ -28,36 +28,36 @@ import java.util.Optional;
  */
 public class ProcessorBlame {
 
-	public static Template.BlockInfo findBrokenProcessor(StructureProcessor structureProcessor, IWorldReader world, BlockPos blockPos1, BlockPos blockPos2, Template.BlockInfo blockInfo1, Template.BlockInfo blockInfo2, PlacementSettings placementSettings, Template template) {
-		try{
-			return structureProcessor.process(world, blockPos1, blockPos2, blockInfo1, blockInfo2, placementSettings, template);
-		}
-		catch (Exception e){
-			MinecraftServer minecraftServer = ServerLifecycleHooks.getCurrentServer();
-			TemplateManager templateManager = ((MinecraftServerAccessor)minecraftServer).blame_getStructureManager();
-			Map<ResourceLocation, Template> templateMap = ((TemplateManagerAccessor)templateManager).blame_getStructureRepository();
-			String brokenNBTFile = "";
-			if(template != null){
-				Optional<Map.Entry<ResourceLocation, Template>> optional = templateMap.entrySet().stream().filter((entry)-> entry.getValue().equals(template)).findFirst();
-				if(optional.isPresent()){
-					ResourceLocation templateRL = optional.get().getKey();
-					brokenNBTFile = templateRL.toString();
-				}
-			}
-			String blockBeingProcessed = blockInfo1.state.toString();
-			String blockNBT = "";
-			if(blockInfo1.nbt != null){
-				Gson gson = new GsonBuilder().setPrettyPrinting().create();
-				blockNBT = gson.toJson(blockInfo1.nbt);
-			}
+    public static Template.BlockInfo findBrokenProcessor(StructureProcessor structureProcessor, IWorldReader world, BlockPos blockPos1, BlockPos blockPos2, Template.BlockInfo blockInfo1, Template.BlockInfo blockInfo2, PlacementSettings placementSettings, Template template) {
+        try {
+            return structureProcessor.process(world, blockPos1, blockPos2, blockInfo1, blockInfo2, placementSettings, template);
+        }
+        catch (Exception e) {
+            MinecraftServer minecraftServer = ServerLifecycleHooks.getCurrentServer();
+            TemplateManager templateManager = ((MinecraftServerAccessor) minecraftServer).blame_getStructureManager();
+            Map<ResourceLocation, Template> templateMap = ((TemplateManagerAccessor) templateManager).blame_getStructureRepository();
+            String brokenNBTFile = "";
+            if (template != null) {
+                Optional<Map.Entry<ResourceLocation, Template>> optional = templateMap.entrySet().stream().filter((entry) -> entry.getValue().equals(template)).findFirst();
+                if (optional.isPresent()) {
+                    ResourceLocation templateRL = optional.get().getKey();
+                    brokenNBTFile = templateRL.toString();
+                }
+            }
+            String blockBeingProcessed = blockInfo1.state.toString();
+            String blockNBT = "";
+            if (blockInfo1.nbt != null) {
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                blockNBT = gson.toJson(blockInfo1.nbt);
+            }
 
-			String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
-					"\n\n Processor blew up trying to process a block." +
-					"\n Broken template is: " + brokenNBTFile +
-					"\n Block being processed: " + blockBeingProcessed +
-					"\n NBT of the block being processed: " + blockNBT;
-			Blame.LOGGER.log(Level.ERROR, errorReport);
-			throw e;
-		}
-	}
+            String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+                    "\n\n Processor blew up trying to process a block." +
+                    "\n Broken template is: " + brokenNBTFile +
+                    "\n Block being processed: " + blockBeingProcessed +
+                    "\n NBT of the block being processed: " + blockNBT;
+            Blame.LOGGER.log(Level.ERROR, errorReport);
+            throw e;
+        }
+    }
 }

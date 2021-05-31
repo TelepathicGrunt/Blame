@@ -20,11 +20,11 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(Template.class)
 public class TemplateMixin {
 
-	@Redirect(method = "processBlockInfos(Lnet/minecraft/world/IWorld;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/gen/feature/template/PlacementSettings;Ljava/util/List;Lnet/minecraft/world/gen/feature/template/Template;)Ljava/util/List;",
-			remap = false,
-			at = @At(value = "INVOKE",
-			target = "Lnet/minecraft/world/gen/feature/template/StructureProcessor;process(Lnet/minecraft/world/IWorldReader;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/gen/feature/template/Template$BlockInfo;Lnet/minecraft/world/gen/feature/template/Template$BlockInfo;Lnet/minecraft/world/gen/feature/template/PlacementSettings;Lnet/minecraft/world/gen/feature/template/Template;)Lnet/minecraft/world/gen/feature/template/Template$BlockInfo;"))
-	private static Template.BlockInfo processBlockInfos(StructureProcessor structureProcessor, IWorldReader world, BlockPos blockPos1, BlockPos blockPos2, Template.BlockInfo blockInfo1, Template.BlockInfo blockInfo2, PlacementSettings placementSettings, Template template) {
-		return ProcessorBlame.findBrokenProcessor(structureProcessor, world, blockPos1, blockPos2, blockInfo1, blockInfo2, placementSettings, template);
-	}
+    @Redirect(method = "processBlockInfos(Lnet/minecraft/world/IWorld;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/gen/feature/template/PlacementSettings;Ljava/util/List;Lnet/minecraft/world/gen/feature/template/Template;)Ljava/util/List;",
+            remap = false,
+            at = @At(value = "INVOKE",
+                    target = "Lnet/minecraft/world/gen/feature/template/StructureProcessor;process(Lnet/minecraft/world/IWorldReader;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/gen/feature/template/Template$BlockInfo;Lnet/minecraft/world/gen/feature/template/Template$BlockInfo;Lnet/minecraft/world/gen/feature/template/PlacementSettings;Lnet/minecraft/world/gen/feature/template/Template;)Lnet/minecraft/world/gen/feature/template/Template$BlockInfo;"))
+    private static Template.BlockInfo processBlockInfos(StructureProcessor structureProcessor, IWorldReader world, BlockPos blockPos1, BlockPos blockPos2, Template.BlockInfo blockInfo1, Template.BlockInfo blockInfo2, PlacementSettings placementSettings, Template template) {
+        return ProcessorBlame.findBrokenProcessor(structureProcessor, world, blockPos1, blockPos2, blockInfo1, blockInfo2, placementSettings, template);
+    }
 }

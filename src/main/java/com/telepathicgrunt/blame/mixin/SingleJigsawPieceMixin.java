@@ -19,15 +19,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(SingleJigsawPiece.class)
 public class SingleJigsawPieceMixin {
 
-	@Inject(method = "getTemplate(Lnet/minecraft/world/gen/feature/template/TemplateManager;)Lnet/minecraft/world/gen/feature/template/Template;",
-			at = @At(value = "HEAD"))
-	private void storeCurrentPool(TemplateManager templateManagerIn, CallbackInfoReturnable<MutableBoundingBox> cir)
-	{
-		if(MissingNBTBlame.CALLING_POOL != null &((SingleJigsawPieceAccessor)this).blame_getTemplateRL().left().isPresent()){
-			MissingNBTBlame.storeCurrentIdentifiers(new Pair<>(MissingNBTBlame.CALLING_POOL, ((SingleJigsawPieceAccessor)this).blame_getTemplateRL().left().get()));
-		}
-		else{
-			MissingNBTBlame.storeCurrentIdentifiers(null);
-		}
-	}
+    @Inject(method = "getTemplate(Lnet/minecraft/world/gen/feature/template/TemplateManager;)Lnet/minecraft/world/gen/feature/template/Template;",
+            at = @At(value = "HEAD"))
+    private void storeCurrentPool(TemplateManager templateManagerIn, CallbackInfoReturnable<MutableBoundingBox> cir) {
+        if (MissingNBTBlame.CALLING_POOL != null & ((SingleJigsawPieceAccessor) this).blame_getTemplateRL().left().isPresent()) {
+            MissingNBTBlame.storeCurrentIdentifiers(new Pair<>(MissingNBTBlame.CALLING_POOL, ((SingleJigsawPieceAccessor) this).blame_getTemplateRL().left().get()));
+        }
+        else {
+            MissingNBTBlame.storeCurrentIdentifiers(null);
+        }
+    }
 }

@@ -15,13 +15,13 @@ import java.util.Map;
 @Mixin(DispenserBlock.class)
 public interface DispenserBlockAccessor {
 
-	@Accessor("DISPENSER_REGISTRY")
-	static void blame_setDISPENSER_REGISTRY(Map<Item, IDispenseItemBehavior> map) {
-		throw new UnsupportedOperationException();
-	}
+    @Accessor("DISPENSER_REGISTRY")
+    static void blame_setDISPENSER_REGISTRY(Map<Item, IDispenseItemBehavior> map) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Accessor("DISPENSER_REGISTRY")
-	static Map<Item, IDispenseItemBehavior> blame_getDISPENSER_REGISTRY() {
-		throw new UnsupportedOperationException();
-	}
+    @Accessor("DISPENSER_REGISTRY")
+    static Map<Item, IDispenseItemBehavior> blame_getDISPENSER_REGISTRY() {
+        throw new UnsupportedOperationException();
+    }
 }

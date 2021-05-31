@@ -25,31 +25,28 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(Commands.class)
 public class CommandsMixin<S> {
 
-	@Shadow
-	@Final
-	private CommandDispatcher<CommandSource> dispatcher;
+    @Shadow
+    @Final
+    private CommandDispatcher<CommandSource> dispatcher;
 
-	@Shadow
-	@Final
-	private static Logger LOGGER;
+    @Shadow
+    @Final
+    private static Logger LOGGER;
 
-	@Inject(method = "<init>",
-			at = @At(value = "RETURN"))
-	private void onInit(Commands.EnvironmentType p_i232148_1_, CallbackInfo ci)
-	{
-		BrokenCommandBlame.detectBrokenCommand(dispatcher);
-	}
+    @Inject(method = "<init>",
+            at = @At(value = "RETURN"))
+    private void onInit(Commands.EnvironmentType p_i232148_1_, CallbackInfo ci) {
+        BrokenCommandBlame.detectBrokenCommand(dispatcher);
+    }
 
-	@Inject(method = "performCommand(Lnet/minecraft/command/CommandSource;Ljava/lang/String;)I",
-			at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;isDebugEnabled()Z"),
-			locals = LocalCapture.CAPTURE_FAILHARD)
-	private void printFailedCommandStacktrace(CommandSource commandSource, String commandString, CallbackInfoReturnable<Integer> cir,
-											  StringReader stringreader, Exception exception,
-											  IFormattableTextComponent iformattabletextcomponent)
-	{
-		if(!LOGGER.isDebugEnabled())
-		{
-			BrokenCommandBlame.printStacktrace(commandString, LOGGER, exception, iformattabletextcomponent);
-		}
-	}
+    @Inject(method = "performCommand(Lnet/minecraft/command/CommandSource;Ljava/lang/String;)I",
+            at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;isDebugEnabled()Z"),
+            locals = LocalCapture.CAPTURE_FAILHARD)
+    private void printFailedCommandStacktrace(CommandSource commandSource, String commandString, CallbackInfoReturnable<Integer> cir,
+                                              StringReader stringreader, Exception exception,
+                                              IFormattableTextComponent iformattabletextcomponent) {
+        if (!LOGGER.isDebugEnabled()) {
+            BrokenCommandBlame.printStacktrace(commandString, LOGGER, exception, iformattabletextcomponent);
+        }
+    }
 }

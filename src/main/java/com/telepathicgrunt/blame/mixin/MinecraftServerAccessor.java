@@ -11,6 +11,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(MinecraftServer.class)
 public interface MinecraftServerAccessor {
 
-	@Accessor("structureManager")
-	TemplateManager blame_getStructureManager();
+    @Accessor("structureManager")
+    TemplateManager blame_getStructureManager();
 }

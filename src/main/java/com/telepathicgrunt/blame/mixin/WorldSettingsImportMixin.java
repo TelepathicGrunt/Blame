@@ -24,11 +24,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * LGPLv3
  */
 @Mixin(WorldSettingsImport.class)
-public class WorldSettingsImportMixin<E>
-{
-	@Inject(method = "readAndRegisterElement", at = @At(value = "RETURN"))
-	private void addBrokenFileDetails(RegistryKey<? extends Registry<E>> registryKey, MutableRegistry<E> mutableRegistry, Codec<E> mapCodec, ResourceLocation id, CallbackInfoReturnable<DataResult<Supplier<E>>> cir)
-	{
-		WorldSettingsImportBlame.addBrokenFileDetails(registryKey, id, cir.getReturnValue());
-	}
+public class WorldSettingsImportMixin<E> {
+    @Inject(method = "readAndRegisterElement", at = @At(value = "RETURN"))
+    private void addBrokenFileDetails(RegistryKey<? extends Registry<E>> registryKey, MutableRegistry<E> mutableRegistry, Codec<E> mapCodec, ResourceLocation id, CallbackInfoReturnable<DataResult<Supplier<E>>> cir) {
+        WorldSettingsImportBlame.addBrokenFileDetails(registryKey, id, cir.getReturnValue());
+    }
 }

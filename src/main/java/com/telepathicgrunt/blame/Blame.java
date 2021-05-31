@@ -14,8 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(Blame.MODID)
-public class Blame
-{
+public class Blame {
     public static final String MODID = "blame";
     public static final Logger LOGGER = LogManager.getLogger();
     public static String VERSION = "N/A";
@@ -24,7 +23,7 @@ public class Blame
         ModList.get().getModContainerById(Blame.MODID)
                 .ifPresent(container -> VERSION = container.getModInfo().getVersion().toString());
 
-        Blame.LOGGER.log(Level.ERROR, "Blame "+VERSION+" initialized");
+        Blame.LOGGER.log(Level.ERROR, "Blame " + VERSION + " initialized");
 
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST,
                 () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
@@ -43,8 +42,8 @@ public class Blame
 
     // Let us know when TagCollectionManager is safe to be classloaded.
     public static boolean MAIN_MOD_STARTUPS_FINISHED = false;
-    public void afterModStartups(final FMLCommonSetupEvent event)
-    {
+
+    public void afterModStartups(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             MAIN_MOD_STARTUPS_FINISHED = true;
         });
@@ -64,7 +63,7 @@ public class Blame
 //    }
 //
 //    private static int locateBiome(CommandSource p_241049_0_, ResourceLocation p_241049_1_) throws CommandSyntaxException {
-        // throw new RuntimeException("example exception");
+    // throw new RuntimeException("example exception");
 //        Biome biome = p_241049_0_.getServer().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getOptional(p_241049_1_).orElseThrow(() -> {
 //            return ERROR_INVALID_BIOME.create(p_241049_1_);
 //        });

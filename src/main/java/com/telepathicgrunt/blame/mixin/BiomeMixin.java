@@ -31,41 +31,39 @@ import java.util.function.Supplier;
  */
 @Mixin(Biome.class)
 public class BiomeMixin {
-	/**
-	 * Place blame on broke feature during worldgen.
-	 * Prints registry name of feature and biome.
-	 * Prints the crashlog to latest.log as well.
-	 */
-	@Inject(method = "generate(Lnet/minecraft/world/gen/feature/structure/StructureManager;Lnet/minecraft/world/gen/ChunkGenerator;Lnet/minecraft/world/gen/WorldGenRegion;JLnet/minecraft/util/SharedSeedRandom;Lnet/minecraft/util/math/BlockPos;)V",
-			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/crash/CrashReport;addCategory(Ljava/lang/String;)Lnet/minecraft/crash/CrashReportCategory;", ordinal = 1),
-			locals = LocalCapture.CAPTURE_FAILHARD)
-	private void addFeatureDetails(StructureManager structureManager, ChunkGenerator chunkGenerator,
-								   WorldGenRegion worldGenRegion, long seed, SharedSeedRandom random, BlockPos pos,
-								   CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> GenerationStageList,
-								   int numOfGenerationStage, int generationStageIndex, int configuredFeatureIndex,
-								   Iterator<ConfiguredFeature<?, ?>> var12, Supplier<ConfiguredFeature<?, ?>> supplier,
-								   ConfiguredFeature<?, ?> configuredfeature, Exception exception, CrashReport crashreport)
-	{
-		BiomeBlame.addFeatureDetails((Biome)(Object)this, worldGenRegion, configuredfeature, crashreport);
-	}
+    /**
+     * Place blame on broke feature during worldgen.
+     * Prints registry name of feature and biome.
+     * Prints the crashlog to latest.log as well.
+     */
+    @Inject(method = "generate(Lnet/minecraft/world/gen/feature/structure/StructureManager;Lnet/minecraft/world/gen/ChunkGenerator;Lnet/minecraft/world/gen/WorldGenRegion;JLnet/minecraft/util/SharedSeedRandom;Lnet/minecraft/util/math/BlockPos;)V",
+            at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/crash/CrashReport;addCategory(Ljava/lang/String;)Lnet/minecraft/crash/CrashReportCategory;", ordinal = 1),
+            locals = LocalCapture.CAPTURE_FAILHARD)
+    private void addFeatureDetails(StructureManager structureManager, ChunkGenerator chunkGenerator,
+                                   WorldGenRegion worldGenRegion, long seed, SharedSeedRandom random, BlockPos pos,
+                                   CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> GenerationStageList,
+                                   int numOfGenerationStage, int generationStageIndex, int configuredFeatureIndex,
+                                   Iterator<ConfiguredFeature<?, ?>> var12, Supplier<ConfiguredFeature<?, ?>> supplier,
+                                   ConfiguredFeature<?, ?> configuredfeature, Exception exception, CrashReport crashreport) {
+        BiomeBlame.addFeatureDetails((Biome) (Object) this, worldGenRegion, configuredfeature, crashreport);
+    }
 
 
-	/**
-	 * Place blame on broke structures during worldgen.
-	 * Prints registry name of feature and biome.
-	 * Prints the crashlog to latest.log as well.
-	 */
-	@Inject(method = "generate(Lnet/minecraft/world/gen/feature/structure/StructureManager;Lnet/minecraft/world/gen/ChunkGenerator;Lnet/minecraft/world/gen/WorldGenRegion;JLnet/minecraft/util/SharedSeedRandom;Lnet/minecraft/util/math/BlockPos;)V",
-			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/crash/CrashReport;addCategory(Ljava/lang/String;)Lnet/minecraft/crash/CrashReportCategory;", ordinal = 0),
-			locals = LocalCapture.CAPTURE_FAILHARD)
-	private void addStructureDetails(StructureManager structureManager, ChunkGenerator chunkGenerator,
-									 WorldGenRegion worldGenRegion, long seed, SharedSeedRandom random, BlockPos pos,
-									 CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> list,
-									 int numOfGenerationStage, int generationStageIndex, int configuredFeatureIndex,
-									 Iterator<Structure<?>> var12, Structure<?> structureFeature,
-									 int chunkX, int chunkZ, int ChunkXPos, int ChunkZPos,
-									 Exception exception, CrashReport crashreport)
-	{
-		BiomeBlame.addStructureDetails((Biome)(Object)this, worldGenRegion, structureFeature, crashreport);
-	}
+    /**
+     * Place blame on broke structures during worldgen.
+     * Prints registry name of feature and biome.
+     * Prints the crashlog to latest.log as well.
+     */
+    @Inject(method = "generate(Lnet/minecraft/world/gen/feature/structure/StructureManager;Lnet/minecraft/world/gen/ChunkGenerator;Lnet/minecraft/world/gen/WorldGenRegion;JLnet/minecraft/util/SharedSeedRandom;Lnet/minecraft/util/math/BlockPos;)V",
+            at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/crash/CrashReport;addCategory(Ljava/lang/String;)Lnet/minecraft/crash/CrashReportCategory;", ordinal = 0),
+            locals = LocalCapture.CAPTURE_FAILHARD)
+    private void addStructureDetails(StructureManager structureManager, ChunkGenerator chunkGenerator,
+                                     WorldGenRegion worldGenRegion, long seed, SharedSeedRandom random, BlockPos pos,
+                                     CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> list,
+                                     int numOfGenerationStage, int generationStageIndex, int configuredFeatureIndex,
+                                     Iterator<Structure<?>> var12, Structure<?> structureFeature,
+                                     int chunkX, int chunkZ, int ChunkXPos, int ChunkZPos,
+                                     Exception exception, CrashReport crashreport) {
+        BiomeBlame.addStructureDetails((Biome) (Object) this, worldGenRegion, structureFeature, crashreport);
+    }
 }

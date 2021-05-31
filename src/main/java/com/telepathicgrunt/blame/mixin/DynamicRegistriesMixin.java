@@ -20,21 +20,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = DynamicRegistries.class, priority = 99999)
 public class DynamicRegistriesMixin {
 
-	@Dynamic
-	@Inject(method = "<clinit>", at = @At("TAIL"), require = 1)
-	private static void onInit(CallbackInfo ci) {
-		DynamicRegistriesBlame.classloadedCheck();
-	}
+    @Dynamic
+    @Inject(method = "<clinit>", at = @At("TAIL"), require = 1)
+    private static void onInit(CallbackInfo ci) {
+        DynamicRegistriesBlame.classloadedCheck();
+    }
 
 
-
-	/**
-	 * The main hook for the parser to work from. This will check every biomes in the
-	 * DynamicRegistry to see if it has exploded due to unregistered stuff added to it.
-	 */
-	@Inject(method = "builtin()Lnet/minecraft/util/registry/DynamicRegistries$Impl;",
-			at = @At(value = "RETURN"), require = 1)
-	private static void worldCreateHook(CallbackInfoReturnable<DynamicRegistries.Impl> cir) {
-		DynamicRegistriesBlame.printUnregisteredWorldgenConfiguredStuff(cir.getReturnValue());
-	}
+    /**
+     * The main hook for the parser to work from. This will check every biomes in the
+     * DynamicRegistry to see if it has exploded due to unregistered stuff added to it.
+     */
+    @Inject(method = "builtin()Lnet/minecraft/util/registry/DynamicRegistries$Impl;",
+            at = @At(value = "RETURN"), require = 1)
+    private static void worldCreateHook(CallbackInfoReturnable<DynamicRegistries.Impl> cir) {
+        DynamicRegistriesBlame.printUnregisteredWorldgenConfiguredStuff(cir.getReturnValue());
+    }
 }
