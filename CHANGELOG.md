@@ -1,4 +1,4 @@
-### (V.3.1.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
+### **(V.3.1.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
 
 #### Dynamic Registry:
 * Fixed a single Blame Report being printed multiple times because Minecraft makes a single error cascading through multiple files.
@@ -17,13 +17,13 @@
   From that, I'll be able to figure out a better solution than a stacktrace. Please give me reports if stacktrace is printed for missing NBT files.
 
 
-### (V.3.0.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
+### **(V.3.0.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
 
 #### Commands:
 * Fixed CommandManagerMixin crashing 24/7. Major oops.
 
 
-### (V.3.0.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
+### **(V.3.0.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
    
 #### Processors:
 * Will now print out which block and its nbt was crashing a structure processor. 
@@ -38,7 +38,7 @@
 * Will no longer print a false positive report when saving new NBT files with Structure Blocks.
 
 
-### (V.2.4.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
+### **(V.2.4.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
 #### #### 
 #### Unregistered worldgen:
 * Hardened error reporting so that broken configuredfeatures that cannot be turned to JSON doesn't crash Blame and Blame reports them now.
@@ -55,7 +55,7 @@
  Should make running Blame in dev environment less likely to mask actual errors.
 
 
-### (V.2.4.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+### **(V.2.4.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)**
    
 #### JSON file on world loading:
 *  Added extra info about missing block properties from broken ConfiguredFeatures files to help modders fix them better.
@@ -68,7 +68,7 @@
  https://github.com/SpongePowered/Mixin/issues/430
  
 ####   
-### (V.2.3.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+### **(V.2.3.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)**
 ####   
 #### Mob Spawning:
 *  Will detect if mob spawning will crash due to mob entries having a weight of 0 or negative value.
@@ -83,13 +83,13 @@
 *  Now will properly print out the structure that is crashing instead of Blame itself crashing lol.
 
 
-### (V.2.2.6 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+### **(V.2.2.6 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)**
 ####   
 #### Dispenser Behaviors:
 *  Fixed logspam when a mod uses ArmorItem which registers the Dispenser behavior before the item is registered.
 
   
-### (V.2.2.5 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+### **(V.2.2.5 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)**
 ####   
 #### Dispenser Behaviors:
 *  Fixed code that crashes any dispensed item that doesn't have a default behavior because I was
@@ -102,7 +102,7 @@
    as those missing loottables appears to be intentional by most mods.
 
 
-### (V.2.2.4 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+### **(V.2.2.4 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)**
 ####   
 #### Dispenser Behaviors:
 *  Reduced the logspam from dispenser registry replacement detection.
@@ -112,27 +112,27 @@
    on finding where it is called.
 
 ####    
-### (V.2.2.3 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+### **(V.2.2.3 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)**
 ####   
 #### Unregistered worldgen:
 *  Moved location for detecting unregistered worldgen to now find mods injecting into MinecraftServer.
    
 ####    
-### (V.2.2.2 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+### **(V.2.2.2 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)**
 ####   
 #### Structure Spacing:
 *  Now will detect if separation value is less than or equal 
    to spacing value because that will crash structures.
    
    
-### (V.2.2.1 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+### **(V.2.2.1 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)**
 ####   
 #### Missing Loot Table:
 *  Fixed crash when a mod or datapack somehow tries to pass null in for getting a loottable. 
    There's not enough info for me to find out which mod or datapack the loottable is from it seems.
    
    
-### (V.2.2.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+### **(V.2.2.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)**
 ####   
 #### Structure Spacing:
 *  Will print out which structure has a spacing of 0 which will crash the game.
@@ -141,7 +141,7 @@
 *  Blame will print "Blame 1.7.0 initialized" at start so it is clear if Blame is running or not.
 
 
-### (V.2.1.2 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+### **(V.2.1.2 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)**
 ####   
 #### Missing Template Pools:
 *  Blame will now print out the ID of the empty starting Template Pool that is crashing the game!
@@ -154,7 +154,7 @@
 *  Changed wording a bit in report.
 
 
-### (V.2.1.1 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+### **(V.2.1.1 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)**
 ####   
 #### Unregistered worldgen:
 *  Added back in code for unregistered worldgen stuff but put in a new 
@@ -164,7 +164,7 @@
 *  Fixed typo in report.
 
 
-### (V.2.1.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)
+### **(V.2.1.0 Changes) (1.16.2/1.16.3/1.16.4 Minecraft)**
 ####   
 #### Missing Loot Table:
 *  Will now print out if a non*existent loot table was attempted 
@@ -179,13 +179,13 @@
 *  Made Dispenser log stuff printed by Blame now match other Blame reports.
 
 
-### (V.2.0.0 Changes) (1.16.2/1.16.3 Minecraft)
+### **(V.2.0.0 Changes) (1.16.2/1.16.3 Minecraft)**
 ####   
 #### Major:
 * Ported to Fabric from Forge!
 
 
-### (V.1.4.4 Changes) (1.16.2/1.16.3 Minecraft)
+### **(V.1.4.4 Changes) (1.16.2/1.16.3 Minecraft)**
 ####   
 #### DynamicRegistries:
 * Changed scary classloading warning to be more of just a small comment 
@@ -193,7 +193,7 @@
   classload it at a safe time.
 
 
-### (V.1.4.3 Changes) (1.16.2/1.16.3 Minecraft)
+### **(V.1.4.3 Changes) (1.16.2/1.16.3 Minecraft)**
 ####   
 #### Flat/Custom ChunkGenerator crashes:
 * Will detect if the ChunkGenerator will crash at world load and if so,
@@ -204,7 +204,7 @@
 * Forgot to comment out my unregistered Desert Well test lmao. Oops. Sorry about that
 
 
-### (V.1.4.2 Changes) (1.16.2/1.16.3 Minecraft)
+### **(V.1.4.2 Changes) (1.16.2/1.16.3 Minecraft)**
 #### 
 #### Unregistered worldgen:
 * Detection of unregistered worldgen now works perfectly after
@@ -214,7 +214,7 @@
   the bottom as best as it can.
 
 
-### (V.1.4.1 Changes) (1.16.2/1.16.3 Minecraft)
+### **(V.1.4.1 Changes) (1.16.2/1.16.3 Minecraft)**
    
 #### Unregistered worldgen:
 * Add a quick check to prevent crash with TownCraft modpack. 
@@ -222,7 +222,7 @@
   at some weirdness going on in that pack...
 
 
-### (V.1.4.0 Changes) (1.16.2/1.16.3 Minecraft)
+### **(V.1.4.0 Changes) (1.16.2/1.16.3 Minecraft)**
 ####  
 #### Missing nbt file:
 * Will now log any attempt to load any nbt file that doesn't exist
@@ -234,14 +234,14 @@
   There's some weird biome/registry interactions going on that I missed.
 
    
-### (V.1.3.0 Changes) (1.16.2/1.16.3 Minecraft)
+### **(V.1.3.0 Changes) (1.16.2/1.16.3 Minecraft)**
    
 #### Unregistered worldgen:
 * Will now detect any ConfiguredFeature, ConfiguredStructure, or ConfiguredCarver
   that is unregistered as those mods will break other mods that registered properly.
 
 
-### (V.1.2.0 Changes) (1.16.2/1.16.3 Minecraft)
+### **(V.1.2.0 Changes) (1.16.2/1.16.3 Minecraft)**
    
 #### Detection of DynamicRegistry classloading:
 * Will detect if a mod classloaded DynamicRegistry way too
@@ -250,7 +250,7 @@
   which mod is registering things improperly.
 
 
-### (V.1.1.0 Changes) (1.16.2 Minecraft)
+### **(V.1.1.0 Changes) (1.16.2 Minecraft)**
    
 #### JSON file on world loading:
 * When starting up a world and a broken JSON file is found, 
@@ -258,7 +258,7 @@
   JSON file so it can be found and corrected faster! 
 
 
-### (V.1.0.4 Changes) (1.16.2 Minecraft)
+### **(V.1.0.4 Changes) (1.16.2 Minecraft)**
    
 #### Major:
 * Full release of working Blame that doesn't crash itself! Wooooo!!!
