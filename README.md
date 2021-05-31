@@ -29,6 +29,10 @@ Here's are the current stuff Blame can help with!
 • Prints out the name of the crashing structure that has its spacing value set to 0 or if it's separation value is equal to or greater than the spacing value.
 (Either one of these condition being true will crash the game.)
 
+• Condense broken Recipe and Loot Table parsing so you can share logs easier and see errors easier.
+
+• Fixes MC-190122 bug so that the actual true number of recipes loaded and stated in logs is correct to help debugging recipes. https://bugs.mojang.com/browse/MC-190122
+
 • Prints out exactly which structure crashed a custom/flat ChunkGenerator because it wasn't added to FlatGenerationSettings.STRUCTURES
 
 • Will print to logs if a Jigsaw Structure attempts to access a non-existent template pool so you know when a structure is not fully generating.

@@ -41,7 +41,7 @@ public class CommandManagerMixin {
     }
 
     @Inject(method = "execute(Lnet/minecraft/server/command/ServerCommandSource;Ljava/lang/String;)I",
-            at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;isDebugEnabled()Z"),
+            at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;isDebugEnabled()Z", remap = false),
             locals = LocalCapture.CAPTURE_FAILHARD)
     private void printFailedCommandStacktrace(ServerCommandSource commandSource, String commandString, CallbackInfoReturnable<Integer> cir,
                                               Exception exception, MutableText mutableText) {

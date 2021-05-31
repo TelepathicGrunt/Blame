@@ -32,7 +32,7 @@ import java.util.Random;
 public abstract class StructurePoolMixin {
 
     @Redirect(method = "<init>(Lnet/minecraft/util/Identifier;Lnet/minecraft/util/Identifier;Ljava/util/List;)V",
-            at = @At(value = "INVOKE", target = "Lcom/mojang/datafixers/util/Pair;getFirst()Ljava/lang/Object;"))
+            at = @At(value = "INVOKE", target = "Lcom/mojang/datafixers/util/Pair;getFirst()Ljava/lang/Object;", remap = false))
     private <F> F tooLargePool(Pair<F, Integer> pair, Identifier name, Identifier fallback,
                                List<Pair<StructurePoolElement, Integer>> pieceElements) {
         if (pair.getSecond() > 100000) {

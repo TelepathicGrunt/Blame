@@ -51,7 +51,7 @@ public class StructurePoolBasedGeneratorStructurePoolGeneratorMixin {
 
 
     @Inject(method = "generatePiece(Lnet/minecraft/structure/PoolStructurePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZ)V",
-            at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", ordinal = 0),
+            at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", ordinal = 0, remap = false),
             locals = LocalCapture.CAPTURE_FAILHARD)
     private void printMissingPoolDetails1(PoolStructurePiece piece, MutableObject<VoxelShape> mutableObject, int minY, int currentSize,
                                           boolean bl, CallbackInfo ci, StructurePoolElement structurePoolElement, BlockPos blockPos,
@@ -63,7 +63,7 @@ public class StructurePoolBasedGeneratorStructurePoolGeneratorMixin {
     }
 
     @Inject(method = "generatePiece(Lnet/minecraft/structure/PoolStructurePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZ)V",
-            at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", ordinal = 1),
+            at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false, ordinal = 1),
             locals = LocalCapture.CAPTURE_FAILHARD)
     private void printMissingPoolDetails2(PoolStructurePiece piece, MutableObject<VoxelShape> mutableObject, int minY, int currentSize,
                                           boolean bl, CallbackInfo ci, StructurePoolElement structurePoolElement, BlockPos blockPos,
