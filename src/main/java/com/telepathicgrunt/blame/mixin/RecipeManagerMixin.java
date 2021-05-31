@@ -18,13 +18,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(RecipeManager.class)
-public abstract class RecipeManagerMixin extends JsonReloadListener {
+public class RecipeManagerMixin {
+    
     @Shadow
     private Map<IRecipeType<?>, Map<ResourceLocation, IRecipe<?>>> recipes;
-
-    private RecipeManagerMixin(Gson gson, String key) {
-        super(gson, key);
-    }
 
     /**
      * Log a more useful message. Full stack trace is not useful. Concise, readable errors are useful.

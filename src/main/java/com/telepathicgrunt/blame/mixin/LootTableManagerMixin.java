@@ -25,10 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * LGPLv3
  */
 @Mixin(LootTableManager.class)
-public abstract class LootTableManagerMixin extends JsonReloadListener {
-    private LootTableManagerMixin(Gson gson_, String string_) {
-        super(gson_, string_);
-    }
+public class LootTableManagerMixin {
 
     @Shadow
     private Map<ResourceLocation, LootTable> tables;
