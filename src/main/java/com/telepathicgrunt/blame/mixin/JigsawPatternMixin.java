@@ -25,7 +25,7 @@ import java.util.List;
 public class JigsawPatternMixin {
 
     @Redirect(method = "<init>(Lnet/minecraft/util/ResourceLocation;Lnet/minecraft/util/ResourceLocation;Ljava/util/List;)V",
-            at = @At(value = "INVOKE", target = "Lcom/mojang/datafixers/util/Pair;getFirst()Ljava/lang/Object;"))
+            at = @At(value = "INVOKE", target = "Lcom/mojang/datafixers/util/Pair;getFirst()Ljava/lang/Object;"), remap = false)
     private <F> F tooLargePool(Pair<F, Integer> pair, ResourceLocation name, ResourceLocation fallback, List<Pair<JigsawPiece, Integer>> pieceElements) {
         if (pair.getSecond() > 100000) {
             JigsawPatternBlame.printExcessiveWeight(name, (Pair<JigsawPiece, Integer>) pair);

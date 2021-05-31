@@ -41,7 +41,7 @@ public class CommandsMixin<S> {
 
     @Inject(method = "performCommand(Lnet/minecraft/command/CommandSource;Ljava/lang/String;)I",
             at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;isDebugEnabled()Z"),
-            locals = LocalCapture.CAPTURE_FAILHARD)
+            locals = LocalCapture.CAPTURE_FAILHARD, remap = false)
     private void printFailedCommandStacktrace(CommandSource commandSource, String commandString, CallbackInfoReturnable<Integer> cir,
                                               StringReader stringreader, Exception exception,
                                               IFormattableTextComponent iformattabletextcomponent) {

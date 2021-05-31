@@ -52,7 +52,7 @@ public class JigsawManagerAssemblerMixin {
 
     @Inject(method = "tryPlacingChildren(Lnet/minecraft/world/gen/feature/structure/AbstractVillagePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZ)V",
             at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", ordinal = 0),
-            locals = LocalCapture.CAPTURE_FAILHARD)
+            locals = LocalCapture.CAPTURE_FAILHARD, remap = false)
     private void printMissingPoolDetails1(AbstractVillagePiece abstractVillagePiece, MutableObject<VoxelShape> voxelShapeMutableObject,
                                           int i1, int i2, boolean b, CallbackInfo ci, JigsawPiece structurePoolElement, BlockPos blockPos,
                                           Rotation blockRotation, JigsawPattern.PlacementBehaviour projection, boolean bl2,
@@ -64,7 +64,7 @@ public class JigsawManagerAssemblerMixin {
 
     @Inject(method = "tryPlacingChildren(Lnet/minecraft/world/gen/feature/structure/AbstractVillagePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZ)V",
             at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", ordinal = 1),
-            locals = LocalCapture.CAPTURE_FAILHARD)
+            locals = LocalCapture.CAPTURE_FAILHARD, remap = false)
     private void printMissingPoolDetails2(AbstractVillagePiece abstractVillagePiece, MutableObject<VoxelShape> voxelShapeMutableObject,
                                           int i1, int i2, boolean b, CallbackInfo ci, JigsawPiece structurePoolElement, BlockPos blockPos,
                                           Rotation blockRotation, JigsawPattern.PlacementBehaviour projection, boolean bl2,
