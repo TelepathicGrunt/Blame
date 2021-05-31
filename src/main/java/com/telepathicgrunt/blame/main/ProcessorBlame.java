@@ -18,24 +18,24 @@ import org.apache.logging.log4j.Level;
  */
 public class ProcessorBlame {
 
-	public static Structure.StructureBlockInfo findBrokenProcessor(StructureProcessor structureProcessor, WorldView world, BlockPos blockPos1, BlockPos blockPos2, Structure.StructureBlockInfo blockInfo1, Structure.StructureBlockInfo blockInfo2, StructurePlacementData placementSettings) {
-		try{
-			return structureProcessor.process(world, blockPos1, blockPos2, blockInfo1, blockInfo2, placementSettings);
-		}
-		catch (Exception e){
-			String blockBeingProcessed = blockInfo1.state.toString();
-			String blockNBT = "";
-			if(blockInfo1.tag != null){
-				Gson gson = new GsonBuilder().setPrettyPrinting().create();
-				blockNBT = gson.toJson(blockInfo1.tag);
-			}
+    public static Structure.StructureBlockInfo findBrokenProcessor(StructureProcessor structureProcessor, WorldView world, BlockPos blockPos1, BlockPos blockPos2, Structure.StructureBlockInfo blockInfo1, Structure.StructureBlockInfo blockInfo2, StructurePlacementData placementSettings) {
+        try {
+            return structureProcessor.process(world, blockPos1, blockPos2, blockInfo1, blockInfo2, placementSettings);
+        }
+        catch (Exception e) {
+            String blockBeingProcessed = blockInfo1.state.toString();
+            String blockNBT = "";
+            if (blockInfo1.tag != null) {
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                blockNBT = gson.toJson(blockInfo1.tag);
+            }
 
-			String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
-					"\n\n Processor blew up trying to process a block." +
-					"\n Block being processed: " + blockBeingProcessed +
-					"\n NBT of the block being processed: " + blockNBT;
-			Blame.LOGGER.log(Level.ERROR, errorReport);
-			throw e;
-		}
-	}
+            String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+                    "\n\n Processor blew up trying to process a block." +
+                    "\n Block being processed: " + blockBeingProcessed +
+                    "\n NBT of the block being processed: " + blockNBT;
+            Blame.LOGGER.log(Level.ERROR, errorReport);
+            throw e;
+        }
+    }
 }

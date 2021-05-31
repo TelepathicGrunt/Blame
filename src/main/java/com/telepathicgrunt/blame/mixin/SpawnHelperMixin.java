@@ -28,14 +28,13 @@ import static com.telepathicgrunt.blame.main.SpawnHelperBlame.addFeatureDetails;
 @Mixin(SpawnHelper.class)
 public class SpawnHelperMixin {
 
-	@Inject(method = "pickRandomSpawnEntry(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/entity/SpawnGroup;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/world/biome/SpawnSettings$SpawnEntry;",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/util/collection/WeightedPicker;getRandom(Ljava/util/Random;Ljava/util/List;)Lnet/minecraft/util/collection/WeightedPicker$Entry;", ordinal = 0),
-			locals = LocalCapture.CAPTURE_FAILHARD)
-	private static void checkIfMobSpawnWillCrash(ServerWorld serverWorld, StructureAccessor structureAccessor,
-												 ChunkGenerator chunkGenerator, SpawnGroup spawnGroup,
-												 Random random, BlockPos pos, CallbackInfoReturnable<SpawnSettings.SpawnEntry> cir,
-												 Biome biome, List<SpawnSettings.SpawnEntry> list)
-	{
-		addFeatureDetails(serverWorld, spawnGroup, pos, biome, list);
-	}
+    @Inject(method = "pickRandomSpawnEntry(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/entity/SpawnGroup;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/world/biome/SpawnSettings$SpawnEntry;",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/util/collection/WeightedPicker;getRandom(Ljava/util/Random;Ljava/util/List;)Lnet/minecraft/util/collection/WeightedPicker$Entry;", ordinal = 0),
+            locals = LocalCapture.CAPTURE_FAILHARD)
+    private static void checkIfMobSpawnWillCrash(ServerWorld serverWorld, StructureAccessor structureAccessor,
+                                                 ChunkGenerator chunkGenerator, SpawnGroup spawnGroup,
+                                                 Random random, BlockPos pos, CallbackInfoReturnable<SpawnSettings.SpawnEntry> cir,
+                                                 Biome biome, List<SpawnSettings.SpawnEntry> list) {
+        addFeatureDetails(serverWorld, spawnGroup, pos, biome, list);
+    }
 }

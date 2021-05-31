@@ -28,11 +28,13 @@ public class PrettyPrintBrokenJSON {
 
                 if (ignoreNext) {
                     ignoreNext = false;
-                } else if (character == '"') {
+                }
+                else if (character == '"') {
                     inQuote = false;
                 }
                 prettyPrintJson.append(character);
-            } else {
+            }
+            else {
 
                 if (ignoreNext) {
                     ignoreNext = !ignoreNext;

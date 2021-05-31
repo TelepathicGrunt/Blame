@@ -27,22 +27,21 @@ import java.util.Map;
 @Mixin(FlatChunkGeneratorConfig.class)
 public class FlatChunkGeneratorConfigMixin {
 
-	@Shadow
-	@Final
-	private static Map<StructureFeature<?>, ConfiguredStructureFeature<?, ?>> STRUCTURE_TO_FEATURES;
+    @Shadow
+    @Final
+    private static Map<StructureFeature<?>, ConfiguredStructureFeature<?, ?>> STRUCTURE_TO_FEATURES;
 
-	/**
-	 * Will detect if someone added the structure spacing to the chunkgenerator without adding
-	 * the structure to the FlatChunkGeneratorConfig's STRUCTURE_FEATURE map. Doing so will cause a crash.
-	 * This mixin will say what structure it was that triggered it.
-	 */
-	@Inject(method = "createBiome()Lnet/minecraft/world/biome/Biome;",
-			at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"),
-			locals = LocalCapture.CAPTURE_FAILHARD)
-	private void addCrashDetails(CallbackInfoReturnable<Biome> cir, Biome biome, GenerationSettings generationSettings,
-								 GenerationSettings.Builder biomegenerationsettings$builder, Iterator<?> var4,
-								 Map.Entry<StructureFeature<?>, ConfiguredStructureFeature<?, ?>> structureEntry)
-	{
-		FlatChunkGeneratorConfigBlame.addCrashDetails(STRUCTURE_TO_FEATURES, structureEntry);
-	}
+    /**
+     * Will detect if someone added the structure spacing to the chunkgenerator without adding
+     * the structure to the FlatChunkGeneratorConfig's STRUCTURE_FEATURE map. Doing so will cause a crash.
+     * This mixin will say what structure it was that triggered it.
+     */
+    @Inject(method = "createBiome()Lnet/minecraft/world/biome/Biome;",
+            at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"),
+            locals = LocalCapture.CAPTURE_FAILHARD)
+    private void addCrashDetails(CallbackInfoReturnable<Biome> cir, Biome biome, GenerationSettings generationSettings,
+                                 GenerationSettings.Builder biomegenerationsettings$builder, Iterator<?> var4,
+                                 Map.Entry<StructureFeature<?>, ConfiguredStructureFeature<?, ?>> structureEntry) {
+        FlatChunkGeneratorConfigBlame.addCrashDetails(STRUCTURE_TO_FEATURES, structureEntry);
+    }
 }

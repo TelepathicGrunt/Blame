@@ -25,17 +25,16 @@ import java.net.Proxy;
  *
  * LGPLv3
  */
-@Mixin(value=MinecraftServer.class, priority = 10000)
+@Mixin(value = MinecraftServer.class, priority = 10000)
 public class MinecraftServerMixin {
 
-	/**
-	 * The main hook for the parser to work from. This will check every biomes in the
-	 * DynamicRegistry to see if it has exploded due to unregistered stuff added to it.
-	 */
-	@Inject(method = "<init>",
-			at = @At(value = "RETURN"), require = 1)
-	private void init(Thread thread, DynamicRegistryManager.Impl impl, LevelStorage.Session session, SaveProperties saveProperties, ResourcePackManager resourcePackManager, Proxy proxy, DataFixer dataFixer, ServerResourceManager serverResourceManager, MinecraftSessionService minecraftSessionService, GameProfileRepository gameProfileRepository, UserCache userCache, WorldGenerationProgressListenerFactory worldGenerationProgressListenerFactory, CallbackInfo ci)
-	{
-		DynamicRegistryManagerBlame.printUnregisteredWorldgenConfiguredStuff(impl);
-	}
+    /**
+     * The main hook for the parser to work from. This will check every biomes in the
+     * DynamicRegistry to see if it has exploded due to unregistered stuff added to it.
+     */
+    @Inject(method = "<init>",
+            at = @At(value = "RETURN"), require = 1)
+    private void init(Thread thread, DynamicRegistryManager.Impl impl, LevelStorage.Session session, SaveProperties saveProperties, ResourcePackManager resourcePackManager, Proxy proxy, DataFixer dataFixer, ServerResourceManager serverResourceManager, MinecraftSessionService minecraftSessionService, GameProfileRepository gameProfileRepository, UserCache userCache, WorldGenerationProgressListenerFactory worldGenerationProgressListenerFactory, CallbackInfo ci) {
+        DynamicRegistryManagerBlame.printUnregisteredWorldgenConfiguredStuff(impl);
+    }
 }

@@ -19,12 +19,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(StructureFeature.class)
 public class StructureFeatureMixin {
 
-	@Inject(method = "getStartChunk(Lnet/minecraft/world/gen/chunk/StructureConfig;JLnet/minecraft/world/gen/ChunkRandom;II)Lnet/minecraft/util/math/ChunkPos;",
-			at = @At(value = "HEAD"))
-	private void checkSpacing(StructureConfig config, long worldSeed, ChunkRandom placementRandom, int chunkX, int chunkY, CallbackInfoReturnable<ChunkPos> cir)
-	{
-		if(config.getSpacing() == 0 || config.getSpacing() - config.getSeparation() <= 0){
-			StructureFeatureBlame.printStructureSpacingBlame((StructureFeature<?>)(Object)this, config);
-		}
-	}
+    @Inject(method = "getStartChunk(Lnet/minecraft/world/gen/chunk/StructureConfig;JLnet/minecraft/world/gen/ChunkRandom;II)Lnet/minecraft/util/math/ChunkPos;",
+            at = @At(value = "HEAD"))
+    private void checkSpacing(StructureConfig config, long worldSeed, ChunkRandom placementRandom, int chunkX, int chunkY, CallbackInfoReturnable<ChunkPos> cir) {
+        if (config.getSpacing() == 0 || config.getSpacing() - config.getSeparation() <= 0) {
+            StructureFeatureBlame.printStructureSpacingBlame((StructureFeature<?>) (Object) this, config);
+        }
+    }
 }

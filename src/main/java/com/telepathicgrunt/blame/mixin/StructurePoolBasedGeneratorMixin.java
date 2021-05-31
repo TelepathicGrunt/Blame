@@ -29,15 +29,14 @@ import java.util.Random;
 @Mixin(StructurePoolBasedGenerator.class)
 public class StructurePoolBasedGeneratorMixin {
 
-	@Inject(method = "method_30419(Lnet/minecraft/util/registry/DynamicRegistryManager;Lnet/minecraft/world/gen/feature/StructurePoolFeatureConfig;Lnet/minecraft/structure/pool/StructurePoolBasedGenerator$PieceFactory;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/structure/StructureManager;Lnet/minecraft/util/math/BlockPos;Ljava/util/List;Ljava/util/Random;ZZ)V",
-			at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/structure/pool/StructurePool;getRandomElement(Ljava/util/Random;)Lnet/minecraft/structure/pool/StructurePoolElement;"),
-			locals = LocalCapture.CAPTURE_FAILHARD)
-	private static void storeCurrentPool(DynamicRegistryManager dynamicRegistryManager, StructurePoolFeatureConfig structurePoolFeatureConfig,
-										 StructurePoolBasedGenerator.PieceFactory pieceFactory, ChunkGenerator chunkGenerator,
-										 StructureManager structureManager, BlockPos blockPos, List<? super PoolStructurePiece> list,
-										 Random random, boolean bl, boolean bl2, CallbackInfo ci, MutableRegistry<StructurePool> mutableRegistry,
-										 BlockRotation blockRotation, StructurePool structurePool)
-	{
-		MissingNBTBlame.CALLING_POOL = structurePool.getId();
-	}
+    @Inject(method = "method_30419(Lnet/minecraft/util/registry/DynamicRegistryManager;Lnet/minecraft/world/gen/feature/StructurePoolFeatureConfig;Lnet/minecraft/structure/pool/StructurePoolBasedGenerator$PieceFactory;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/structure/StructureManager;Lnet/minecraft/util/math/BlockPos;Ljava/util/List;Ljava/util/Random;ZZ)V",
+            at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/structure/pool/StructurePool;getRandomElement(Ljava/util/Random;)Lnet/minecraft/structure/pool/StructurePoolElement;"),
+            locals = LocalCapture.CAPTURE_FAILHARD)
+    private static void storeCurrentPool(DynamicRegistryManager dynamicRegistryManager, StructurePoolFeatureConfig structurePoolFeatureConfig,
+                                         StructurePoolBasedGenerator.PieceFactory pieceFactory, ChunkGenerator chunkGenerator,
+                                         StructureManager structureManager, BlockPos blockPos, List<? super PoolStructurePiece> list,
+                                         Random random, boolean bl, boolean bl2, CallbackInfo ci, MutableRegistry<StructurePool> mutableRegistry,
+                                         BlockRotation blockRotation, StructurePool structurePool) {
+        MissingNBTBlame.CALLING_POOL = structurePool.getId();
+    }
 }

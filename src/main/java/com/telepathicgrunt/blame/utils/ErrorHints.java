@@ -8,7 +8,7 @@ public class ErrorHints {
     public static final Map<String, String> HINT_MAP = createHintMap();
 
     private static Map<String, String> createHintMap() {
-        Map<String,String> errorMap = new HashMap<>();
+        Map<String, String> errorMap = new HashMap<>();
 
         errorMap.put("Not a json array",
                 "\n     This error typically means you need an certain kind of JSON array surrounding" +
@@ -31,6 +31,11 @@ public class ErrorHints {
                 "\n     The allowed range should be specified below in \"Prettified form of the broken JSON:\"" +
                 "\n     The two values are separated by a - dash. That means -10-256 means between -10 and 256." +
                 "\n     Let the modder know to correct their out-of-bounds value.");
+
+        errorMap.put("Unknown registry key",
+                "\n     An key that was suppose to point to a registry entry was unable to find the entry." +
+                        "\n     Contact the modder so that they can check to see they didn't typo the below" +
+                        "\n     resourcelocation or forgot to register their stuff.");
 
         return errorMap;
     }

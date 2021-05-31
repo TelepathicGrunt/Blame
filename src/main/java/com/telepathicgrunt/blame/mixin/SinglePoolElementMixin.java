@@ -19,15 +19,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(SinglePoolElement.class)
 public class SinglePoolElementMixin {
 
-	@Inject(method = "method_27233(Lnet/minecraft/structure/StructureManager;)Lnet/minecraft/structure/Structure;",
-			at = @At(value = "HEAD"))
-	private void storeCurrentPool(StructureManager structureManager, CallbackInfoReturnable<BlockBox> cir)
-	{
-		if(MissingNBTBlame.CALLING_POOL != null &((SinglePoolElementAccessor)this).blame_getTemplateID().left().isPresent()){
-			MissingNBTBlame.storeCurrentIdentifiers(new Pair<>(MissingNBTBlame.CALLING_POOL, ((SinglePoolElementAccessor)this).blame_getTemplateID().left().get()));
-		}
-		else{
-			MissingNBTBlame.storeCurrentIdentifiers(null);
-		}
-	}
+    @Inject(method = "method_27233(Lnet/minecraft/structure/StructureManager;)Lnet/minecraft/structure/Structure;",
+            at = @At(value = "HEAD"))
+    private void storeCurrentPool(StructureManager structureManager, CallbackInfoReturnable<BlockBox> cir) {
+        if (MissingNBTBlame.CALLING_POOL != null & ((SinglePoolElementAccessor) this).blame_getTemplateID().left().isPresent()) {
+            MissingNBTBlame.storeCurrentIdentifiers(new Pair<>(MissingNBTBlame.CALLING_POOL, ((SinglePoolElementAccessor) this).blame_getTemplateID().left().get()));
+        }
+        else {
+            MissingNBTBlame.storeCurrentIdentifiers(null);
+        }
+    }
 }

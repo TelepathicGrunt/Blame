@@ -31,50 +31,46 @@ import java.util.Random;
 @Mixin(StructurePool.class)
 public abstract class StructurePoolMixin {
 
-	@Redirect(method = "<init>(Lnet/minecraft/util/Identifier;Lnet/minecraft/util/Identifier;Ljava/util/List;)V",
-			at = @At(value = "INVOKE", target = "Lcom/mojang/datafixers/util/Pair;getFirst()Ljava/lang/Object;"))
-	private <F> F tooLargePool(Pair<F, Integer> pair, Identifier name, Identifier fallback,
-							   List<Pair<StructurePoolElement, Integer>> pieceElements)
-	{
-		if(pair.getSecond() > 100000){
-			StructurePoolBlame.printExcessiveWeight(name, (Pair<StructurePoolElement, Integer>) pair);
-		}
+    @Redirect(method = "<init>(Lnet/minecraft/util/Identifier;Lnet/minecraft/util/Identifier;Ljava/util/List;)V",
+            at = @At(value = "INVOKE", target = "Lcom/mojang/datafixers/util/Pair;getFirst()Ljava/lang/Object;"))
+    private <F> F tooLargePool(Pair<F, Integer> pair, Identifier name, Identifier fallback,
+                               List<Pair<StructurePoolElement, Integer>> pieceElements) {
+        if (pair.getSecond() > 100000) {
+            StructurePoolBlame.printExcessiveWeight(name, (Pair<StructurePoolElement, Integer>) pair);
+        }
 
-		return pair.getFirst();
-	}
+        return pair.getFirst();
+    }
 
-	@Final
-	@Shadow
-	private List<StructurePoolElement> elements;
+    @Final
+    @Shadow
+    private List<StructurePoolElement> elements;
 
-	@Final
-	@Shadow
-	private Identifier id;
+    @Final
+    @Shadow
+    private Identifier id;
 
-	// Detect and print the empty template pool that is gonna crash game.
-	@Inject(method = "getRandomElement(Ljava/util/Random;)Lnet/minecraft/structure/pool/StructurePoolElement;",
-			at = @At(value = "HEAD"))
-	private void isEmptyPool(Random random, CallbackInfoReturnable<StructurePoolElement> cir)
-	{
-		if(elements.size() == 0){
-			MissingTemplatePoolBlame.addEmptyPoolDetails(id, null);
-		}
-	}
+    // Detect and print the empty template pool that is gonna crash game.
+    @Inject(method = "getRandomElement(Ljava/util/Random;)Lnet/minecraft/structure/pool/StructurePoolElement;",
+            at = @At(value = "HEAD"))
+    private void isEmptyPool(Random random, CallbackInfoReturnable<StructurePoolElement> cir) {
+        if (elements.size() == 0) {
+            MissingTemplatePoolBlame.addEmptyPoolDetails(id, null);
+        }
+    }
 
-	// Make it so TemplateManager actually states what nbt file was unable to be found.
-	@Inject(method = "getHighestY(Lnet/minecraft/structure/StructureManager;)I",
-			at = @At(value = "HEAD"))
-	private void tempPool(StructureManager structureManager, CallbackInfoReturnable<Integer> cir)
-	{
-		MissingNBTBlame.CALLING_POOL = ((StructurePool)(Object)this).getId();
-	}
+    // Make it so TemplateManager actually states what nbt file was unable to be found.
+    @Inject(method = "getHighestY(Lnet/minecraft/structure/StructureManager;)I",
+            at = @At(value = "HEAD"))
+    private void tempPool(StructureManager structureManager, CallbackInfoReturnable<Integer> cir) {
+        MissingNBTBlame.CALLING_POOL = ((StructurePool) (Object) this).getId();
+    }
 
-	// Make it so TemplateManager actually states what nbt file was unable to be found.
-	@Inject(method = "getHighestY(Lnet/minecraft/structure/StructureManager;)I",
-			at = @At(value = "TAIL"))
-	private void tempPoolClear(StructureManager structureManager, CallbackInfoReturnable<Integer> cir)
-	{
-		MissingNBTBlame.CALLING_POOL = null;
-	}
+    // Make it so TemplateManager actually states what nbt file was unable to be found.
+    @Inject(method = "getHighestY(Lnet/minecraft/structure/StructureManager;)I",
+            at = @At(value = "TAIL"))
+    private void tempPoolClear(StructureManager structureManager, CallbackInfoReturnable<Integer> cir) {
+        MissingNBTBlame.CALLING_POOL = null;
+    }
 
 }

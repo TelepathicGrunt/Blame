@@ -26,28 +26,27 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(CommandManager.class)
 public class CommandManagerMixin {
 
-	@Shadow
-	@Final
-	private CommandDispatcher<CommandSource> dispatcher;
+    @Shadow
+    @Final
+    private CommandDispatcher<CommandSource> dispatcher;
 
-	@Shadow
-	@Final
-	private static Logger LOGGER;
+    @Shadow
+    @Final
+    private static Logger LOGGER;
 
-	@Inject(method = "<init>",
-			at = @At(value = "RETURN"))
-	private void onInit(CommandManager.RegistrationEnvironment environment, CallbackInfo ci) {
-		BrokenCommandBlame.detectBrokenCommand(dispatcher);
-	}
+    @Inject(method = "<init>",
+            at = @At(value = "RETURN"))
+    private void onInit(CommandManager.RegistrationEnvironment environment, CallbackInfo ci) {
+        BrokenCommandBlame.detectBrokenCommand(dispatcher);
+    }
 
-	@Inject(method = "execute(Lnet/minecraft/server/command/ServerCommandSource;Ljava/lang/String;)I",
-			at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;isDebugEnabled()Z"),
-			locals = LocalCapture.CAPTURE_FAILHARD)
-	private void printFailedCommandStacktrace(ServerCommandSource commandSource, String commandString, CallbackInfoReturnable<Integer> cir,
-											  Exception exception, MutableText mutableText)
-	{
-		if(!LOGGER.isDebugEnabled()) {
-			BrokenCommandBlame.printStacktrace(commandString, LOGGER, exception, mutableText);
-		}
-	}
+    @Inject(method = "execute(Lnet/minecraft/server/command/ServerCommandSource;Ljava/lang/String;)I",
+            at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;isDebugEnabled()Z"),
+            locals = LocalCapture.CAPTURE_FAILHARD)
+    private void printFailedCommandStacktrace(ServerCommandSource commandSource, String commandString, CallbackInfoReturnable<Integer> cir,
+                                              Exception exception, MutableText mutableText) {
+        if (!LOGGER.isDebugEnabled()) {
+            BrokenCommandBlame.printStacktrace(commandString, LOGGER, exception, mutableText);
+        }
+    }
 }
