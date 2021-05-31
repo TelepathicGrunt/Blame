@@ -32,6 +32,11 @@ public class ErrorHints {
                 "\n     The two values are separated by a - dash. That means -10-256 means between -10 and 256." +
                 "\n     Let the modder know to correct their out-of-bounds value.");
 
+        errorMap.put("Unknown registry key",
+                "\n     An key that was suppose to point to a registry entry was unable to find the entry." +
+                "\n     Contact the modder so that they can check to see they didn't typo the below" +
+                "\n     resourcelocation or forgot to register their stuff.");
+
         return errorMap;
     }
 }

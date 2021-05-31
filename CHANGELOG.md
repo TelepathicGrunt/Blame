@@ -1,7 +1,14 @@
-## (V.3.0.2 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
+## (V.3.1.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
 
 ### Dynamic Registry:
 • Fixed false positive report appearing saying the DynamicRegistry was classloaded too early when it wasn't outside of development environment.
+
+• Fixed a single Blame Report being printed multiple times because Minecraft makes a single error cascading through multiple files.
+
+• Added hint for "Unknown registry key" errors.
+
+### Loot Table/Recipes:
+• Condensed Recipe and Loot Table errors so that they do not make finding other errors way more difficult than it needs to be and helps make logs more easily sharable. 
 
 
 ## (V.3.0.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)

@@ -35,7 +35,8 @@ public class WorldSettingsImportBlame {
             erroredResources.add(fullKey);
 
             String currentResource = id + ".json";
-            String reason = null, brokenJSON;
+            String reason;
+            String brokenJSON;
 
             try {
                 String[] parsed = partial.message().split(": \\{", 2);
@@ -49,8 +50,8 @@ public class WorldSettingsImportBlame {
                     brokenJSON = "[" + parsed[1];
                 }
                 catch (Exception e2) {
-                    brokenJSON = "Failed to turn error msg into string. Please notify " +
-                            "TelepathicGrunt (Blame creator) and show him this message:  \n" + partial.message();
+                    reason = partial.message();
+                    brokenJSON = partial.message();
                 }
             }
 
