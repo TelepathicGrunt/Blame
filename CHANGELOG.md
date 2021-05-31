@@ -10,6 +10,10 @@
 ### Loot Table/Recipes:
 • Condensed Recipe and Loot Table errors so that they do not make finding other errors way more difficult than it needs to be and helps make logs more easily sharable. 
 
+### Recipes:
+• Fixes MC-190122 bug so that the actual true number of recipes loaded is correct to help debugging recipes. 
+  https://bugs.mojang.com/browse/MC-190122
+
 
 ## (V.3.0.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
 

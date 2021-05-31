@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
+import com.telepathicgrunt.blame.Blame;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.client.resources.JsonReloadListener;
 import net.minecraft.item.crafting.IRecipe;
@@ -31,12 +32,12 @@ public abstract class RecipeManagerMixin extends JsonReloadListener {
      */
     @Redirect(method = "apply", at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false), require = 0)
     private void simplifyInvalidRecipeLogOutput(Logger logger, String message, Object p0, Object p1) {
-        logger.error(message + " {}: {} (Blame: suppressed long stacktrace)", p0, p1.getClass().getSimpleName(), ((Exception) p1).getMessage());
+        logger.error(message + " {}: {} (Blame {}: suppressed long stacktrace)", p0, p1.getClass().getSimpleName(), ((Exception) p1).getMessage(), Blame.VERSION);
     }
 
     /**
      * This fixes a stupid vanilla bug - when it logs "Loaded X recipes", it actually logs the number of recipe types, not the number of recipes. `require = 0` as this is the definition of non-essential
-     * See MC-190122
+     * See MC-190122 https://bugs.mojang.com/browse/MC-190122
      */
     @Redirect(method = "apply", at = @At(value = "INVOKE", target = "Ljava/util/Map;size()I"), require = 0)
     private int redirect$apply$size(Map<IRecipeType<?>, ImmutableMap.Builder<ResourceLocation, IRecipe<?>>> map) {
