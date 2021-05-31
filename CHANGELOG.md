@@ -1,3 +1,9 @@
+## (V.3.0.2 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
+
+### Dynamic Registry:
+• Fixed false positive report appearing saying the DynamicRegistry was classloaded too early when it wasn't outside of development environment.
+
+
 ## (V.3.0.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)
 
 ### Flat Chunk Generator:

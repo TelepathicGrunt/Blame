@@ -36,13 +36,13 @@ public class DynamicRegistriesBlame {
 		// vanilla loaded DynamicRegistries safely. No panic.
 		// Did you know clients have 3 places that classloads DynamicRegistries but server has only 1?
 		if((stack.getClassName().equals("net.minecraft.client.gui.screen.CreateWorldScreen") &&
-			stack.getMethodName().equals("create")) ||
+			(stack.getMethodName().equals("create") || stack.getMethodName().equals("func_243425_a"))) ||
 
 			(stack.getClassName().equals("net.minecraft.client.Minecraft") &&
-			(stack.getMethodName().equals("loadLevel") || stack.getMethodName().equals("loadWorld"))) ||
+			(stack.getMethodName().equals("loadLevel") || stack.getMethodName().equals("loadWorld") || stack.getMethodName().equals("func_238191_a_"))) ||
 
 			(stack.getClassName().equals("net.minecraft.server.Main") &&
-			stack.getMethodName().equals("main")) ||
+			(stack.getMethodName().equals("main") || stack.getMethodName().equals("func_238191_a_"))) ||
 
 			(stack.getClassName().equals("net.minecraft.client.network.play.ClientPlayNetHandler") &&
 			stack.getMethodName().equals("<init>")))
