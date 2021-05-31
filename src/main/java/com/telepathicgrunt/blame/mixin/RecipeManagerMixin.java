@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(RecipeManager.class)
 public class RecipeManagerMixin {
-    
+
     @Shadow
     private Map<IRecipeType<?>, Map<ResourceLocation, IRecipe<?>>> recipes;
 

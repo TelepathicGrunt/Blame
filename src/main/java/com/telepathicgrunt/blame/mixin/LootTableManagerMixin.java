@@ -42,7 +42,8 @@ public class LootTableManagerMixin {
      * Log a more useful message. Full stack trace is not useful. Concise, readable errors are useful.
      */
     @SuppressWarnings("UnresolvedMixinReference")
-    @Redirect(method = "*(Lnet/minecraft/resources/IResourceManager;Lcom/google/common/collect/ImmutableMap$Builder;Lnet/minecraft/util/ResourceLocation;Lcom/google/gson/JsonElement;)V", at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"), require = 0, remap = false)
+    @Redirect(method = "*(Lnet/minecraft/resources/IResourceManager;Lcom/google/common/collect/ImmutableMap$Builder;Lnet/minecraft/util/ResourceLocation;Lcom/google/gson/JsonElement;)V",
+            at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false), require = 0)
     private void simplifyInvalidLootTableLogOutput(Logger logger, String message, Object p0, Object p1) {
         logger.error(message + " {}: {} (Blame {}: suppressed long stacktrace)", p0, p1.getClass().getSimpleName(), ((Exception) p1).getMessage(), Blame.VERSION);
     }

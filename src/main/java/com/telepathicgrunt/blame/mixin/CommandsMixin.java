@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
  * LGPLv3
  */
 @Mixin(Commands.class)
-public class CommandsMixin<S> {
+public class CommandsMixin {
 
     @Shadow
     @Final
@@ -40,8 +40,8 @@ public class CommandsMixin<S> {
     }
 
     @Inject(method = "performCommand(Lnet/minecraft/command/CommandSource;Ljava/lang/String;)I",
-            at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;isDebugEnabled()Z"),
-            locals = LocalCapture.CAPTURE_FAILHARD, remap = false)
+            at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;isDebugEnabled()Z", remap = false),
+            locals = LocalCapture.CAPTURE_FAILHARD)
     private void printFailedCommandStacktrace(CommandSource commandSource, String commandString, CallbackInfoReturnable<Integer> cir,
                                               StringReader stringreader, Exception exception,
                                               IFormattableTextComponent iformattabletextcomponent) {
