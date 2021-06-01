@@ -80,7 +80,7 @@ public class RegistryOpsBlame {
                             + "\n\n Failed to load resource file: " + currentResource
                             + "\n\n Reason stated: " + reason
                             + "\n\n Possibly helpful hint (hopefully): " + hint
-                            + "\n\n Prettified form of the broken JSON: \n" + (brokenJSON != null ? PrettyPrintBrokenJSON.prettyPrintJSONAsString(brokenJSON) : " Unable to display JSON. ")
+                            + "\n\n Prettified form of the broken JSON: \n" + PrettyPrintBrokenJSON.prettyPrintJSONAsString(brokenJSON)
                             + "\n\n"
             );
         });
