@@ -6,7 +6,11 @@
 
 Blame is a mod that aims to help print out more infos for errors, crashes, and issues that usually lacks any help in the logs. Blame solely exists as a diagnosis mod and will not prevent any crashes or fix anything.
 
+&nbsp;
+
 Here's are the current stuff Blame can help with!
+
+<details>
 
 • Prints out the stacktrace for commands that crashed when used.
 (Normally, modded commands do not print anything to logs when they crash)
@@ -43,6 +47,9 @@ Here's are the current stuff Blame can help with!
 
 • Will print out what block, its nbt, and what nbt file crashed a structure processor during structure generation.
 
+</details>
+
+&nbsp;
 
 ### USING BLAME IN DEV ENVIRONMENT
 
