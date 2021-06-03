@@ -1,3 +1,11 @@
+### **(V.3.2.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
+
+#### Worldgen Mob Spawning:
+* Added check to print more info if creature mobs crash during worldgen creation of chunks.
+  
+* Fixed logging not actually working for crashes caused by mob spawning lists having zero or negative weight.
+
+
 ### **(V.3.1.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
 
 #### Dynamic Registry:

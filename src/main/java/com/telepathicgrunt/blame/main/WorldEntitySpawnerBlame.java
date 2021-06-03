@@ -7,6 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
@@ -23,7 +24,7 @@ import java.util.List;
  */
 public class WorldEntitySpawnerBlame {
 
-    public static void addFeatureDetails(ServerWorld serverWorld, EntityClassification entityClassification, BlockPos pos, Biome biome, List<MobSpawnInfo.Spawners> list) {
+    public static void addMobCrashDetails(ServerWorld serverWorld, EntityClassification entityClassification, BlockPos pos, Biome biome, List<MobSpawnInfo.Spawners> list) {
         // Figure out if mob spawning is gonna crash game and to run our code if so.
         int totalWeight = WeightedRandom.getTotalWeight(list);
         if (totalWeight <= 0) {
@@ -32,15 +33,37 @@ public class WorldEntitySpawnerBlame {
             ResourceLocation biomeID = serverWorld.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome);
 
             // Add extra info to the log file.
-            Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report " + Blame.VERSION + " ******************",
+            Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report " + Blame.VERSION + " ******************" +
                     "\n  Detected total weight of mob list is 0 or negative which will crash the game! " +
-                            "\n  See info below to find which mob is the problem and where it is attempting to spawn at." +
-                            "\n World Registry Name : " + worldID.location().toString() +
-                            "\n Biome Registry Name : " + (biomeID != null ? biomeID.toString() : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!") +
-                            "\n Classification of entity being spawned : " + entityClassification.getName() +
-                            "\n Entity position : " + pos.toString() +
-                            "\n Weighted list of mobs to spawn : " + printMobListContents(list) +
-                            "\n");
+                    "\n  See info below to find which mob is the problem and where it is attempting to spawn at." +
+                    "\n World Registry Name : " + worldID.location().toString() +
+                    "\n Biome Registry Name : " + (biomeID != null ? biomeID.toString() : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!") +
+                    "\n Classification of entity being spawned : " + entityClassification.getName() +
+                    "\n Entity position : " + pos.toString() +
+                    "\n Weighted list of mobs to spawn : " + printMobListContents(list) +
+                    "\n");
+
+        }
+    }
+
+    public static void addMobCrashDetails(IServerWorld serverWorld, EntityClassification entityClassification, int chunkX, int chunkZ, Biome biome, List<MobSpawnInfo.Spawners> list) {
+        // Figure out if mob spawning is gonna crash game and to run our code if so.
+        int totalWeight = WeightedRandom.getTotalWeight(list);
+        if (totalWeight <= 0) {
+
+            RegistryKey<World> worldID = serverWorld.getLevel().dimension();
+            ResourceLocation biomeID = serverWorld.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome);
+
+            // Add extra info to the log file.
+            Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+                    "\n  Detected total weight of mob list is 0 or negative which will crash the game! " +
+                    "\n  See info below to find which mob is the problem and where it is attempting to spawn at." +
+                    "\n World Registry Name : " + worldID.location().toString() +
+                    "\n Biome Registry Name : " + (biomeID != null ? biomeID.toString() : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!") +
+                    "\n Classification of entity being spawned : " + entityClassification.getName() +
+                    "\n Entity position :  chunk " + chunkX + " " + chunkZ +
+                    "\n Weighted list of mobs to spawn : " + printMobListContents(list) +
+                    "\n");
 
         }
     }
