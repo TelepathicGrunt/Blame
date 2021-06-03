@@ -30,7 +30,9 @@ import java.util.stream.Collectors;
 public class DynamicRegistriesBlame {
 
     public static void classloadedCheck() {
-        if(Blame.MAIN_MOD_STARTUPS_FINISHED) return; // After this part, the dynamic registry should be safe to classload. I believe.
+        // After the main mod startup is done, the dynamic registry should be safe to classload. I believe.
+        // So don't do any reports afterwards.
+        if(Blame.MAIN_MOD_STARTUPS_FINISHED) return;
 
         Blame.LOGGER.log(Level.ERROR,
                 "\n****************** Blame Report " + Blame.VERSION + " ******************" +
