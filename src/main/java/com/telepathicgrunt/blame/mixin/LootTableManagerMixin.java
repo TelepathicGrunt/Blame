@@ -1,22 +1,19 @@
 package com.telepathicgrunt.blame.mixin;
 
-import java.util.Map;
-
-import com.google.gson.Gson;
 import com.telepathicgrunt.blame.Blame;
-import org.apache.logging.log4j.Logger;
-import net.minecraft.client.resources.JsonReloadListener;
+import com.telepathicgrunt.blame.main.MissingLoottableBlame;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTableManager;
 import net.minecraft.util.ResourceLocation;
-
-import com.telepathicgrunt.blame.main.MissingLoottableBlame;
+import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Map;
 
 /* @author - TelepathicGrunt
  *

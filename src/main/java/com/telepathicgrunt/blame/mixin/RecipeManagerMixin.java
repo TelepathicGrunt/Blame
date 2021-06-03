@@ -1,21 +1,18 @@
 package com.telepathicgrunt.blame.mixin;
 
-import java.util.Map;
-
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.Gson;
 import com.telepathicgrunt.blame.Blame;
-import org.apache.logging.log4j.Logger;
-import net.minecraft.client.resources.JsonReloadListener;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.util.ResourceLocation;
-
+import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+
+import java.util.Map;
 
 @Mixin(RecipeManager.class)
 public class RecipeManagerMixin {

@@ -1,19 +1,18 @@
 package com.telepathicgrunt.blame.main;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Supplier;
-
-import org.apache.logging.log4j.Level;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-
 import com.mojang.serialization.DataResult;
 import com.telepathicgrunt.blame.Blame;
 import com.telepathicgrunt.blame.utils.ErrorHints;
 import com.telepathicgrunt.blame.utils.PrettyPrintBrokenJSON;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
+import org.apache.logging.log4j.Level;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Supplier;
 
 /* @author - TelepathicGrunt
  *

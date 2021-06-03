@@ -30,35 +30,7 @@ import java.util.stream.Collectors;
 public class DynamicRegistriesBlame {
 
     public static void classloadedCheck() {
-        //gets the details of what method classloaded DynamicRegistries
-        StackTraceElement stack = Thread.currentThread().getStackTrace()[4];
-
-        // vanilla loaded DynamicRegistries safely. No panic.
-        // Did you know clients have 3 places that classloads DynamicRegistries but server has only 1?
-        if ((stack.getClassName().equals("net.minecraft.client.gui.screen.CreateWorldScreen") &&
-                (stack.getMethodName().equals("create") || stack.getMethodName().equals("func_243425_a"))) ||
-
-                (stack.getClassName().equals("net.minecraft.client.Minecraft") &&
-                        (stack.getMethodName().equals("loadLevel") || stack.getMethodName().equals("loadWorld") || stack.getMethodName().equals("func_238191_a_"))) ||
-
-                (stack.getClassName().equals("net.minecraft.server.Main") &&
-                        (stack.getMethodName().equals("main") || stack.getMethodName().equals("func_238191_a_"))) ||
-
-                (stack.getClassName().equals("net.minecraft.client.network.play.ClientPlayNetHandler") &&
-                        stack.getMethodName().equals("<init>"))) {
-            return;
-        }
-
-        if ((stack.getClassName().equals("de.teamlapen.vampirism.client.core.ClientEventHandler") &&
-                stack.getMethodName().equals("onGuiInit"))) {
-            Blame.LOGGER.log(Level.ERROR,
-                    "\n****************** Blame Report " + Blame.VERSION + " ******************" +
-                            "\n\n Vampirism classloaded the DynamicRegistries class." +
-                            "\n However, this should be okay as they do it after the main " +
-                            "\n mod initialization is done. Ignore this message and continue on lol.\n");
-            //Thread.dumpStack();
-            return;
-        }
+        if(Blame.MAIN_MOD_STARTUPS_FINISHED) return; // After this part, the dynamic registry should be safe to classload. I believe.
 
         Blame.LOGGER.log(Level.ERROR,
                 "\n****************** Blame Report " + Blame.VERSION + " ******************" +
