@@ -3,6 +3,7 @@ package com.telepathicgrunt.blame.mixin;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.SpawnHelper;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.SpawnSettings;
@@ -11,13 +12,14 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.List;
 import java.util.Random;
 
-import static com.telepathicgrunt.blame.main.SpawnHelperBlame.addFeatureDetails;
+import static com.telepathicgrunt.blame.main.SpawnHelperBlame.addMobCrashDetails;
 
 /* @author - TelepathicGrunt
  *
@@ -35,6 +37,15 @@ public class SpawnHelperMixin {
                                                  ChunkGenerator chunkGenerator, SpawnGroup spawnGroup,
                                                  Random random, BlockPos pos, CallbackInfoReturnable<SpawnSettings.SpawnEntry> cir,
                                                  Biome biome, List<SpawnSettings.SpawnEntry> list) {
-        addFeatureDetails(serverWorld, spawnGroup, pos, biome, list);
+        addMobCrashDetails(serverWorld, spawnGroup, pos, biome, list);
+    }
+
+    @Inject(method = "populateEntities(Lnet/minecraft/world/ServerWorldAccess;Lnet/minecraft/world/biome/Biome;IILjava/util/Random;)V",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/util/collection/WeightedPicker;getRandom(Ljava/util/Random;Ljava/util/List;)Lnet/minecraft/util/collection/WeightedPicker$Entry;", ordinal = 0),
+            locals = LocalCapture.CAPTURE_FAILHARD)
+    private static void checkIfMobSpawnWillCrash2(ServerWorldAccess serverWorldAccess, Biome biome, int chunkX, int chunkZ,
+                                                  Random random, CallbackInfo ci, SpawnSettings spawnSettings,
+                                                  List<SpawnSettings.SpawnEntry> list) {
+        addMobCrashDetails(serverWorldAccess, SpawnGroup.CREATURE, chunkX, chunkZ, biome, list);
     }
 }
