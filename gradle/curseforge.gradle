@@ -13,7 +13,9 @@ curseforge {
         addGameVersion("1.16.5")
         addGameVersion("Fabric")
 
-        mainArtifact(remapJar)
+        mainArtifact(remapJar) {
+            displayName = "Blame v${project.mod_version} (${project.minecraft_version} MC)"
+        }
 
         afterEvaluate {
             uploadTask.dependsOn("remapJar")
