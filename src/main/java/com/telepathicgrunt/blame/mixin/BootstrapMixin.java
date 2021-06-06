@@ -6,6 +6,7 @@ import net.minecraft.dispenser.IDispenseItemBehavior;
 import net.minecraft.item.Item;
 import net.minecraft.util.Util;
 import net.minecraft.util.registry.Bootstrap;
+import net.minecraftforge.fml.DatagenModLoader;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,6 +24,7 @@ public class BootstrapMixin {
     @Inject(method = "bootStrap()V",
             at = @At(value = "TAIL"))
     private static void onInit(CallbackInfo ci) {
+        if(DatagenModLoader.isRunningDataGen()) return;
         DispenserBlockRegistry<Item, IDispenseItemBehavior> map = Util.make(new DispenserBlockRegistry<>(), (behaviour) -> behaviour.defaultReturnValue(new DefaultDispenseItemBehavior()));
         map.putAll(DispenserBlockAccessor.blame_getDISPENSER_REGISTRY());
         map.startupIgnore = false; // Finished copying. Now turn on registry replacement detection.

@@ -1,3 +1,9 @@
+### **(V.3.2.2 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
+
+#### Datagen:
+* Blame now disables itself when genData task is ran for a mod in a development environment. This prevents Blame reports from giving false positives.
+
+
 ### **(V.3.2.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
 
 #### Dynamic Registry:

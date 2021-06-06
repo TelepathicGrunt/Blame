@@ -5,6 +5,7 @@ import com.telepathicgrunt.blame.main.MissingLoottableBlame;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTableManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.DatagenModLoader;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,6 +32,7 @@ public class LootTableManagerMixin {
             at = @At(value = "HEAD"))
     private void addMissingLoottableDetails(ResourceLocation rl, CallbackInfoReturnable<LootTable> cir) {
         if (!tables.containsKey(rl)) {
+            if(DatagenModLoader.isRunningDataGen()) return;
             MissingLoottableBlame.addMissingLoottableDetails(rl);
         }
     }
@@ -42,6 +44,7 @@ public class LootTableManagerMixin {
     @Redirect(method = "*(Lnet/minecraft/resources/IResourceManager;Lcom/google/common/collect/ImmutableMap$Builder;Lnet/minecraft/util/ResourceLocation;Lcom/google/gson/JsonElement;)V",
             at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false), require = 0)
     private void simplifyInvalidLootTableLogOutput(Logger logger, String message, Object p0, Object p1) {
+        if(DatagenModLoader.isRunningDataGen()) return;
         logger.error(message + " {}: {} (Blame {}: suppressed long stacktrace)", p0, p1.getClass().getSimpleName(), ((Exception) p1).getMessage(), Blame.VERSION);
     }
 }

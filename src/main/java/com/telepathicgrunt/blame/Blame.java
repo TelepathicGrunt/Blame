@@ -1,6 +1,7 @@
 package com.telepathicgrunt.blame;
 
 import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.fml.DatagenModLoader;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -20,8 +21,12 @@ public class Blame {
     public static String VERSION = "N/A";
 
     public Blame() {
+
         ModList.get().getModContainerById(Blame.MODID)
                 .ifPresent(container -> VERSION = container.getModInfo().getVersion().toString());
+
+        // Do not run when datagenning
+        if(DatagenModLoader.isRunningDataGen()) return;
 
         Blame.LOGGER.log(Level.ERROR, "Blame " + VERSION + " initialized");
 

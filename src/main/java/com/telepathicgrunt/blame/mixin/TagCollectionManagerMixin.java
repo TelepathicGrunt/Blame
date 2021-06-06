@@ -3,6 +3,7 @@ package com.telepathicgrunt.blame.mixin;
 import com.telepathicgrunt.blame.Blame;
 import net.minecraft.tags.ITagCollectionSupplier;
 import net.minecraft.tags.TagCollectionManager;
+import net.minecraftforge.fml.DatagenModLoader;
 import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,6 +26,7 @@ public class TagCollectionManagerMixin {
             at = @At(value = "TAIL"),
             locals = LocalCapture.CAPTURE_FAILHARD)
     private static void possibleClassloadPoint1(CallbackInfoReturnable<ITagCollectionSupplier> cir) {
+        if(DatagenModLoader.isRunningDataGen()) return;
         if (!Blame.MAIN_MOD_STARTUPS_FINISHED) {
             Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report " + Blame.VERSION + " ******************" +
                     "\n   TagCollectionManager was classloaded too early! " +
@@ -39,6 +41,7 @@ public class TagCollectionManagerMixin {
             at = @At(value = "TAIL"),
             locals = LocalCapture.CAPTURE_FAILHARD)
     private static void possibleClassloadPoint2(ITagCollectionSupplier managerIn, CallbackInfo ci) {
+        if(DatagenModLoader.isRunningDataGen()) return;
         if (!Blame.MAIN_MOD_STARTUPS_FINISHED) {
             Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report " + Blame.VERSION + " ******************" +
                     "\n   TagCollectionManager was classloaded too early! " +

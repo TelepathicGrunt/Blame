@@ -12,5 +12,9 @@ curseforge {
         addGameVersion("1.16.4")
         addGameVersion("1.16.5")
         addGameVersion("Forge")
+
+        mainArtifact(jar) {
+            displayName = "Blame v${project.mod_version} (${project.mc_version} MC)"
+        }
     }
 }

@@ -23,7 +23,6 @@ public class BlameMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-
         if (mixinClassName.equals("com.telepathicgrunt.blame.mixin.FlatGenerationSettingsMixin")) {
             ArtifactVersion forgeVersion = new DefaultArtifactVersion(ForgeVersion.getVersion());
             ArtifactVersion cutoffForgeVersion = new DefaultArtifactVersion("36.1.18");
