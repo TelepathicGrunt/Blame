@@ -68,7 +68,7 @@ Now add this to the dependency block. Replace <version> with the Blame version y
 ```
 dependencies {
   ...
-  implementation fg.deobf("com.telepathicgrunt:Blame:<version>")
+  runtimeOnly fg.deobf("com.telepathicgrunt:Blame:<version>")
 }
 ```
 
