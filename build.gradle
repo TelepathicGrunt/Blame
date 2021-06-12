@@ -11,11 +11,12 @@ buildscript {
 }
 
 plugins {
-	id 'fabric-loom' version '0.7-SNAPSHOT'
+	id 'fabric-loom' version '0.8-SNAPSHOT'
+	id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 
 archivesBaseName = project.archives_base_name
 version = "${project.minecraft_version}-${project.mod_version}-fabric"
@@ -29,23 +30,24 @@ dependencies {
 
 if (project.use_third_party_mods) {
 	repositories {
-		maven { url "https://maven.fabricmc.net" }
-		maven { url = "https://jitpack.io" }
 	}
 
 	dependencies {
-		modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-		modImplementation "io.github.prospector:modmenu:${project.mod_menu_version}"
 	}
 }
 
-tasks.withType(JavaCompile) {
-	options.encoding = "UTF-8"
+tasks.withType(JavaCompile).configureEach {
+	it.options.encoding = "UTF-8"
+	it.options.release = 16
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
 	classifier = "sources"
 	from sourceSets.main.allSource
+}
+
+java {
+	withSourcesJar()
 }
 
 jar {

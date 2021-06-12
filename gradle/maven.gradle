@@ -18,18 +18,18 @@ publishing {
             pom {
                 name = 'Blame-Fabric'
                 description = 'Gotta find the broken mods!'
-                url = 'https://github.com/TelepathicGrunt/Blame/tree/Fabric-1.16.2'
+                url = 'https://github.com/TelepathicGrunt/Blame/tree/Fabric-1.17.x'
 
                 scm {
-                    connection = 'git:https://github.com/TelepathicGrunt/Blame/tree/Fabric-1.16.2.git'
-                    developerConnection = 'git:https://github.com/TelepathicGrunt/Blame/tree/Fabric-1.16.2.git'
-                    url = 'https://github.com/TelepathicGrunt/Blame/tree/Fabric-1.16.2'
+                    connection = 'git:https://github.com/TelepathicGrunt/Blame/tree/Fabric-1.17.x.git'
+                    developerConnection = 'git:https://github.com/TelepathicGrunt/Blame/tree/Fabric-1.17.x.git'
+                    url = 'https://github.com/TelepathicGrunt/Blame/tree/Fabric-1.17.x'
                 }
 
                 licenses {
                     license {
                         name = 'GNU Lesser General Public License v3.0'
-                        url = 'https://github.com/TelepathicGrunt/Blame/blob/Fabric-1.16.2/LICENSE'
+                        url = 'https://github.com/TelepathicGrunt/Blame/blob/Fabric-1.17.x/LICENSE'
                     }
                 }
 

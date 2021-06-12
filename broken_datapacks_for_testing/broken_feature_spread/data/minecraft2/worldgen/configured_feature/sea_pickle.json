@@ -4,7 +4,7 @@
       "config": {
         "feature": {
           "config": {
-            "count": 520
+            "count": 512
           },
           "type": "minecraft:sea_pickle"
         },
@@ -15,8 +15,10 @@
               "type": "minecraft:square"
             },
             "inner": {
-              "config": {},
-              "type": "minecraft:top_solid_heightmap"
+              "config": {
+                "heightmap": "OCEAN_FLOOR_WG"
+              },
+              "type": "minecraft:heightmap"
             }
           },
           "type": "minecraft:decorated"
@@ -26,7 +28,7 @@
     },
     "decorator": {
       "config": {
-        "chance": 1456
+        "chance": 1400
       },
       "type": "minecraft:chance"
     }

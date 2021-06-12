@@ -25,9 +25,9 @@ public class ProcessorBlame {
         catch (Exception e) {
             String blockBeingProcessed = blockInfo1.state.toString();
             String blockNBT = "";
-            if (blockInfo1.tag != null) {
+            if (blockInfo1.nbt != null) {
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                blockNBT = gson.toJson(blockInfo1.tag);
+                blockNBT = gson.toJson(blockInfo1.nbt);
             }
 
             String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +

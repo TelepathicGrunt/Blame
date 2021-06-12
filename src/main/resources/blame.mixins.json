@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.telepathicgrunt.blame.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_16",
   "mixins": [
     "BiomeMixin",
     "BootstrapMixin",
@@ -11,6 +11,7 @@
     "FlatChunkGeneratorConfigMixin",
     "LootManagerMixin",
     "MinecraftServerMixin",
+    "PoolAccessor",
     "RecipeManagerMixin",
     "RegistryOpsMixin",
     "SinglePoolElementAccessor",

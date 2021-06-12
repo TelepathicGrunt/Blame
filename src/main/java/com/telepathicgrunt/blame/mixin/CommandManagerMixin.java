@@ -1,7 +1,6 @@
 package com.telepathicgrunt.blame.mixin;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.StringReader;
 import com.telepathicgrunt.blame.main.BrokenCommandBlame;
 import net.minecraft.command.CommandSource;
 import net.minecraft.server.command.CommandManager;

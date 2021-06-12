@@ -16,17 +16,26 @@
                   "Name": "minecraft:basalt"
                 },
                 "radius": {
-                  "base": -400,
-                  "spread": 556689
+                  "type": "minecraft:uniform",
+                  "value": {
+                    "min_inclusive": -400,
+                    "max_inclusive": 7346863
+                  }
                 }
               },
               "type": "minecraft:netherrack_replace_blobs"
             },
             "decorator": {
               "config": {
-                "bottom_offset": 0,
-                "top_offset": 0,
-                "maximum": 128
+                "height": {
+                  "min_inclusive": {
+                    "above_bottom": 0
+                  },
+                  "max_inclusive": {
+                    "below_top": 0
+                  },
+                  "type": "minecraft:uniform"
+                }
               },
               "type": "minecraft:range"
             }
@@ -42,7 +51,7 @@
     },
     "decorator": {
       "config": {
-        "count": 7555
+        "count": 75
       },
       "type": "minecraft:count"
     }

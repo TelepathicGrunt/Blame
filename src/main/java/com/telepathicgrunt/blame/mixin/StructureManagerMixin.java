@@ -9,6 +9,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Optional;
+
 /* @author - TelepathicGrunt
  *
  * Make it so TemplateManager actually states what nbt file was unable to be found.
@@ -18,10 +20,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(StructureManager.class)
 public class StructureManagerMixin {
 
-    @Inject(method = "getStructure(Lnet/minecraft/util/Identifier;)Lnet/minecraft/structure/Structure;",
+    @Inject(method = "getStructureOrBlank(Lnet/minecraft/util/Identifier;)Lnet/minecraft/structure/Structure;",
             at = @At(value = "RETURN"))
-    private void addMissingnbtDetails(Identifier miniRL, CallbackInfoReturnable<Structure> cir) {
+    private void addMissingnbtDetails1(Identifier miniRL, CallbackInfoReturnable<Structure> cir) {
         if (cir.getReturnValue() == null) {
+            MissingNBTBlame.addMissingNbtDetails(miniRL);
+        }
+    }
+
+    @Inject(method = "getStructure(Lnet/minecraft/util/Identifier;)Ljava/util/Optional;",
+            at = @At(value = "RETURN"))
+    private void addMissingnbtDetails2(Identifier miniRL, CallbackInfoReturnable<Optional<Structure>> cir) {
+        if (!cir.getReturnValue().isPresent()) {
             MissingNBTBlame.addMissingNbtDetails(miniRL);
         }
     }

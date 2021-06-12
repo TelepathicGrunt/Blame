@@ -1,12 +1,10 @@
 package com.telepathicgrunt.blame.mixin;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.Gson;
 import com.telepathicgrunt.blame.Blame;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.recipe.RecipeType;
-import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;

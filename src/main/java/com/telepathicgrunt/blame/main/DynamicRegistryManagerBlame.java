@@ -6,14 +6,25 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import com.telepathicgrunt.blame.Blame;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.*;
+import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.util.registry.DynamicRegistryManager;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
-import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.gen.feature.DecoratedFeatureConfig;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.FeatureConfig;
 import org.apache.logging.log4j.Level;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +42,7 @@ public class DynamicRegistryManagerBlame {
         Pattern pattern = Pattern.compile("\"(?:Name|type|location)\": *\"([a-z0-9_.-:]+)\"");
 
         // ConfiguredFeatures
-        imp.getOptional(Registry.CONFIGURED_FEATURE_WORLDGEN).ifPresent(configuredFeatureRegistry ->
+        imp.getOptional(Registry.CONFIGURED_FEATURE_KEY).ifPresent(configuredFeatureRegistry ->
                 imp.getOptional(Registry.BIOME_KEY).ifPresent(mutableRegistry -> mutableRegistry.getEntries()
                         .forEach(mapEntry -> findUnregisteredConfiguredFeatures(mapEntry, unconfiguredStuffMap, brokenConfiguredStuffSet, configuredFeatureRegistry, gson))));
 
@@ -39,7 +50,7 @@ public class DynamicRegistryManagerBlame {
         extractModNames(unconfiguredStuffMap, collectedPossibleIssueMods, pattern);
 
         // ConfiguredStructures
-        imp.getOptional(Registry.CONFIGURED_STRUCTURE_FEATURE_WORLDGEN).ifPresent(configuredStructureRegistry ->
+        imp.getOptional(Registry.CONFIGURED_STRUCTURE_FEATURE_KEY).ifPresent(configuredStructureRegistry ->
                 imp.getOptional(Registry.BIOME_KEY).ifPresent(mutableRegistry -> mutableRegistry.getEntries()
                         .forEach(mapEntry -> findUnregisteredConfiguredStructures(mapEntry, unconfiguredStuffMap, configuredStructureRegistry, gson))));
 
@@ -47,7 +58,7 @@ public class DynamicRegistryManagerBlame {
         extractModNames(unconfiguredStuffMap, collectedPossibleIssueMods, pattern);
 
         // ConfiguredCarvers
-        imp.getOptional(Registry.CONFIGURED_CARVER_WORLDGEN).ifPresent(configuredCarverRegistry ->
+        imp.getOptional(Registry.CONFIGURED_CARVER_KEY).ifPresent(configuredCarverRegistry ->
                 imp.getOptional(Registry.BIOME_KEY).ifPresent(mutableRegistry -> mutableRegistry.getEntries()
                         .forEach(mapEntry -> findUnregisteredConfiguredCarver(mapEntry, unconfiguredStuffMap, configuredCarverRegistry, gson))));
 
@@ -93,7 +104,7 @@ public class DynamicRegistryManagerBlame {
             Map.Entry<RegistryKey<Biome>, Biome> mapEntry,
             Map<String, Set<Identifier>> unregisteredFeatureMap,
             HashSet<String> brokenConfiguredStuffSet,
-            MutableRegistry<ConfiguredFeature<?, ?>> configuredFeatureRegistry,
+            Registry<ConfiguredFeature<?, ?>> configuredFeatureRegistry,
             Gson gson) {
 
         for (List<Supplier<ConfiguredFeature<?, ?>>> generationStageList : mapEntry.getValue().getGenerationSettings().getFeatures()) {
@@ -151,7 +162,7 @@ public class DynamicRegistryManagerBlame {
     private static void findUnregisteredConfiguredStructures(
             Map.Entry<RegistryKey<Biome>, Biome> mapEntry,
             Map<String, Set<Identifier>> unregisteredStructureMap,
-            MutableRegistry<ConfiguredStructureFeature<?, ?>> configuredStructureRegistry,
+            Registry<ConfiguredStructureFeature<?, ?>> configuredStructureRegistry,
             Gson gson) {
         for (Supplier<ConfiguredStructureFeature<?, ?>> configuredStructureSupplier : mapEntry.getValue().getGenerationSettings().getStructureFeatures()) {
 
@@ -176,7 +187,7 @@ public class DynamicRegistryManagerBlame {
     private static void findUnregisteredConfiguredCarver(
             Map.Entry<RegistryKey<Biome>, Biome> mapEntry,
             Map<String, Set<Identifier>> unregisteredCarverMap,
-            MutableRegistry<ConfiguredCarver<?>> configuredCarverRegistry,
+            Registry<ConfiguredCarver<?>> configuredCarverRegistry,
             Gson gson) {
         for (GenerationStep.Carver carvingStage : GenerationStep.Carver.values()) {
             for (Supplier<ConfiguredCarver<?>> configuredCarverSupplier : mapEntry.getValue().getGenerationSettings().getCarversForStep(carvingStage)) {

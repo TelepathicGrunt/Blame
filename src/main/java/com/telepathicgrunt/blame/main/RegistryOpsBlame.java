@@ -7,7 +7,6 @@ import com.telepathicgrunt.blame.utils.PrettyPrintBrokenJSON;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.util.registry.SimpleRegistry;
 import org.apache.logging.log4j.Level;
 
 import java.util.HashSet;

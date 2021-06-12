@@ -44,7 +44,7 @@ public class BiomeBlame {
         StackTraceElement[] trace = null;
 
         try {
-            configuredFeatureID = dynamicRegistryManager.get(Registry.CONFIGURED_FEATURE_WORLDGEN).getId(configuredFeature);
+            configuredFeatureID = dynamicRegistryManager.get(Registry.CONFIGURED_FEATURE_KEY).getId(configuredFeature);
             if (configuredFeatureID == null) {
                 configuredFeatureID = BuiltinRegistries.CONFIGURED_FEATURE.getId(configuredFeature);
             }
@@ -63,7 +63,7 @@ public class BiomeBlame {
         // Add extra info to the crash report file.
         if (configuredFeatureID == null) {
             crashreport.getSystemDetailsSection()
-                    .add("\n****************** Blame Report " + Blame.VERSION + " ******************",
+                    .addSection("\n****************** Blame Report " + Blame.VERSION + " ******************",
                             "\n\n ConfiguredFeature name was unable to be found due to either the configuredfeature registry or " +
                                     "\n biome registry missing somehow. Or that the configuredfeature is not in any registries." +
                                     "\n Sorry but Blame isn't really able to get much info but..." +
@@ -71,7 +71,7 @@ public class BiomeBlame {
         }
         else {
             crashreport.getSystemDetailsSection()
-                    .add("\n****************** Blame Report " + Blame.VERSION + " ******************",
+                    .addSection("\n****************** Blame Report " + Blame.VERSION + " ******************",
                             "\n\n ConfiguredFeature Registry Name : " + configuredFeatureID +
                                     "\n Biome Registry Name : " + (biomeID != null ? biomeID : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!") +
                                     "\n\n JSON info : " + (configuredFeatureJSON.isPresent() ? gson.toJson(configuredFeatureJSON.get()) : "Failed to get JSON somehow. Stacktrace of error:\n" + Arrays.toString(trace)) + "\n\n");
@@ -103,7 +103,7 @@ public class BiomeBlame {
         // Add extra info to the crash report file.
         // Note, only structures can do the details part as configuredfeatures always says the ConfiguredFeature class.
         crashreport.getSystemDetailsSection()
-                .add("\n****************** Blame Report " + Blame.VERSION + " ******************",
+                .addSection("\n****************** Blame Report " + Blame.VERSION + " ******************",
                         "\n\n Structure Name : " + structureFeature.getName() + // Never null
                                 "\n Structure Registry Name : " + (structureID != null ? structureID : "Structure is not registered somehow. Yell at the mod author when found to register their structures!") +
                                 "\n Structure Details : " + structureFeature.toString() +
