@@ -29,6 +29,7 @@ import java.util.Iterator;
  *
  * LGPLv3
  */
+@SuppressWarnings("public-target")
 @Mixin(targets = "net.minecraft.structure.pool.StructurePoolBasedGenerator$StructurePoolGenerator")
 public class StructurePoolBasedGeneratorStructurePoolGeneratorMixin {
 

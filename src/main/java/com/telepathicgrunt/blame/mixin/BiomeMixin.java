@@ -3,6 +3,7 @@ package com.telepathicgrunt.blame.mixin;
 import com.telepathicgrunt.blame.main.BiomeBlame;
 import net.minecraft.util.crash.CrashReport;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkRandom;
@@ -37,15 +38,17 @@ public class BiomeMixin {
      * Prints the crashlog to latest.log as well.
      */
     @Inject(method = "generateFeatureStep(Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/world/ChunkRegion;JLnet/minecraft/world/gen/ChunkRandom;Lnet/minecraft/util/math/BlockPos;)V",
-            at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/crash/CrashReport;create(Ljava/lang/Throwable;Ljava/lang/String;)Lnet/minecraft/util/crash/CrashReport;", ordinal = 1),
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/util/crash/CrashReport;create(Ljava/lang/Throwable;Ljava/lang/String;)Lnet/minecraft/util/crash/CrashReport;", ordinal = 1),
             locals = LocalCapture.CAPTURE_FAILHARD)
     private void addFeatureDetails(StructureAccessor structureAccessor, ChunkGenerator chunkGenerator,
                                    ChunkRegion chunkRegion, long seed, ChunkRandom random, BlockPos pos,
-                                   CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> GenerationStageList,
+                                   CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> list,
+                                   Registry<ConfiguredFeature<?, ?>> registry, Registry<StructureFeature<?>> structureFeatures,
                                    int numOfGenerationSteps, int generationStepIndex, int configuredFeatureIndex,
                                    Iterator<ConfiguredFeature<?, ?>> var12, Supplier<ConfiguredFeature<?, ?>> supplier,
-                                   ConfiguredFeature<?, ?> configuredFeature, Exception exception, CrashReport crashreport) {
-        BiomeBlame.addFeatureDetails((Biome) (Object) this, chunkRegion, configuredFeature, crashreport);
+                                   ConfiguredFeature<?, ?> configuredFeature, Supplier<String> supplier3,
+                                   Exception exception) {
+        BiomeBlame.addFeatureDetails((Biome) (Object) this, chunkRegion, configuredFeature);
     }
 
 
@@ -55,15 +58,18 @@ public class BiomeMixin {
      * Prints the crashlog to latest.log as well.
      */
     @Inject(method = "generateFeatureStep(Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/world/ChunkRegion;JLnet/minecraft/world/gen/ChunkRandom;Lnet/minecraft/util/math/BlockPos;)V",
-            at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/crash/CrashReport;create(Ljava/lang/Throwable;Ljava/lang/String;)Lnet/minecraft/util/crash/CrashReport;", ordinal = 0),
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/util/crash/CrashReport;create(Ljava/lang/Throwable;Ljava/lang/String;)Lnet/minecraft/util/crash/CrashReport;", ordinal = 0),
             locals = LocalCapture.CAPTURE_FAILHARD)
     private void addStructureDetails(StructureAccessor structureAccessor, ChunkGenerator chunkGenerator,
                                      ChunkRegion chunkRegion, long seed, ChunkRandom random, BlockPos pos,
                                      CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> list,
+                                     Registry<ConfiguredFeature<?, ?>> registry, Registry<StructureFeature<?>> structureFeatures,
                                      int numOfGenerationSteps, int generationStepIndex, int configuredFeatureIndex,
                                      List<List<Supplier<ConfiguredFeature<?, ?>>>> list2,
-                                     Iterator<StructureFeature<?>> structureFeatureIterator, StructureFeature<?> structureFeature,
-                                     Exception exception, CrashReport crashreport) {
-        BiomeBlame.addStructureDetails((Biome) (Object) this, chunkRegion, structureFeature, crashreport);
+                                     Iterator<StructureFeature<?>> structureFeatureIterator,
+                                     StructureFeature<?> structureFeature,
+                                     int sectionCordX, int sectionCordZ, int blockCordX, int blockCordZ,
+                                     Supplier<String> supplier, Exception exception) {
+        BiomeBlame.addStructureDetails((Biome) (Object) this, chunkRegion, structureFeature);
     }
 }

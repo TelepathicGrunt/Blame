@@ -4,10 +4,10 @@ curseforge {
     project {
         apiKey = "$System.env.CURSEFORGEKEY"
         id = "413313"
-        releaseType = "release"
+        releaseType = "beta"
         changelogType = 'markdown'
         changelog = file('CHANGELOG.md')
-        addGameVersion("1.17.0")
+        addGameVersion("1.17")
         addGameVersion("Fabric")
 
         mainArtifact(remapJar) {

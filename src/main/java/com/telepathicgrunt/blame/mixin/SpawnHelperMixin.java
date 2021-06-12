@@ -14,10 +14,12 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import java.util.Optional;
 import java.util.Random;
 
 import static com.telepathicgrunt.blame.main.SpawnHelperBlame.addMobCrashDetails;
@@ -31,14 +33,15 @@ import static com.telepathicgrunt.blame.main.SpawnHelperBlame.addMobCrashDetails
 @Mixin(SpawnHelper.class)
 public class SpawnHelperMixin {
 
-    @Inject(method = "pickRandomSpawnEntry(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/entity/SpawnGroup;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Ljava/util/Optional;",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/util/collection/Pool;getOrEmpty(Ljava/util/Random;)Ljava/util/Optional;", ordinal = 0),
-            locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void checkIfMobSpawnWillCrash(ServerWorld serverWorld, StructureAccessor structureAccessor,
-                                                 ChunkGenerator chunkGenerator, SpawnGroup spawnGroup,
-                                                 Random random, BlockPos pos, CallbackInfoReturnable<SpawnSettings.SpawnEntry> cir,
-                                                 Biome biome, Pool<SpawnSettings.SpawnEntry> pool) {
+    @Redirect(method = "pickRandomSpawnEntry(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/entity/SpawnGroup;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Ljava/util/Optional;",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/util/collection/Pool;getOrEmpty(Ljava/util/Random;)Ljava/util/Optional;"))
+    private static Optional<SpawnSettings.SpawnEntry> checkIfMobSpawnWillCrash(Pool<SpawnSettings.SpawnEntry> pool, Random random,
+                                                                                     ServerWorld serverWorld, StructureAccessor structureAccessor,
+                                                                                     ChunkGenerator chunkGenerator, SpawnGroup spawnGroup,
+                                                                                     Random random2, BlockPos pos) {
+        Biome biome = serverWorld.getBiome(pos);
         addMobCrashDetails(serverWorld, spawnGroup, pos, biome, pool);
+        return pool.getOrEmpty(random);
     }
 
     @Inject(method = "populateEntities(Lnet/minecraft/world/ServerWorldAccess;Lnet/minecraft/world/biome/Biome;Lnet/minecraft/util/math/ChunkPos;Ljava/util/Random;)V",

@@ -34,8 +34,7 @@ public class BiomeBlame {
      * Prints registry name of feature and biome.
      * Prints the crashlog to latest.log as well.
      */
-    public static void addFeatureDetails(Biome biome, ChunkRegion chunkRegion,
-                                         ConfiguredFeature<?, ?> configuredFeature, CrashReport crashreport) {
+    public static void addFeatureDetails(Biome biome, ChunkRegion chunkRegion, ConfiguredFeature<?, ?> configuredFeature) {
         DynamicRegistryManager dynamicRegistryManager = chunkRegion.getRegistryManager();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Identifier configuredFeatureID = null;
@@ -60,24 +59,20 @@ public class BiomeBlame {
             trace = e.getStackTrace();
         }
 
-        // Add extra info to the crash report file.
+        // Add extra info to the latest.log file.
         if (configuredFeatureID == null) {
-            crashreport.getSystemDetailsSection()
-                    .addSection("\n****************** Blame Report " + Blame.VERSION + " ******************",
+            Blame.LOGGER.error("\n****************** Blame Report " + Blame.VERSION + " ******************" +
                             "\n\n ConfiguredFeature name was unable to be found due to either the configuredfeature registry or " +
-                                    "\n biome registry missing somehow. Or that the configuredfeature is not in any registries." +
-                                    "\n Sorry but Blame isn't really able to get much info but..." +
-                                    "\n Here's the best attempt at turning the configuredfeature to JSON for analysis: \n" + (configuredFeatureJSON.isPresent() ? gson.toJson(configuredFeatureJSON.get()) : ""));
+                            "\n biome registry missing somehow. Or that the configuredfeature is not in any registries." +
+                            "\n Sorry but Blame isn't really able to get much info but..." +
+                            "\n Here's the best attempt at turning the configuredfeature to JSON for analysis: \n" + (configuredFeatureJSON.isPresent() ? gson.toJson(configuredFeatureJSON.get()) : ""));
         }
         else {
-            crashreport.getSystemDetailsSection()
-                    .addSection("\n****************** Blame Report " + Blame.VERSION + " ******************",
+            Blame.LOGGER.error("\n****************** Blame Report " + Blame.VERSION + " ******************" +
                             "\n\n ConfiguredFeature Registry Name : " + configuredFeatureID +
-                                    "\n Biome Registry Name : " + (biomeID != null ? biomeID : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!") +
-                                    "\n\n JSON info : " + (configuredFeatureJSON.isPresent() ? gson.toJson(configuredFeatureJSON.get()) : "Failed to get JSON somehow. Stacktrace of error:\n" + Arrays.toString(trace)) + "\n\n");
+                            "\n Biome Registry Name : " + (biomeID != null ? biomeID : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!") +
+                            "\n\n JSON info : " + (configuredFeatureJSON.isPresent() ? gson.toJson(configuredFeatureJSON.get()) : "Failed to get JSON somehow. Stacktrace of error:\n" + Arrays.toString(trace)) + "\n\n");
         }
-        // Log it to the latest.log file as well.
-        Blame.LOGGER.log(Level.ERROR, crashreport.getMessage());
     }
 
 
@@ -86,8 +81,7 @@ public class BiomeBlame {
      * Prints registry name of structure and biome.
      * Prints the crashlog to latest.log as well.
      */
-    public static void addStructureDetails(Biome biome, ChunkRegion chunkRegion,
-                                           StructureFeature<?> structureFeature, CrashReport crashreport) {
+    public static void addStructureDetails(Biome biome, ChunkRegion chunkRegion, StructureFeature<?> structureFeature) {
         DynamicRegistryManager dynamicRegistryManager = chunkRegion.getRegistryManager();
 
         Identifier structureID = null;
@@ -100,16 +94,12 @@ public class BiomeBlame {
         catch (Throwable ignored) {
         }
 
-        // Add extra info to the crash report file.
+        // Add extra info to the latest.log file.
         // Note, only structures can do the details part as configuredfeatures always says the ConfiguredFeature class.
-        crashreport.getSystemDetailsSection()
-                .addSection("\n****************** Blame Report " + Blame.VERSION + " ******************",
+        Blame.LOGGER.error("\n****************** Blame Report " + Blame.VERSION + " ******************" +
                         "\n\n Structure Name : " + structureFeature.getName() + // Never null
-                                "\n Structure Registry Name : " + (structureID != null ? structureID : "Structure is not registered somehow. Yell at the mod author when found to register their structures!") +
-                                "\n Structure Details : " + structureFeature.toString() +
-                                "\n Biome Registry Name : " + (biomeID != null ? biomeID : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!"));
-
-        // Log it to the latest.log file as well.
-        Blame.LOGGER.log(Level.ERROR, crashreport.getMessage());
+                        "\n Structure Registry Name : " + (structureID != null ? structureID : "Structure is not registered somehow. Yell at the mod author when found to register their structures!") +
+                        "\n Structure Details : " + structureFeature.toString() +
+                        "\n Biome Registry Name : " + (biomeID != null ? biomeID : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!"));
     }
 }

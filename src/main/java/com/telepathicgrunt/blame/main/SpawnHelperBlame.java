@@ -18,7 +18,7 @@ import org.apache.logging.log4j.Level;
 
 /* @author - TelepathicGrunt
  *
- * Detect what mob is crashing the game with a 0 or negative list mob.
+ * Detect what mob is crashing the game with a negative list mob.
  *
  * LGPLv3
  */
@@ -27,14 +27,14 @@ public class SpawnHelperBlame {
     public static void addMobCrashDetails(ServerWorld serverWorld, SpawnGroup entityClassification, BlockPos pos, Biome biome, Pool<SpawnSettings.SpawnEntry> pool) {
         // Figure out if mob spawning is gonna crash game and to run our code if so.
         int totalWeight = ((PoolAccessor)pool).blame_getTotalWeight();
-        if (totalWeight <= 0) {
+        if (totalWeight < 0) {
 
             RegistryKey<World> worldID = serverWorld.getRegistryKey();
             Identifier biomeID = serverWorld.getRegistryManager().get(Registry.BIOME_KEY).getId(biome);
 
             // Add extra info to the log file.
             Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report " + Blame.VERSION + " ******************" +
-                    "\n  Detected total weight of mob list is 0 or negative which will crash the game! " +
+                    "\n  Detected total weight of mob list is negative which will crash the game! " +
                     "\n  See info below to find which mob is the problem and where it is attempting to spawn at." +
                     "\n World Registry Name : " + worldID.getValue().toString() +
                     "\n Biome Registry Name : " + (biomeID != null ? biomeID.toString() : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!") +
@@ -49,14 +49,14 @@ public class SpawnHelperBlame {
     public static void addMobCrashDetails(ServerWorldAccess serverWorld, ChunkPos chunkPos, Biome biome, Pool<SpawnSettings.SpawnEntry> pool) {
         // Figure out if mob spawning is gonna crash game and to run our code if so.
         int totalWeight = ((PoolAccessor)pool).blame_getTotalWeight();
-        if (totalWeight <= 0) {
+        if (totalWeight < 0) {
 
             RegistryKey<World> worldID = serverWorld.toServerWorld().getRegistryKey();
             Identifier biomeID = serverWorld.getRegistryManager().get(Registry.BIOME_KEY).getId(biome);
 
             // Add extra info to the log file.
             Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report " + Blame.VERSION + " ******************" +
-                    "\n  Detected total weight of mob list is 0 or negative which will crash the game! " +
+                    "\n  Detected total weight of mob list is negative which will crash the game! " +
                     "\n  See info below to find which mob is the problem and where it is attempting to spawn at." +
                     "\n World Registry Name : " + worldID.getValue().toString() +
                     "\n Biome Registry Name : " + (biomeID != null ? biomeID.toString() : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!") +
