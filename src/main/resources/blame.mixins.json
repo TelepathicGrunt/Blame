@@ -24,6 +24,7 @@
     "TemplateManagerAccessor",
     "TemplateManagerMixin",
     "TemplateMixin",
+    "TemplateStructurePieceMixin",
     "WorldEntitySpawnerMixin",
     "WorldSettingsImportMixin"
   ],

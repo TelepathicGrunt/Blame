@@ -1,3 +1,10 @@
+### **(V.3.2.3 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
+
+#### Structure Piece:
+* Now will detect if a crash is caused by a mod's templateStructurePiece having a null placementSettings or template field. 
+  This can be caused by mods trying to do a dummy structure piece but forgot about those fields.
+
+
 ### **(V.3.2.2 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
 
 #### Datagen:
