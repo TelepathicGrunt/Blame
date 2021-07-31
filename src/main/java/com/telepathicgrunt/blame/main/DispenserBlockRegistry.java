@@ -55,7 +55,7 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
                 MessageCondenserEntry entry = MESSAGE_CONDENSER_MAP.get(behaviorClassName);
 
                 if (entry.itemBehaviorsReplaced == 0) {
-                    Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
+                    Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report Dispenser Behavior " + Blame.VERSION + " ******************" +
                             "\n   Condensed Dispenser message mode activated for " + entry.modID + "." +
                             "\n   Dispenser behavior registry replacement was detected." +
                             "\n   Reason for the change:  " + entry.reasonForBehaviorChange +
@@ -71,7 +71,7 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
                 stackList.add(stacktrace[4]);
                 stackList.add(stacktrace[5]);
 
-                Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
+                Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report Dispenser Behavior " + Blame.VERSION + " ******************" +
                         "\n   Ignore this unless item behavior aren't working with Dispensers." +
                         "\n  Dispenser Behavior overridden for " + itemID.toString() +
                         "\n  New behavior: " + behavior.getClass().getName() +

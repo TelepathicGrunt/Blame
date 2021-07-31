@@ -19,7 +19,7 @@ public class StructureFeatureBlame {
         Identifier structureId = Registry.STRUCTURE_FEATURE.getId(structureFeature);
 
         // Add extra info to the log file.
-        String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+        String errorReport = "\n****************** Blame Report Structure Spacing " + Blame.VERSION + " ******************" +
                 "\n\n Detected a structure with invalid values for spacing/separation which will cause a crash." +
                 "\n Attempt 1 to find structure name:  " + structureFeature.getName() +
                 "\n Attempt 2 to find structure name:  " + structureId +

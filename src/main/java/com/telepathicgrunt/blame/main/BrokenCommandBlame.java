@@ -79,7 +79,7 @@ public class BrokenCommandBlame {
             }
 
             Blame.LOGGER.log(Level.ERROR,
-                    "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+                    "\n****************** Blame Report Command " + Blame.VERSION + " ******************" +
                             "\n\n Detected a command that is broken. The command may have called .executes() outside a .then() call by mistake " +
                             "\n The broken command is : " + currentCommandPath);
         }
@@ -87,7 +87,7 @@ public class BrokenCommandBlame {
 
     public static void printStacktrace(String commandString, Logger logger, Exception exception, MutableText mutableText) {
         Blame.LOGGER.log(Level.ERROR,
-                "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+                "\n****************** Blame Report Command " + Blame.VERSION + " ******************" +
                         "\n\n A command broke. Here's the stacktrace of the failed command execution:\n");
 
         logger.error("Command exception: {}", commandString, exception);

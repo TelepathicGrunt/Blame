@@ -33,7 +33,7 @@ public class SpawnHelperBlame {
             Identifier biomeID = serverWorld.getRegistryManager().get(Registry.BIOME_KEY).getId(biome);
 
             // Add extra info to the log file.
-            Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+            Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report Mob Weights " + Blame.VERSION + " ******************" +
                     "\n  Detected total weight of mob list is negative which will crash the game! " +
                     "\n  See info below to find which mob is the problem and where it is attempting to spawn at." +
                     "\n World Registry Name : " + worldID.getValue().toString() +
@@ -55,7 +55,7 @@ public class SpawnHelperBlame {
             Identifier biomeID = serverWorld.getRegistryManager().get(Registry.BIOME_KEY).getId(biome);
 
             // Add extra info to the log file.
-            Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+            Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report Mob Weights " + Blame.VERSION + " ******************" +
                     "\n  Detected total weight of mob list is negative which will crash the game! " +
                     "\n  See info below to find which mob is the problem and where it is attempting to spawn at." +
                     "\n World Registry Name : " + worldID.getValue().toString() +
