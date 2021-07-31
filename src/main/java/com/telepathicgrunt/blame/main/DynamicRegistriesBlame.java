@@ -293,7 +293,7 @@ public class DynamicRegistriesBlame {
 
             // Add extra info to the log.
             String errorReport = (printedInitialInfo ? "" : initialInfo) +
-                    "\n\n Unregistered " + type + " JSON info : " + entry.getKey() +
+                    "\n Unregistered " + type + " JSON info : " + entry.getKey() +
                     "\n\n Biome affected : " + entry.getValue().toString().replaceAll("(([\\w :]*,){7})", "$1\n                  ") + "\n\n";
 
             // Log it to the latest.log file as well.
