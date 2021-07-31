@@ -58,19 +58,4 @@ public abstract class StructurePoolMixin {
             MissingTemplatePoolBlame.addEmptyPoolDetails(id, null);
         }
     }
-
-    // Make it so TemplateManager actually states what nbt file was unable to be found.
-    @Inject(method = "getHighestY(Lnet/minecraft/structure/StructureManager;)I",
-            at = @At(value = "HEAD"))
-    private void tempPool(StructureManager structureManager, CallbackInfoReturnable<Integer> cir) {
-        MissingNBTBlame.CALLING_POOL = ((StructurePool) (Object) this).getId();
-    }
-
-    // Make it so TemplateManager actually states what nbt file was unable to be found.
-    @Inject(method = "getHighestY(Lnet/minecraft/structure/StructureManager;)I",
-            at = @At(value = "TAIL"))
-    private void tempPoolClear(StructureManager structureManager, CallbackInfoReturnable<Integer> cir) {
-        MissingNBTBlame.CALLING_POOL = null;
-    }
-
 }

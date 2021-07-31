@@ -1,0 +1,7 @@
+{
+  "config": {
+    "start_pool": "structure_tutorial:run_down_house/start_pool",
+    "size": 6
+  },
+  "type": "minecraft:bastion_remnant"
+}
