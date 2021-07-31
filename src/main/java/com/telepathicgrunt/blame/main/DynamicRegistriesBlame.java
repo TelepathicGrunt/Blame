@@ -4,15 +4,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.datafixers.util.Either;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import com.telepathicgrunt.blame.Blame;
-import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.MutableRegistry;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeGenerationSettings;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
@@ -24,11 +24,8 @@ import org.apache.logging.log4j.Level;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
-import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -59,6 +56,9 @@ public class DynamicRegistriesBlame {
     }
 
 
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final Pattern PATTERN = Pattern.compile("\"(?:Name|type|location)\": *\"([a-z0-9_.-:]+)\"");
+
     /**
      * The main hook for the parser to work from. This will check every biomes in the
      * DynamicRegistry to see if it has exploded due to unregistered stuff added to it.
@@ -70,7 +70,7 @@ public class DynamicRegistriesBlame {
      * actually being registered already. That's why we compare the stringified JSON
      * results instead.
      */
-    public static void printUnregisteredWorldgenConfiguredStuff(net.minecraft.util.registry.DynamicRegistries.Impl imp) {
+    public static void printUnregisteredWorldgenConfiguredStuff(net.minecraft.util.registry.DynamicRegistries.Impl dynamicRegistries) {
         // Gets where this is firing. We want to not print info multiple times.
         // Specifically, clientside sync should be ignored as unregistered stuff
         // is more of a dedicated/integrated server issue.
@@ -79,36 +79,97 @@ public class DynamicRegistriesBlame {
             return;
         }
 
+
+        // Small cache so we can skip already safe worldgen elements to speedup validating.
+        Set<Object> checkedSafeElements = new HashSet<>();
+
         // Create a store here to minimize memory impact and let it get garbaged collected later.
         Map<String, Set<ResourceLocation>> unconfiguredStuffMap = new HashMap<>();
-        HashSet<String> brokenConfiguredStuffSet = new HashSet<>();
+        Map<String, String> brokenConfiguredWorldgenMap = new HashMap<>();
         Set<String> collectedPossibleIssueMods = new HashSet<>();
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        Pattern pattern = Pattern.compile("\"(?:Name|type|location)\": *\"([a-z0-9_.-:]+)\"");
 
-        // ConfiguredFeatures
-        imp.registry(Registry.CONFIGURED_FEATURE_REGISTRY).ifPresent(configuredFeatureRegistry ->
-                imp.registry(Registry.BIOME_REGISTRY).ifPresent(mutableRegistry -> mutableRegistry.entrySet()
-                        .forEach(mapEntry -> findUnregisteredConfiguredFeatures(mapEntry, unconfiguredStuffMap, brokenConfiguredStuffSet, configuredFeatureRegistry, gson))));
+        // Grab all registries we will need.
+        Registry<Biome> biomeRegistry = dynamicRegistries.registryOrThrow(Registry.BIOME_REGISTRY);
+        Registry<ConfiguredFeature<?, ?>> configuredFeatureRegistry = dynamicRegistries.registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY);
+        Registry<ConfiguredCarver<?>> configuredCarverRegistry = dynamicRegistries.registryOrThrow(Registry.CONFIGURED_CARVER_REGISTRY);
+        Registry<StructureFeature<?, ?>> configuredStructureRegistry = dynamicRegistries.registryOrThrow(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY);
 
-        printUnregisteredStuff(unconfiguredStuffMap, "ConfiguredFeature");
-        extractModNames(unconfiguredStuffMap, collectedPossibleIssueMods, pattern);
+        // Checks every biome for unregistered or broken worldgen elements.
+        for (Biome biome : biomeRegistry) {
+            BiomeGenerationSettings biomeGenerationSettings = biome.getGenerationSettings();
+            ResourceLocation biomeName = biome.getRegistryName();
 
-        // ConfiguredStructures
-        imp.registry(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY).ifPresent(configuredStructureRegistry ->
-                imp.registry(Registry.BIOME_REGISTRY).ifPresent(mutableRegistry -> mutableRegistry.entrySet()
-                        .forEach(mapEntry -> findUnregisteredConfiguredStructures(mapEntry, unconfiguredStuffMap, configuredStructureRegistry, gson))));
+            biomeGenerationSettings.features().forEach(generationStageFeatureList ->
+                generationStageFeatureList.forEach(configuredFeatureSupplier -> {
+                    ConfiguredFeature<?, ?> feature = configuredFeatureSupplier.get();
+                    if (!checkedSafeElements.contains(feature)) {
+                        boolean isValid = validate(feature,
+                                configuredFeatureRegistry,
+                                WorldGenRegistries.CONFIGURED_FEATURE,
+                                "ConfiguredFeature",
+                                ConfiguredFeature.DIRECT_CODEC,
+                                biomeName,
+                                unconfiguredStuffMap,
+                                brokenConfiguredWorldgenMap);
 
-        printUnregisteredStuff(unconfiguredStuffMap, "ConfiguredStructure");
-        extractModNames(unconfiguredStuffMap, collectedPossibleIssueMods, pattern);
+                        if(isValid) checkedSafeElements.add(feature);
+                    }
+                })
+            );
+        }
 
-        // ConfiguredCarvers
-        imp.registry(Registry.CONFIGURED_CARVER_REGISTRY).ifPresent(configuredCarverRegistry ->
-                imp.registry(Registry.BIOME_REGISTRY).ifPresent(mutableRegistry -> mutableRegistry.entrySet()
-                        .forEach(mapEntry -> findUnregisteredConfiguredCarver(mapEntry, unconfiguredStuffMap, configuredCarverRegistry, gson))));
+        printUnregisteredAndBrokenStuff(unconfiguredStuffMap, brokenConfiguredWorldgenMap, "ConfiguredFeature");
+        extractModNames(unconfiguredStuffMap, collectedPossibleIssueMods);
 
-        printUnregisteredStuff(unconfiguredStuffMap, "ConfiguredStructure");
-        extractModNames(unconfiguredStuffMap, collectedPossibleIssueMods, pattern);
+        for (Biome biome : biomeRegistry) {
+            BiomeGenerationSettings biomeGenerationSettings = biome.getGenerationSettings();
+            ResourceLocation biomeName = biome.getRegistryName();
+
+            for (GenerationStage.Carving carvingStage : GenerationStage.Carving.values()) {
+                biomeGenerationSettings.getCarvers(carvingStage).forEach(configuredWorldCarverSupplier -> {
+                    ConfiguredCarver<?> carver = configuredWorldCarverSupplier.get();
+                    if (!checkedSafeElements.contains(carver)) {
+                        boolean isValid = validate(carver,
+                                configuredCarverRegistry,
+                                WorldGenRegistries.CONFIGURED_CARVER,
+                                "ConfiguredCarver",
+                                ConfiguredCarver.DIRECT_CODEC,
+                                biomeName,
+                                unconfiguredStuffMap,
+                                brokenConfiguredWorldgenMap);
+
+                        if(isValid) checkedSafeElements.add(carver);
+                    }
+                });
+            }
+        }
+
+        printUnregisteredAndBrokenStuff(unconfiguredStuffMap, brokenConfiguredWorldgenMap, "ConfiguredStructure");
+        extractModNames(unconfiguredStuffMap, collectedPossibleIssueMods);
+
+        for (Biome biome : biomeRegistry) {
+            BiomeGenerationSettings biomeGenerationSettings = biome.getGenerationSettings();
+            ResourceLocation biomeName = biome.getRegistryName();
+
+            biomeGenerationSettings.structures().forEach(structureFeatureSupplier -> {
+                StructureFeature<?, ?> structureFeature = structureFeatureSupplier.get();
+                if (!checkedSafeElements.contains(structureFeature)) {
+                    boolean isValid = validate(structureFeature,
+                            configuredStructureRegistry,
+                            WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE,
+                            "ConfiguredStructure",
+                            StructureFeature.DIRECT_CODEC,
+                            biomeName,
+                            unconfiguredStuffMap,
+                            brokenConfiguredWorldgenMap);
+
+                    if(isValid) checkedSafeElements.add(structureFeature);
+                }
+            });
+        }
+
+        printUnregisteredAndBrokenStuff(unconfiguredStuffMap, brokenConfiguredWorldgenMap, "ConfiguredStructure");
+        extractModNames(unconfiguredStuffMap, collectedPossibleIssueMods);
 
         if (collectedPossibleIssueMods.size() != 0) {
             // Add extra info to the log.
@@ -128,142 +189,81 @@ public class DynamicRegistriesBlame {
         collectedPossibleIssueMods.clear();
     }
 
-    private static void extractModNames(Map<String, Set<ResourceLocation>> unconfiguredStuffMap, Set<String> collectedPossibleIssueMods, Pattern pattern) {
-        unconfiguredStuffMap.keySet()
-                .forEach(jsonString -> {
-                    Matcher match = pattern.matcher(jsonString);
-                    while (match.find()) {
-                        if (!match.group(1).contains("minecraft:")) {
-                            collectedPossibleIssueMods.add(match.group(1));
-                        }
-                    }
-                });
-        unconfiguredStuffMap.clear();
-    }
 
     /**
-     * Prints all unregistered configured features to the log.
+     * Handles checking if the worldgen element is broken (unable to be turned into JSON) or unregistered.
+     * If an issue is found, this will pause the IDE so the modder can come here and see the error and the worldgenElement for which element is the issue.
+     * The console output will have the Forge message as last thing when paused too.
      */
-    private static void findUnregisteredConfiguredFeatures(
-            Map.Entry<RegistryKey<Biome>, Biome> mapEntry,
-            Map<String, Set<ResourceLocation>> unregisteredFeatureMap,
-            HashSet<String> brokenConfiguredStuffSet,
-            MutableRegistry<ConfiguredFeature<?, ?>> configuredFeatureRegistry,
-            Gson gson) {
+    private static <T> boolean validate(T worldgenElement, Registry<T> dynamicRegistry, Registry<T> preWorldRegistry, String worldgenElementType, Codec<T> codec, ResourceLocation biomeName, Map<String, Set<ResourceLocation>> unconfiguredStuffMap, Map<String, String> brokenConfiguredStuffSet) {
 
-        for (List<Supplier<ConfiguredFeature<?, ?>>> generationStageList : mapEntry.getValue().getGenerationSettings().features()) {
-            for (Supplier<ConfiguredFeature<?, ?>> configuredFeatureSupplier : generationStageList) {
+        // Checks to make sure the element can be turned into JSON safely or else Minecraft will explode with vague errors.
+        Either<JsonElement, DataResult.PartialResult<JsonElement>> parsedData = codec.encode(worldgenElement, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get();
+        
+        if(parsedData.right().isPresent()) {
+            String partialResult = parsedData.right().get().toString().replace("DynamicException["+parsedData.right().get().message()+" ", "");
+            partialResult = partialResult.substring(0, partialResult.length() - 1);
 
-                ResourceLocation biomeID = mapEntry.getKey().location();
-                if (configuredFeatureRegistry.getKey(configuredFeatureSupplier.get()) == null &&
-                        WorldGenRegistries.CONFIGURED_FEATURE.getKey(configuredFeatureSupplier.get()) == null) {
+            ResourceLocation registeredName = preWorldRegistry.getKey(worldgenElement);
+            if(registeredName == null) {
+                registeredName = dynamicRegistry.getKey(worldgenElement);
+            }
 
-                    Either<JsonElement, DataResult.PartialResult<JsonElement>> parsedData = ConfiguredFeature.CODEC
-                            .encode(configuredFeatureSupplier, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get();
+            if(!partialResult.isEmpty() && brokenConfiguredStuffSet.containsKey(partialResult)){
+                brokenConfiguredStuffSet.merge(partialResult, biomeName.toString(), (oldValue, newValue) -> oldValue + ", " + newValue);
+                return false;
+            }
 
-                    if(parsedData.right().isPresent() && !brokenConfiguredStuffSet.contains(configuredFeatureSupplier.toString())) {
+            if(worldgenElement instanceof ConfiguredFeature){
 
-                        brokenConfiguredStuffSet.add(configuredFeatureSupplier.toString());
-                        ConfiguredFeature<?, ?> cf = configuredFeatureSupplier.get();
+                // Getting bottommost cf way is from Quark. Very nice!
+                ConfiguredFeature<?, ?> cf = (ConfiguredFeature<?, ?>) worldgenElement;
+                Feature<?> feature = cf.feature;
+                IFeatureConfig config = cf.config;
 
-                        ResourceLocation registeredName = WorldGenRegistries.CONFIGURED_FEATURE.getKey(configuredFeatureSupplier.get());
-                        if(registeredName == null) {
-                            registeredName = configuredFeatureRegistry.getKey(configuredFeatureSupplier.get());
-                        }
-
-                        // Getting bottommost cf way is from Quark. Very nice!
-                        Feature<?> feature = cf.feature;
-                        IFeatureConfig config = cf.config;
-
-                        // Get the base feature of the CF. Will not get nested CFs such as trees in Feature.RANDOM_SELECTOR.
-                        while (config instanceof DecoratedFeatureConfig) {
-                            DecoratedFeatureConfig decoratedConfig = (DecoratedFeatureConfig) config;
-                            feature = decoratedConfig.feature.get().feature;
-                            config = decoratedConfig.feature.get().config;
-                        }
-
-                        String errorReport = "\n****************** Blame Report ConfiguredFeature JSON parse " + Blame.VERSION + " ******************" +
-                                "\n\n Found a ConfiguredFeature that was unabled to be turned into JSON which is... bad." +
-                                "\n Error msg is: " +parsedData.right().get().message() +
-                                "\n This is all the info we can get about this ConfiguredFeature" +
-                                "\n Registry Name: " + registeredName +
-                                "\n Top level cf [feature:" + configuredFeatureSupplier + " | config: " + configuredFeatureSupplier.get().toString() + "]" +
-                                "\n bottomost level cf [feature:" + feature.toString() + " | config: " + config.toString() + "]" +
-                                "\n\n";
-
-                        // Log it to the latest.log file as well.
-                        Blame.LOGGER.log(Level.ERROR, errorReport);
-                    }
-                    else {
-                        parsedData.left().ifPresent(configuredFeatureSupplier2 ->
-                                cacheUnregisteredObject(configuredFeatureSupplier2,
-                                        unregisteredFeatureMap,
-                                        biomeID,
-                                        gson));
-                    }
+                // Get the base feature of the CF. Will not get nested CFs such as trees in Feature.RANDOM_SELECTOR.
+                while (config instanceof DecoratedFeatureConfig) {
+                    DecoratedFeatureConfig decoratedConfig = (DecoratedFeatureConfig) config;
+                    feature = decoratedConfig.feature.get().feature;
+                    config = decoratedConfig.feature.get().config;
                 }
+
+                String errorReport =
+                        "\n Error msg is: " + parsedData.right().get().message() +
+                        "\n Registry Name: " + registeredName +
+                        "\n Top level cf [feature:" + cf.feature.toString() + " | config: " + cf.config.toString() + "]" +
+                        "\n bottomost level cf [feature:" + feature.toString() + " | config: " + config.toString() + "]" +
+                        "\n Partial JSON Result: " + partialResult +
+                        "\n Biomes Affected: " + biomeName;
+
+                brokenConfiguredStuffSet.put(partialResult, errorReport);
             }
-        }
-    }
+            else {
+                String errorReport =
+                        "\n Error msg is: " + parsedData.right().get().message() +
+                        "\n Registry Name: " + registeredName + "  | Instance: " + worldgenElement +
+                        "\n Partial JSON Result: " + partialResult +
+                        "\n Biomes Affected: " + biomeName;
 
-    /**
-     * Prints all unregistered configured structures to the log.
-     */
-    private static void findUnregisteredConfiguredStructures(
-            Map.Entry<RegistryKey<Biome>, Biome> mapEntry,
-            Map<String, Set<ResourceLocation>> unregisteredStructureMap,
-            MutableRegistry<StructureFeature<?, ?>> configuredStructureRegistry,
-            Gson gson) {
-        for (Supplier<StructureFeature<?, ?>> configuredStructureSupplier : mapEntry.getValue().getGenerationSettings().structures()) {
-
-            ResourceLocation biomeID = mapEntry.getKey().location();
-            if (configuredStructureRegistry.getKey(configuredStructureSupplier.get()) == null &&
-                    WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE.getKey(configuredStructureSupplier.get()) == null) {
-                StructureFeature.DIRECT_CODEC
-                        .encode(configuredStructureSupplier.get(), JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left()
-                        .ifPresent(configuredStructureJSON ->
-                                cacheUnregisteredObject(
-                                        configuredStructureJSON,
-                                        unregisteredStructureMap,
-                                        biomeID,
-                                        gson));
+                brokenConfiguredStuffSet.put(partialResult, errorReport);
             }
-        }
-    }
 
-    /**
-     * Prints all unregistered configured carver to the log.
-     */
-    private static void findUnregisteredConfiguredCarver(
-            Map.Entry<RegistryKey<Biome>, Biome> mapEntry,
-            Map<String, Set<ResourceLocation>> unregisteredCarverMap,
-            MutableRegistry<ConfiguredCarver<?>> configuredCarverRegistry,
-            Gson gson) {
-        for (GenerationStage.Carving carvingStage : GenerationStage.Carving.values()) {
-            for (Supplier<ConfiguredCarver<?>> configuredCarverSupplier : mapEntry.getValue().getGenerationSettings().getCarvers(carvingStage)) {
-
-                ResourceLocation biomeID = mapEntry.getKey().location();
-                if (configuredCarverRegistry.getKey(configuredCarverSupplier.get()) == null &&
-                        WorldGenRegistries.CONFIGURED_CARVER.getKey(configuredCarverSupplier.get()) == null) {
-                    ConfiguredCarver.DIRECT_CODEC
-                            .encode(configuredCarverSupplier.get(), JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left()
-                            .ifPresent(configuredCarverJSON ->
-                                    cacheUnregisteredObject(
-                                            configuredCarverJSON,
-                                            unregisteredCarverMap,
-                                            biomeID,
-                                            gson));
-                }
-            }
+            return false;
         }
+        else if (dynamicRegistry.getKey(worldgenElement) == null && preWorldRegistry.getKey(worldgenElement) == null) {
+            parsedData.left().ifPresent(configuredFeatureSupplier2 -> cacheUnregisteredObject(configuredFeatureSupplier2, unconfiguredStuffMap, biomeName));
+            return false;
+        }
+
+        return true;
     }
 
     private static void cacheUnregisteredObject(
             JsonElement configuredObjectJSON,
             Map<String, Set<ResourceLocation>> unregisteredObjectMap,
-            ResourceLocation biomeID,
-            Gson gson) {
-        String configuredObjectString = gson.toJson(configuredObjectJSON);
+            ResourceLocation biomeID) {
+
+        String configuredObjectString = GSON.toJson(configuredObjectJSON);
 
         if (!unregisteredObjectMap.containsKey(configuredObjectString))
             unregisteredObjectMap.put(configuredObjectString, new HashSet<>());
@@ -271,19 +271,50 @@ public class DynamicRegistriesBlame {
         unregisteredObjectMap.get(configuredObjectString).add(biomeID);
     }
 
-    private static void printUnregisteredStuff(Map<String, Set<ResourceLocation>> unregisteredStuffMap, String type) {
+    private static void printUnregisteredAndBrokenStuff(Map<String, Set<ResourceLocation>> unregisteredStuffMap, Map<String, String> brokenConfiguredStuffSet, String type) {
+
+        boolean printedInitialInfo = false;
+        String initialInfo =
+                "\n****************** Blame Report Broken Worldgen " + Blame.VERSION + " ******************" +
+                "\n\n These " + type + " were unabled to be turned into JSON which is... bad." +
+                "\n This is all the info we can get about the " + type + "\n";
+
+        for (Map.Entry<String, String> entry : brokenConfiguredStuffSet.entrySet()) {
+            Blame.LOGGER.log(Level.ERROR, (printedInitialInfo ? "" : initialInfo) + entry.getValue() + "\n\n");
+            printedInitialInfo = true;
+        }
+        brokenConfiguredStuffSet.clear();
+
+
+        printedInitialInfo = false;
+        initialInfo =
+                "\n****************** Blame Report Unregistered Worldgen " + Blame.VERSION + " ******************" +
+                "\n\n These " + type + " was found to be not registered. Look at the JSON info and try to" +
+                "\n find which mod it belongs to. Then go tell that mod owner to register their " + type +
+                "\n as otherwise, it will break other mods or datapacks that registered their stuff.\n";
         for (Map.Entry<String, Set<ResourceLocation>> entry : unregisteredStuffMap.entrySet()) {
 
             // Add extra info to the log.
-            String errorReport = "\n****************** Blame Report Unregistered Worldgen " + Blame.VERSION + " ******************" +
-                    "\n\n This " + type + " was found to be not registered. Look at the JSON info and try to" +
-                    "\n find which mod it belongs to. Then go tell that mod owner to register their " + type +
-                    "\n as otherwise, it will break other mods or datapacks that registered their stuff." +
-                    "\n\n JSON info : " + entry.getKey() +
+            String errorReport = (printedInitialInfo ? "" : initialInfo) +
+                    "\n\n Unregistered " + type + " JSON info : " + entry.getKey() +
                     "\n\n Biome affected : " + entry.getValue().toString().replaceAll("(([\\w :]*,){7})", "$1\n                  ") + "\n\n";
 
             // Log it to the latest.log file as well.
             Blame.LOGGER.log(Level.ERROR, errorReport);
+            printedInitialInfo = true;
         }
+    }
+
+    private static void extractModNames(Map<String, Set<ResourceLocation>> unconfiguredStuffMap, Set<String> collectedPossibleIssueMods) {
+        unconfiguredStuffMap.keySet()
+                .forEach(jsonString -> {
+                    Matcher match = PATTERN.matcher(jsonString);
+                    while (match.find()) {
+                        if (!match.group(1).contains("minecraft:")) {
+                            collectedPossibleIssueMods.add(match.group(1));
+                        }
+                    }
+                });
+        unconfiguredStuffMap.clear();
     }
 }

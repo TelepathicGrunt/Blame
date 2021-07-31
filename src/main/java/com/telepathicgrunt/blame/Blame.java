@@ -1,30 +1,5 @@
 package com.telepathicgrunt.blame;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeAmbience;
-import net.minecraft.world.biome.BiomeGenerationSettings;
-import net.minecraft.world.biome.BiomeMaker;
-import net.minecraft.world.biome.DefaultBiomeFeatures;
-import net.minecraft.world.biome.MobSpawnInfo;
-import net.minecraft.world.biome.MoodSoundAmbience;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
-import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.FeatureSpread;
-import net.minecraft.world.gen.feature.Features;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.TwoLayerFeature;
-import net.minecraft.world.gen.feature.structure.StructureFeatures;
-import net.minecraft.world.gen.foliageplacer.SpruceFoliagePlacer;
-import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilders;
-import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.DatagenModLoader;
 import net.minecraftforge.fml.ExtensionPoint;
@@ -34,7 +9,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.FMLNetworkConstants;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -71,7 +45,7 @@ public class Blame {
         // DispenserBlock.registerDispenseBehavior(Items.HONEY_BOTTLE, new DefaultDispenseItemBehavior());
 
         // Test detecting unregistered configuredfeatures.
-        // MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, this::biomeModification);
+        // MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, this::unregisteredConfiguredFeature);
 
         // Test detecting broken configuredfeatures.
         // MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, this::brokenConfiguredFeature);
@@ -143,10 +117,12 @@ public class Blame {
 //    });
 
 
-//    private void biomeModification(final BiomeLoadingEvent event) {
+//    private void unregisteredConfiguredFeature(final BiomeLoadingEvent event) {
 //        // Add our structure to all biomes including other modded biomes.
 //        // You can filter to certain biomes based on stuff like temperature, scale, precipitation, mod id.
 //        event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> Feature.DESERT_WELL.configured(new NoFeatureConfig()));
+//        event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> Feature.BASALT_PILLAR.configured(new NoFeatureConfig()));
+//        event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> Feature.BONUS_CHEST.configured(new NoFeatureConfig()));
 //    }
 
 //

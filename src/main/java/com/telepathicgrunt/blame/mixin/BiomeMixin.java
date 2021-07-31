@@ -45,7 +45,7 @@ public class BiomeMixin {
                                    int numOfGenerationStage, int generationStageIndex, int configuredFeatureIndex,
                                    Iterator<ConfiguredFeature<?, ?>> var12, Supplier<ConfiguredFeature<?, ?>> supplier,
                                    ConfiguredFeature<?, ?> configuredfeature, Exception exception, CrashReport crashreport) {
-        BiomeBlame.addFeatureDetails((Biome) (Object) this, worldGenRegion, configuredfeature, crashreport);
+        BiomeBlame.addFeatureDetails((Biome) (Object) this, worldGenRegion, configuredfeature);
     }
 
 

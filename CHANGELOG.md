@@ -1,3 +1,14 @@
+### **(V.3.2.5 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
+
+#### Broken/Unregistered Worldgen:
+Fixed up the error messages when detecting unregistered or broken worldgen to be a little less spammy.
+
+#### Crashing ConfiguredStructure/ConfiguredFeatures
+Made Blame report less spammy when reporting what ConfiguredStructure or ConfiguredFeature crashed.
+
+Fixed crashing unregistered ConfiguredFeatures not having their JSON dumped for the report.
+
+
 ### **(V.3.2.4 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
 
 #### Broken ConfiguredFeatures:
