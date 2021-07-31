@@ -64,7 +64,7 @@ repositories {
 }
 ```
 
-Now add this to the dependency block. Replace <version> with the Blame version you want to use such as `1.16.5-3.0.0-forge`. Check the CurseForge page for what the latest version is.
+Now add this to the dependency block. Replace <version> with the Blame version you want to use such as `1.17-4.0.0-forge`. Check the CurseForge page for what the latest version is.
 ```
 dependencies {
   ...
