@@ -1,5 +1,17 @@
 package com.telepathicgrunt.blame;
 
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeAmbience;
+import net.minecraft.world.biome.BiomeGenerationSettings;
+import net.minecraft.world.biome.BiomeMaker;
+import net.minecraft.world.biome.DefaultBiomeFeatures;
+import net.minecraft.world.biome.MobSpawnInfo;
+import net.minecraft.world.biome.MoodSoundAmbience;
+import net.minecraft.world.gen.feature.structure.StructureFeatures;
+import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilders;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.DatagenModLoader;
 import net.minecraftforge.fml.ExtensionPoint;
@@ -9,6 +21,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.FMLNetworkConstants;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -35,6 +48,9 @@ public class Blame {
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(EventPriority.LOWEST, this::afterModStartups);
 
+        // Test code biomes stuff to see what missing stuff does to the logs
+        //FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Biome.class, this::registerBiome);
+
         // Test detecting broken commands that called .execute() outside a .then() call.
         //MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
 
@@ -48,18 +64,40 @@ public class Blame {
     // Let us know when TagCollectionManager is safe to be classloaded.
     public static boolean MAIN_MOD_STARTUPS_FINISHED = false;
 
-    public void afterModStartups(final FMLCommonSetupEvent event) {
+    private void afterModStartups(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             MAIN_MOD_STARTUPS_FINISHED = true;
         });
     }
 
-//    public void registerCommands(final RegisterCommandsEvent event)
+//    private void registerBiome(final RegistryEvent.Register<Biome> event){
+//        Biome biome = (new Biome.Builder())
+//                .precipitation(Biome.RainType.RAIN)
+//                .biomeCategory(Biome.Category.FOREST)
+//                .depth(50)
+//                .scale(50)
+//                .temperature(0.6F)
+//                .downfall(0.6F)
+//                .specialEffects((new BiomeAmbience.Builder())
+//                        .waterColor(4204)
+//                        .waterFogColor(6011)
+//                        .fogColor(8463)
+//                        .skyColor(4446)
+//                        .build())
+//                .mobSpawnSettings(new MobSpawnInfo.Builder().build())
+//                .generationSettings(new BiomeGenerationSettings.Builder()
+//                        .surfaceBuilder(ConfiguredSurfaceBuilders.GRASS).build())
+//                .build();
+//        biome.setRegistryName(new ResourceLocation(Blame.MODID, "test_biome"));
+//        event.getRegistry().register(biome);
+//    }
+
+//    private void registerCommands(final RegisterCommandsEvent event)
 //    {
 //        register(event.getDispatcher());
 //    }
 //
-//    public static void register(CommandDispatcher<CommandSource> p_241046_0_) {
+//    private static void register(CommandDispatcher<CommandSource> p_241046_0_) {
 //        p_241046_0_.register(Commands.literal("locatebiome2").requires((p_241048_0_) -> {
 //            return p_241048_0_.hasPermission(2);
 //        }).then(Commands.argument("biome", ResourceLocationArgument.id()).suggests(SuggestionProviders.AVAILABLE_BIOMES)).executes((p_241047_0_) -> {
@@ -81,7 +119,7 @@ public class Blame {
 //            return LocateCommand.showLocateResult(p_241049_0_, s, blockpos, blockpos1, "commands.locatebiome.success");
 //        }
 //    }
-//    public static final DynamicCommandExceptionType ERROR_INVALID_BIOME = new DynamicCommandExceptionType((p_241052_0_) -> {
+//    private static final DynamicCommandExceptionType ERROR_INVALID_BIOME = new DynamicCommandExceptionType((p_241052_0_) -> {
 //        return new TranslationTextComponent("commands.locatebiome.invalid", p_241052_0_);
 //    });
 //    private static final DynamicCommandExceptionType ERROR_BIOME_NOT_FOUND = new DynamicCommandExceptionType((p_241050_0_) -> {
@@ -89,7 +127,7 @@ public class Blame {
 //    });
 
 
-//    public void biomeModification(final BiomeLoadingEvent event) {
+//    private void biomeModification(final BiomeLoadingEvent event) {
 //        // Add our structure to all biomes including other modded biomes.
 //        // You can filter to certain biomes based on stuff like temperature, scale, precipitation, mod id.
 //        event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> Feature.DESERT_WELL.withConfiguration(new NoFeatureConfig()));
