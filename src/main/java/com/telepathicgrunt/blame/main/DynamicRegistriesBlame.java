@@ -106,7 +106,6 @@ public class DynamicRegistriesBlame {
                         boolean isValid = validate(feature,
                                 configuredFeatureRegistry,
                                 WorldGenRegistries.CONFIGURED_FEATURE,
-                                "ConfiguredFeature",
                                 ConfiguredFeature.DIRECT_CODEC,
                                 biomeName,
                                 unconfiguredStuffMap,
@@ -132,7 +131,6 @@ public class DynamicRegistriesBlame {
                         boolean isValid = validate(carver,
                                 configuredCarverRegistry,
                                 WorldGenRegistries.CONFIGURED_CARVER,
-                                "ConfiguredCarver",
                                 ConfiguredCarver.DIRECT_CODEC,
                                 biomeName,
                                 unconfiguredStuffMap,
@@ -157,7 +155,6 @@ public class DynamicRegistriesBlame {
                     boolean isValid = validate(structureFeature,
                             configuredStructureRegistry,
                             WorldGenRegistries.CONFIGURED_STRUCTURE_FEATURE,
-                            "ConfiguredStructure",
                             StructureFeature.DIRECT_CODEC,
                             biomeName,
                             unconfiguredStuffMap,
@@ -195,7 +192,7 @@ public class DynamicRegistriesBlame {
      * If an issue is found, this will pause the IDE so the modder can come here and see the error and the worldgenElement for which element is the issue.
      * The console output will have the Forge message as last thing when paused too.
      */
-    private static <T> boolean validate(T worldgenElement, Registry<T> dynamicRegistry, Registry<T> preWorldRegistry, String worldgenElementType, Codec<T> codec, ResourceLocation biomeName, Map<String, Set<ResourceLocation>> unconfiguredStuffMap, Map<String, String> brokenConfiguredStuffSet) {
+    private static <T> boolean validate(T worldgenElement, Registry<T> dynamicRegistry, Registry<T> preWorldRegistry, Codec<T> codec, ResourceLocation biomeName, Map<String, Set<ResourceLocation>> unconfiguredStuffMap, Map<String, String> brokenConfiguredStuffSet) {
 
         // Checks to make sure the element can be turned into JSON safely or else Minecraft will explode with vague errors.
         Either<JsonElement, DataResult.PartialResult<JsonElement>> parsedData = codec.encode(worldgenElement, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get();
