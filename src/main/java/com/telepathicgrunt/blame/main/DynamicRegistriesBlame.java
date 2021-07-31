@@ -43,7 +43,7 @@ public class DynamicRegistriesBlame {
         if(Blame.MAIN_MOD_STARTUPS_FINISHED) return;
 
         Blame.LOGGER.log(Level.ERROR,
-                "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+                "\n****************** Blame Report DynamicRegistry Classload  " + Blame.VERSION + " ******************" +
                         "\n\n Oh no! Oh god! Someone classloaded DynamicRegistries class way too early!" +
                         "\n Most registry entries for other mods is broken now! Please read the following stacktrace" +
                         "\n and see if you can find which mod broke the game badly and please show them this log file." +
@@ -111,7 +111,7 @@ public class DynamicRegistriesBlame {
             // Add extra info to the log.
             String errorReport = "\n\n-----------------------------------------------------------------------" +
                     "\n****************** Blame Report " + Blame.VERSION + " ******************" +
-                    "\n\n This is an experimental report. It is suppose to automatically read" +
+                    "\n\n This is an lengthy report. It is suppose to automatically read" +
                     "\n the JSON of all the unregistered ConfiguredFeatures, ConfiguredStructures," +
                     "\n and ConfiguredCarvers. Then does its best to collect the terms that seem to" +
                     "\n state whose mod the unregistered stuff belongs to." +
@@ -181,10 +181,10 @@ public class DynamicRegistriesBlame {
                                 config = decoratedConfig.feature.get().config;
                             }
 
-                            String errorReport = "\n****************** Experimental Blame Report " + Blame.VERSION + " ******************" +
+                            String errorReport = "\n****************** Blame Report ConfiguredFeature JSON parse " + Blame.VERSION + " ******************" +
                                     "\n\n Found a ConfiguredFeature that was unabled to be turned into JSON which is... bad." +
                                     "\n This is all the info we can get about this strange... object." +
-                                    "\n Top level cf [feature:" + configuredFeatureSupplier.toString() + " | config: " + configuredFeatureSupplier.get().toString() + "]" +
+                                    "\n Top level cf [feature:" + configuredFeatureSupplier + " | config: " + configuredFeatureSupplier.get().toString() + "]" +
                                     "\n bottomost level cf [feature:" + feature.toString() + " | config: " + config.toString() + "]" +
                                     "\n\n";
 
@@ -266,7 +266,7 @@ public class DynamicRegistriesBlame {
         for (Map.Entry<String, Set<ResourceLocation>> entry : unregisteredStuffMap.entrySet()) {
 
             // Add extra info to the log.
-            String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+            String errorReport = "\n****************** Blame Report Unregistered Worldgen " + Blame.VERSION + " ******************" +
                     "\n\n This " + type + " was found to be not registered. Look at the JSON info and try to" +
                     "\n find which mod it belongs to. Then go tell that mod owner to register their " + type +
                     "\n as otherwise, it will break other mods or datapacks that registered their stuff." +

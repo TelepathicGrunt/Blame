@@ -19,7 +19,7 @@ public class StructureFeatureBlame {
         ResourceLocation structureRL = Registry.STRUCTURE_FEATURE.getKey(structureFeature);
 
         // Add extra info to the log file.
-        String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+        String errorReport = "\n****************** Blame Report Structure Spacing " + Blame.VERSION + " ******************" +
                 "\n\n Detected a structure with invalid values for spacing/separation which will cause a crash." +
                 "\n Attempt 1 to find structure name:  " + structureFeature.getFeatureName() +
                 "\n Attempt 2 to find structure name:  " + structureRL +

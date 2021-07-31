@@ -24,8 +24,8 @@ public class MissingTemplatePoolBlame {
         if (PRINTED_RLS.contains(poolStartId.toString())) return;
 
         // Add extra info to the log file.
-        String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
-                "\n\n Empty template pool found from : " + poolStartId.toString() +
+        String errorReport = "\n****************** Blame Report Template Pool" + Blame.VERSION + " ******************" +
+                "\n\n Empty template pool found from : " + poolStartId +
                 "\n The path represented by this is:  " + fullPath +
                 (callingParentPiece != null ? "\n The structure piece with a Jigsaw Block that is targeting an empty pool is: " + callingParentPiece.toString() : ".json") +
                 "\n Most common cause is that there is a typo in this path to the template pool which then points to a non-existent pool." +

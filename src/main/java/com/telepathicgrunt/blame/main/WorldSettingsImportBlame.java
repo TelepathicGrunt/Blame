@@ -70,7 +70,7 @@ public class WorldSettingsImportBlame {
             }
 
             Blame.LOGGER.log(Level.ERROR,
-                    "\n****************** Blame Report " + Blame.VERSION + " ******************"
+                    "\n****************** Blame Report Worldgen Import " + Blame.VERSION + " ******************"
                             + "\n\n Failed to load resource file: " + currentResource
                             + "\n\n Reason stated: " + reason
                             + "\n\n Possibly helpful hint (hopefully): " + hint

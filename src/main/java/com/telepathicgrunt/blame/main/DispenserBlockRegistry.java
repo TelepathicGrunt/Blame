@@ -76,7 +76,7 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
                 }
 
                 if (entry.itemBehaviorsReplaced == 0) {
-                    Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
+                    Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report Dispenser Behavior " + Blame.VERSION + " ******************" +
                             "\n   Condensed Dispenser message mode activated for " + entry.modID + "." +
                             "\n   Dispenser behavior registry replacement was detected." +
                             "\n   Reason for the change:  " + entry.reasonForBehaviorChange +
@@ -87,11 +87,11 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
             }
             else if (!startupIgnore && (itemRl.getNamespace().equals("minecraft") || this.containsKey(item))) {
 
-                Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Extra Info Report " + Blame.VERSION + " ******************" +
+                Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report Dispenser Behavior " + Blame.VERSION + " ******************" +
                         "\n   Ignore this unless item behavior aren't working with Dispensers. If Dispenser behavior" +
                         "\n   is broken, check out \"Potentially Dangerous alternative prefix `minecraft`\" lines for" +
                         "\n   the item too as registry replacements might break dispenser behaviors as well." +
-                        "\n  Dispenser Behavior overridden for " + itemRl.toString() +
+                        "\n  Dispenser Behavior overridden for " + itemRl +
                         "\n  New behavior: " + behaviorClassName +
                         "\n  Old behavior: " + this.get(item).getClass().getName() +
                         "\n  Registration done at: " +

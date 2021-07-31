@@ -63,7 +63,7 @@ public class BiomeBlame {
         // Add extra info to the crash report file.
         if (configuredFeatureID == null) {
             crashreport.getSystemDetails()
-                    .setDetail("\n****************** Blame Report " + Blame.VERSION + " ******************",
+                    .setDetail("\n****************** Blame Report ConfiguredFeature " + Blame.VERSION + " ******************",
                             "\n\n ConfiguredFeature name was unable to be found due to either the configuredfeature registry or " +
                                     "\n biome registry missing somehow. Or that the configuredfeature is not in any registries." +
                                     "\n Sorry but Blame isn't really able to get much info but..." +
@@ -71,7 +71,7 @@ public class BiomeBlame {
         }
         else {
             crashreport.getSystemDetails()
-                    .setDetail("\n****************** Blame Report " + Blame.VERSION + " ******************",
+                    .setDetail("\n****************** Blame Report ConfiguredFeature " + Blame.VERSION + " ******************",
                             "\n\n ConfiguredFeature Registry Name : " + configuredFeatureID +
                                     "\n Biome Registry Name : " + (biomeID != null ? biomeID : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!") +
                                     "\n\n JSON info : " + (configuredFeatureJSON.isPresent() ? gson.toJson(configuredFeatureJSON.get()) : "Failed to get JSON somehow. Stacktrace of error:\n" + Arrays.toString(trace)) + "\n\n");
@@ -104,7 +104,7 @@ public class BiomeBlame {
         // Add extra info to the crash report file.
         // Note, only structures can do the details part as configuredfeatures always says the ConfiguredFeature class.
         crashreport.getSystemDetails()
-                .setDetail("\n****************** Blame Report " + Blame.VERSION + " ******************",
+                .setDetail("\n****************** Blame Report ConfiguredStructure " + Blame.VERSION + " ******************",
                         "\n\n Structure Name : " + structureFeature.getFeatureName() + // Never null
                                 "\n Structure Registry Name : " + (structureID != null ? structureID : "Structure is not registered somehow. Yell at the mod author when found to register their structures!") +
                                 "\n Structure Details : " + structureFeature.toString() +

@@ -30,7 +30,7 @@ public class JigsawPatternBlame {
         }
 
         // Add extra info to the log file.
-        String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+        String errorReport = "\n****************** Blame Report Template Pool Weight " + Blame.VERSION + " ******************" +
                 "\n\n   Detected a Template pool for a structure has a MASSIVE weight for their pieces." +
                 "\n   Weights in the millions or billions will eat up a ton of RAM at startup due to" +
                 "\n   an oversight by Mojang with setting up pool weights. It might even crash Minecraft!" +

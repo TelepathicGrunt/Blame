@@ -29,10 +29,10 @@ public class FlatGenerationSettingsBlame {
         if (mainStructureMap.get(structureEntry.getKey()) == null) {
 
             ResourceLocation rl = Registry.STRUCTURE_FEATURE.getKey(structureEntry.getKey());
-            String extraDetail = rl != null ? (" | " + rl.toString()) : "";
+            String extraDetail = rl != null ? (" | " + rl) : "";
 
             // Add extra info to the log before crash.
-            String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+            String errorReport = "\n****************** Blame Report Flat ChunkGenerator " + Blame.VERSION + " ******************" +
                     "\n\n A crash is most likely going to happen right after this report!" +
                     "\n It seems " + structureEntry.getKey().getFeatureName() + extraDetail + " is the cause because it is not added " +
                     "\n to the FlatGenerationSettings.STRUCTURES map. Please let the mod owner " +

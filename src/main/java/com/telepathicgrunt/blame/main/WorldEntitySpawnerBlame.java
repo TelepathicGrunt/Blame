@@ -33,7 +33,7 @@ public class WorldEntitySpawnerBlame {
             ResourceLocation biomeID = serverWorld.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome);
 
             // Add extra info to the log file.
-            Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+            Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report Mob Weights " + Blame.VERSION + " ******************" +
                     "\n  Detected total weight of mob list is 0 or negative which will crash the game! " +
                     "\n  See info below to find which mob is the problem and where it is attempting to spawn at." +
                     "\n World Registry Name : " + worldID.location().toString() +
@@ -55,7 +55,7 @@ public class WorldEntitySpawnerBlame {
             ResourceLocation biomeID = serverWorld.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome);
 
             // Add extra info to the log file.
-            Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+            Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report Mob Weights " + Blame.VERSION + " ******************" +
                     "\n  Detected total weight of mob list is 0 or negative which will crash the game! " +
                     "\n  See info below to find which mob is the problem and where it is attempting to spawn at." +
                     "\n World Registry Name : " + worldID.location().toString() +

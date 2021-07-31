@@ -51,7 +51,7 @@ public class ProcessorBlame {
                 blockNBT = gson.toJson(blockInfo1.nbt);
             }
 
-            String errorReport = "\n****************** Blame Report " + Blame.VERSION + " ******************" +
+            String errorReport = "\n****************** Blame Report Processor " + Blame.VERSION + " ******************" +
                     "\n\n Processor blew up trying to process a block." +
                     "\n Broken template is: " + brokenNBTFile +
                     "\n Block being processed: " + blockBeingProcessed +
