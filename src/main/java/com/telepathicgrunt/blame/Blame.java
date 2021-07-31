@@ -1,5 +1,6 @@
 package com.telepathicgrunt.blame;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
@@ -9,9 +10,21 @@ import net.minecraft.world.biome.BiomeMaker;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.biome.MoodSoundAmbience;
+import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
+import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.FeatureSpread;
+import net.minecraft.world.gen.feature.Features;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.TwoLayerFeature;
 import net.minecraft.world.gen.feature.structure.StructureFeatures;
+import net.minecraft.world.gen.foliageplacer.SpruceFoliagePlacer;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilders;
+import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.DatagenModLoader;
 import net.minecraftforge.fml.ExtensionPoint;
@@ -59,6 +72,9 @@ public class Blame {
 
         // Test detecting unregistered configuredfeatures.
         // MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, this::biomeModification);
+
+        // Test detecting broken configuredfeatures.
+        // MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, this::brokenConfiguredFeature);
     }
 
     // Let us know when TagCollectionManager is safe to be classloaded.
@@ -130,6 +146,24 @@ public class Blame {
 //    private void biomeModification(final BiomeLoadingEvent event) {
 //        // Add our structure to all biomes including other modded biomes.
 //        // You can filter to certain biomes based on stuff like temperature, scale, precipitation, mod id.
-//        event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> Feature.DESERT_WELL.withConfiguration(new NoFeatureConfig()));
+//        event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> Feature.DESERT_WELL.configured(new NoFeatureConfig()));
+//    }
+
+//
+//    private void brokenConfiguredFeature(final BiomeLoadingEvent event) {
+//        // Add our structure to all biomes including other modded biomes.
+//        // You can filter to certain biomes based on stuff like temperature, scale, precipitation, mod id.
+//        event.getGeneration().getFeatures(GenerationStage.Decoration.VEGETAL_DECORATION).add(() ->
+//                Feature.TREE.configured((
+//                        new BaseTreeFeatureConfig.Builder(
+//                                new SimpleBlockStateProvider(Blocks.ACACIA_LOG.defaultBlockState()),
+//                                new SimpleBlockStateProvider(Blocks.ACACIA_LEAVES.defaultBlockState()),
+//                                new SpruceFoliagePlacer(FeatureSpread.of(2, 1),
+//                                        FeatureSpread.of(0, 2),
+//                                        FeatureSpread.of(1, 1)),
+//                                new StraightTrunkPlacer(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE),
+//                                new TwoLayerFeature(2, 0, 2)))
+//                        .ignoreVines()
+//                        .build()));
 //    }
 }

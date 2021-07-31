@@ -3,6 +3,8 @@ package com.telepathicgrunt.blame.main;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.mojang.datafixers.util.Either;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import com.telepathicgrunt.blame.Blame;
 import net.minecraft.util.RegistryKey;
@@ -24,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -154,43 +157,49 @@ public class DynamicRegistriesBlame {
                 ResourceLocation biomeID = mapEntry.getKey().location();
                 if (configuredFeatureRegistry.getKey(configuredFeatureSupplier.get()) == null &&
                         WorldGenRegistries.CONFIGURED_FEATURE.getKey(configuredFeatureSupplier.get()) == null) {
-                    try {
-                        ConfiguredFeature.CODEC
-                                .encode(configuredFeatureSupplier, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left()
-                                .ifPresent(configuredFeatureJSON ->
-                                        cacheUnregisteredObject(
-                                                configuredFeatureJSON,
-                                                unregisteredFeatureMap,
-                                                biomeID,
-                                                gson));
-                    }
-                    catch (Throwable e) {
-                        if (!brokenConfiguredStuffSet.contains(configuredFeatureSupplier.toString())) {
-                            brokenConfiguredStuffSet.add(configuredFeatureSupplier.toString());
 
-                            ConfiguredFeature<?, ?> cf = configuredFeatureSupplier.get();
+                    Either<JsonElement, DataResult.PartialResult<JsonElement>> parsedData = ConfiguredFeature.CODEC
+                            .encode(configuredFeatureSupplier, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get();
 
-                            // Getting bottommost cf way is from Quark. Very nice!
-                            Feature<?> feature = cf.feature;
-                            IFeatureConfig config = cf.config;
+                    if(parsedData.right().isPresent() && !brokenConfiguredStuffSet.contains(configuredFeatureSupplier.toString())) {
 
-                            // Get the base feature of the CF. Will not get nested CFs such as trees in Feature.RANDOM_SELECTOR.
-                            while (config instanceof DecoratedFeatureConfig) {
-                                DecoratedFeatureConfig decoratedConfig = (DecoratedFeatureConfig) config;
-                                feature = decoratedConfig.feature.get().feature;
-                                config = decoratedConfig.feature.get().config;
-                            }
+                        brokenConfiguredStuffSet.add(configuredFeatureSupplier.toString());
+                        ConfiguredFeature<?, ?> cf = configuredFeatureSupplier.get();
 
-                            String errorReport = "\n****************** Blame Report ConfiguredFeature JSON parse " + Blame.VERSION + " ******************" +
-                                    "\n\n Found a ConfiguredFeature that was unabled to be turned into JSON which is... bad." +
-                                    "\n This is all the info we can get about this strange... object." +
-                                    "\n Top level cf [feature:" + configuredFeatureSupplier + " | config: " + configuredFeatureSupplier.get().toString() + "]" +
-                                    "\n bottomost level cf [feature:" + feature.toString() + " | config: " + config.toString() + "]" +
-                                    "\n\n";
-
-                            // Log it to the latest.log file as well.
-                            Blame.LOGGER.log(Level.ERROR, errorReport);
+                        ResourceLocation registeredName = WorldGenRegistries.CONFIGURED_FEATURE.getKey(configuredFeatureSupplier.get());
+                        if(registeredName == null) {
+                            registeredName = configuredFeatureRegistry.getKey(configuredFeatureSupplier.get());
                         }
+
+                        // Getting bottommost cf way is from Quark. Very nice!
+                        Feature<?> feature = cf.feature;
+                        IFeatureConfig config = cf.config;
+
+                        // Get the base feature of the CF. Will not get nested CFs such as trees in Feature.RANDOM_SELECTOR.
+                        while (config instanceof DecoratedFeatureConfig) {
+                            DecoratedFeatureConfig decoratedConfig = (DecoratedFeatureConfig) config;
+                            feature = decoratedConfig.feature.get().feature;
+                            config = decoratedConfig.feature.get().config;
+                        }
+
+                        String errorReport = "\n****************** Blame Report ConfiguredFeature JSON parse " + Blame.VERSION + " ******************" +
+                                "\n\n Found a ConfiguredFeature that was unabled to be turned into JSON which is... bad." +
+                                "\n Error msg is: " +parsedData.right().get().message() +
+                                "\n This is all the info we can get about this ConfiguredFeature" +
+                                "\n Registry Name: " + registeredName +
+                                "\n Top level cf [feature:" + configuredFeatureSupplier + " | config: " + configuredFeatureSupplier.get().toString() + "]" +
+                                "\n bottomost level cf [feature:" + feature.toString() + " | config: " + config.toString() + "]" +
+                                "\n\n";
+
+                        // Log it to the latest.log file as well.
+                        Blame.LOGGER.log(Level.ERROR, errorReport);
+                    }
+                    else {
+                        parsedData.left().ifPresent(configuredFeatureSupplier2 ->
+                                cacheUnregisteredObject(configuredFeatureSupplier2,
+                                        unregisteredFeatureMap,
+                                        biomeID,
+                                        gson));
                     }
                 }
             }
