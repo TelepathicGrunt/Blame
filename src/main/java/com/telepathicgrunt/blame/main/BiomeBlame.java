@@ -37,7 +37,6 @@ public class BiomeBlame {
     public static void addFeatureDetails(Biome biome, WorldGenRegion worldGenRegion, ConfiguredFeature<?, ?> configuredFeature) {
         DynamicRegistries dynamicRegistries = worldGenRegion.registryAccess();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String report;
 
         ResourceLocation configuredFeatureID = dynamicRegistries.registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY).getKey(configuredFeature);
         if (configuredFeatureID == null) configuredFeatureID = WorldGenRegistries.CONFIGURED_FEATURE.getKey(configuredFeature);
@@ -47,20 +46,17 @@ public class BiomeBlame {
 
         // Add extra info to the crash report file.
         if (configuredFeatureID == null) {
-            report = "\n****************** Blame Report ConfiguredFeature " + Blame.VERSION + " ******************" +
+            Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report ConfiguredFeature " + Blame.VERSION + " ******************" +
                     "\n\n ConfiguredFeature name was unable to be found due to the configuredfeature not being registered." +
                     "\n Sorry but Blame isn't really able to get much info but..." +
-                    "\n Here's the best attempt at turning the ConfiguredFeature to JSON for analysis: \n" + gson.toJson(configuredFeatureJSON.left().get());
+                    "\n Here's the best attempt at turning the ConfiguredFeature to JSON for analysis: \n" + gson.toJson(configuredFeatureJSON.left().get()));
         }
         else {
-            report = "\n****************** Blame Report ConfiguredFeature " + Blame.VERSION + " ******************" +
+            Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report ConfiguredFeature " + Blame.VERSION + " ******************" +
                     "\n\n ConfiguredFeature Registry Name : " + configuredFeatureID +
                     "\n Biome Registry Name : " + (biomeID != null ? biomeID : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!") +
-                    "\n\n JSON info : " + (configuredFeatureJSON.left().isPresent() ? gson.toJson(configuredFeatureJSON.left().get()) : "Failed to get JSON somehow. Error:\n" + configuredFeatureJSON.right().toString()) + "\n\n";
+                    "\n\n JSON info : " + (configuredFeatureJSON.left().isPresent() ? gson.toJson(configuredFeatureJSON.left().get()) : "Failed to get JSON somehow. Error:\n" + configuredFeatureJSON.right().toString()) + "\n\n");
         }
-
-        // Log it to the latest.log file as well.
-        Blame.LOGGER.log(Level.ERROR, report);
     }
 
 
