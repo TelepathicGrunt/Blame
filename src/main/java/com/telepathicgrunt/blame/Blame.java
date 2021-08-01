@@ -64,9 +64,9 @@ public class Blame implements ModInitializer {
 //        BuiltinRegistries.add(BuiltinRegistries.BIOME, new Identifier(Blame.MODID, "test_code_biome"), newBiome);
 
 
-        // Unregistered worldgen test
+//        // Unregistered worldgen test
 //        // Make the structure and features list mutable for modification later
-//        List<List<Supplier<ConfiguredFeature<?, ?>>>> tempFeature = ((GenerationStageMixin)BuiltinBiomes.PLAINS.getGenerationSettings()).getGSFeatures();
+//        List<List<Supplier<ConfiguredFeature<?, ?>>>> tempFeature = ((GenerationSettingsAccessor)BuiltinBiomes.PLAINS.getGenerationSettings()).getFeatures();
 //        List<List<Supplier<ConfiguredFeature<?, ?>>>> mutableGenerationStages = new ArrayList<>();
 //
 //        // Fill in generation stages so there are at least 9 or else Minecraft crashes.
@@ -80,39 +80,39 @@ public class Blame implements ModInitializer {
 //        }
 //
 //        // Make the Structure and GenerationStages (features) list mutable for modification later
-//        ((GenerationStageMixin)BuiltinBiomes.PLAINS.getGenerationSettings()).setGSFeatures(mutableGenerationStages);
+//        ((GenerationSettingsAccessor)BuiltinBiomes.PLAINS.getGenerationSettings()).setFeatures(mutableGenerationStages);
 //
 //        BuiltinBiomes.PLAINS.getGenerationSettings().getFeatures().get(GenerationStep.Feature.VEGETAL_DECORATION.ordinal()).add(() -> Feature.DESERT_WELL.configure(DefaultFeatureConfig.INSTANCE));
 
-        ConfiguredFeature<?,?> brokenTree =
-                Feature.TREE.configure(
-                        (new TreeFeatureConfig.Builder(
-                                new SimpleBlockStateProvider(Blocks.ACACIA_LOG.getDefaultState()),
-                                new ForkingTrunkPlacer(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE),
-                                new SimpleBlockStateProvider(Blocks.ACACIA_LEAVES.getDefaultState()),
-                                new SimpleBlockStateProvider(Blocks.ACACIA_SAPLING.getDefaultState()),
-                                new AcaciaFoliagePlacer(ConstantIntProvider.create(2), ConstantIntProvider.create(0)),
-                                new TwoLayersFeatureSize(1, 0, 2)))
-                        .ignoreVines()
-                        .build());
-
-        // Make the structure and features list mutable for modification later
-        List<List<Supplier<ConfiguredFeature<?, ?>>>> tempFeature = ((GenerationSettingsAccessor) BuiltinBiomes.PLAINS.getGenerationSettings()).getFeatures();
-        List<List<Supplier<ConfiguredFeature<?, ?>>>> mutableGenerationStages = new ArrayList<>();
-
-        // Fill in generation stages so there are at least 9 or else Minecraft crashes.
-        // (we need all stages for adding features/structures to the right stage too)
-        for(int currentStageIndex = 0; currentStageIndex < Math.max(10, tempFeature.size()); currentStageIndex++){
-            if(currentStageIndex >= tempFeature.size()){
-                mutableGenerationStages.add(new ArrayList<>());
-            }else{
-                mutableGenerationStages.add(new ArrayList<>(tempFeature.get(currentStageIndex)));
-            }
-        }
-
-        // Make the Structure and GenerationStages (features) list mutable for modification later
-        ((GenerationSettingsAccessor)BuiltinBiomes.PLAINS.getGenerationSettings()).setFeatures(mutableGenerationStages);
-
-        BuiltinBiomes.PLAINS.getGenerationSettings().getFeatures().get(GenerationStep.Feature.LOCAL_MODIFICATIONS.ordinal()).add(() -> brokenTree);
+//        ConfiguredFeature<?,?> brokenTree =
+//                Feature.TREE.configure(
+//                        (new TreeFeatureConfig.Builder(
+//                                new SimpleBlockStateProvider(Blocks.ACACIA_LOG.getDefaultState()),
+//                                new ForkingTrunkPlacer(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE),
+//                                new SimpleBlockStateProvider(Blocks.ACACIA_LEAVES.getDefaultState()),
+//                                new SimpleBlockStateProvider(Blocks.ACACIA_SAPLING.getDefaultState()),
+//                                new AcaciaFoliagePlacer(ConstantIntProvider.create(2), ConstantIntProvider.create(0)),
+//                                new TwoLayersFeatureSize(1, 0, 2)))
+//                        .ignoreVines()
+//                        .build());
+//
+//        // Make the structure and features list mutable for modification later
+//        List<List<Supplier<ConfiguredFeature<?, ?>>>> tempFeature = ((GenerationSettingsAccessor) BuiltinBiomes.PLAINS.getGenerationSettings()).getFeatures();
+//        List<List<Supplier<ConfiguredFeature<?, ?>>>> mutableGenerationStages = new ArrayList<>();
+//
+//        // Fill in generation stages so there are at least 9 or else Minecraft crashes.
+//        // (we need all stages for adding features/structures to the right stage too)
+//        for(int currentStageIndex = 0; currentStageIndex < Math.max(10, tempFeature.size()); currentStageIndex++){
+//            if(currentStageIndex >= tempFeature.size()){
+//                mutableGenerationStages.add(new ArrayList<>());
+//            }else{
+//                mutableGenerationStages.add(new ArrayList<>(tempFeature.get(currentStageIndex)));
+//            }
+//        }
+//
+//        // Make the Structure and GenerationStages (features) list mutable for modification later
+//        ((GenerationSettingsAccessor)BuiltinBiomes.PLAINS.getGenerationSettings()).setFeatures(mutableGenerationStages);
+//
+//        BuiltinBiomes.PLAINS.getGenerationSettings().getFeatures().get(GenerationStep.Feature.LOCAL_MODIFICATIONS.ordinal()).add(() -> brokenTree);
     }
 }
