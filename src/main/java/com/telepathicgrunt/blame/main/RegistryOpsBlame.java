@@ -1,16 +1,28 @@
 package com.telepathicgrunt.blame.main;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.Encoder;
 import com.telepathicgrunt.blame.Blame;
 import com.telepathicgrunt.blame.utils.ErrorHints;
 import com.telepathicgrunt.blame.utils.PrettyPrintBrokenJSON;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.DecoratedFeatureConfig;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.FeatureConfig;
 import org.apache.logging.log4j.Level;
 
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -36,7 +48,6 @@ public class RegistryOpsBlame {
             }
             erroredResources.add(fullKey);
 
-            String currentResource = id + ".json";
             String brokenJSON;
             String reason;
 
@@ -76,7 +87,7 @@ public class RegistryOpsBlame {
 
             Blame.LOGGER.log(Level.ERROR,
                     "\n****************** Blame Report Worldgen Import " + Blame.VERSION + " ******************"
-                            + "\n\n Failed to load resource file: " + currentResource
+                            + "\n\n Failed to load resource file: " + id
                             + "\n\n Reason stated: " + reason
                             + "\n\n Possibly helpful hint (hopefully): " + hint
                             + "\n\n Prettified form of the broken JSON: \n" + PrettyPrintBrokenJSON.prettyPrintJSONAsString(brokenJSON)
@@ -85,4 +96,22 @@ public class RegistryOpsBlame {
         });
     }
 
+    /**
+     * Similar to how DynamicRegistryManagerBlame tries to print broken worldgen elements except it seems in 1.17,
+     * that hook there will not actually get broken worldgen elements. This method's hook will. But I kept the original
+     * code in DynamicRegistryManagerBlame just in case...
+     */
+    public static <E> void printBrokenWorldgenElement(RegistryKey<E> key, E entry, DataResult<JsonElement> dataResult, Optional<DataResult.PartialResult<JsonElement>> error) {
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Either<JsonElement, DataResult.PartialResult<JsonElement>> partialResult = dataResult.promotePartial(s->{}).get();
+        JsonElement jsonElement = partialResult.left().orElse(JsonNull.INSTANCE);
+        Blame.LOGGER.error(
+                "\n****************** Blame Report Worldgen Import " + Blame.VERSION + " ******************" +
+                "\n\n Failed to parse worldgen. This can be tricky to solve but it could be from using a value that is over a hardcoded limit." +
+                "\n Here's some info to help narrow down where and what could be the broken worldgen element." +
+                "\n\n Error msg is: " + error.get().message() +
+                "\n Parent Affected: " + key + " | " + entry +
+                "\n\n Partial JSON Result: " + gson.toJson(jsonElement));
+    }
 }

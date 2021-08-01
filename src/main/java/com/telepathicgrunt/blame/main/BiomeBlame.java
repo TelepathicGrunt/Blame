@@ -3,6 +3,8 @@ package com.telepathicgrunt.blame.main;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.mojang.datafixers.util.Either;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import com.telepathicgrunt.blame.Blame;
 import net.minecraft.util.Identifier;
@@ -37,27 +39,12 @@ public class BiomeBlame {
     public static void addFeatureDetails(Biome biome, ChunkRegion chunkRegion, ConfiguredFeature<?, ?> configuredFeature) {
         DynamicRegistryManager dynamicRegistryManager = chunkRegion.getRegistryManager();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        Identifier configuredFeatureID = null;
-        Identifier biomeID = null;
-        Optional<JsonElement> configuredFeatureJSON = Optional.empty();
-        StackTraceElement[] trace = null;
 
-        try {
-            configuredFeatureID = dynamicRegistryManager.get(Registry.CONFIGURED_FEATURE_KEY).getId(configuredFeature);
-            if (configuredFeatureID == null) {
-                configuredFeatureID = BuiltinRegistries.CONFIGURED_FEATURE.getId(configuredFeature);
-            }
-            biomeID = dynamicRegistryManager.get(Registry.BIOME_KEY).getId(biome);
-        }
-        catch (Throwable ignored) {
-        }
+        Identifier configuredFeatureID = dynamicRegistryManager.getMutable(Registry.CONFIGURED_FEATURE_KEY).getId(configuredFeature);
+        if (configuredFeatureID == null) configuredFeatureID = BuiltinRegistries.CONFIGURED_FEATURE.getId(configuredFeature);
 
-        try {
-            configuredFeatureJSON = ConfiguredFeature.REGISTRY_CODEC.encode(() -> configuredFeature, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).get().left();
-        }
-        catch (Throwable e) {
-            trace = e.getStackTrace();
-        }
+        Identifier biomeID = dynamicRegistryManager.getMutable(Registry.BIOME_KEY).getId(biome);
+        Either<JsonElement, DataResult.PartialResult<JsonElement>> configuredFeatureJSON = ConfiguredFeature.REGISTRY_CODEC.encode(() -> configuredFeature, JsonOps.INSTANCE, JsonOps.INSTANCE.empty()).promotePartial(s -> {}).get();
 
         // Add extra info to the latest.log file.
         if (configuredFeatureID == null) {
@@ -65,13 +52,13 @@ public class BiomeBlame {
                             "\n\n ConfiguredFeature name was unable to be found due to either the configuredfeature registry or " +
                             "\n biome registry missing somehow. Or that the configuredfeature is not in any registries." +
                             "\n Sorry but Blame isn't really able to get much info but..." +
-                            "\n Here's the best attempt at turning the configuredfeature to JSON for analysis: \n" + (configuredFeatureJSON.isPresent() ? gson.toJson(configuredFeatureJSON.get()) : ""));
+                            "\n Here's the best attempt at turning the configuredfeature to JSON for analysis: \n" + gson.toJson(configuredFeatureJSON.left().get()));
         }
         else {
             Blame.LOGGER.error("\n****************** Blame Report ConfiguredFeature " + Blame.VERSION + " ******************" +
                             "\n\n ConfiguredFeature Registry Name : " + configuredFeatureID +
                             "\n Biome Registry Name : " + (biomeID != null ? biomeID : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!") +
-                            "\n\n JSON info : " + (configuredFeatureJSON.isPresent() ? gson.toJson(configuredFeatureJSON.get()) : "Failed to get JSON somehow. Stacktrace of error:\n" + Arrays.toString(trace)) + "\n\n");
+                            "\n\n JSON info : " + (configuredFeatureJSON.left().isPresent() ? gson.toJson(configuredFeatureJSON.left().get()) : "Failed to get JSON somehow. Error:\n" + configuredFeatureJSON.right().toString()) + "\n\n");
         }
     }
 
@@ -99,7 +86,7 @@ public class BiomeBlame {
         Blame.LOGGER.error("\n****************** Blame Report ConfiguredStructure " + Blame.VERSION + " ******************" +
                         "\n\n Structure Name : " + structureFeature.getName() + // Never null
                         "\n Structure Registry Name : " + (structureID != null ? structureID : "Structure is not registered somehow. Yell at the mod author when found to register their structures!") +
-                        "\n Structure Details : " + structureFeature.toString() +
+                        "\n Structure Details : " + structureFeature +
                         "\n Biome Registry Name : " + (biomeID != null ? biomeID : "Wait what? How is the biome not registered and has no registry name!?!? This should be impossible!!!"));
     }
 }
