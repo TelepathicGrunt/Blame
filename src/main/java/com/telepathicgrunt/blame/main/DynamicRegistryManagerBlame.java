@@ -62,6 +62,8 @@ public class DynamicRegistryManagerBlame {
         Registry<ConfiguredCarver<?>> configuredCarverRegistry = dynamicRegistries.getMutable(Registry.CONFIGURED_CARVER_KEY);
         Registry<ConfiguredStructureFeature<?, ?>> configuredStructureRegistry = dynamicRegistries.getMutable(Registry.CONFIGURED_STRUCTURE_FEATURE_KEY);
 
+        int numberOfBiomes = biomeRegistry.getIds().size();
+
         // Checks every biome for unregistered or broken worldgen elements.
         for (Biome biome : biomeRegistry) {
             GenerationSettings biomeGenerationSettings = biome.getGenerationSettings();
@@ -85,7 +87,7 @@ public class DynamicRegistryManagerBlame {
             );
         }
 
-        printUnregisteredStuff(unconfiguredStuffMap, brokenConfiguredWorldgenMap, "ConfiguredFeature");
+        printUnregisteredStuff(unconfiguredStuffMap, brokenConfiguredWorldgenMap, "ConfiguredFeature", numberOfBiomes);
         extractModNames(unconfiguredStuffMap, collectedPossibleIssueMods);
 
         for (Biome biome : biomeRegistry) {
@@ -110,7 +112,7 @@ public class DynamicRegistryManagerBlame {
             }
         }
 
-        printUnregisteredStuff(unconfiguredStuffMap, brokenConfiguredWorldgenMap, "ConfiguredStructure");
+        printUnregisteredStuff(unconfiguredStuffMap, brokenConfiguredWorldgenMap, "ConfiguredStructure", numberOfBiomes);
         extractModNames(unconfiguredStuffMap, collectedPossibleIssueMods);
 
         for (Biome biome : biomeRegistry) {
@@ -133,7 +135,7 @@ public class DynamicRegistryManagerBlame {
             });
         }
 
-        printUnregisteredStuff(unconfiguredStuffMap, brokenConfiguredWorldgenMap, "ConfiguredStructure");
+        printUnregisteredStuff(unconfiguredStuffMap, brokenConfiguredWorldgenMap, "ConfiguredStructure", numberOfBiomes);
         extractModNames(unconfiguredStuffMap, collectedPossibleIssueMods);
 
         if (collectedPossibleIssueMods.size() != 0) {
@@ -234,7 +236,7 @@ public class DynamicRegistryManagerBlame {
         unregisteredObjectMap.get(configuredObjectString).add(biomeID);
     }
 
-    private static void printUnregisteredStuff(Map<String, Set<Identifier>> unregisteredStuffMap, Map<String, String> brokenConfiguredStuffSet, String type) {
+    private static void printUnregisteredStuff(Map<String, Set<Identifier>> unregisteredStuffMap, Map<String, String> brokenConfiguredStuffSet, String type, int numberOfBiomes) {
 
         boolean printedInitialInfo = false;
         String initialInfo =
@@ -257,10 +259,12 @@ public class DynamicRegistryManagerBlame {
                         "\n as otherwise, it will break other mods or datapacks that registered their stuff.\n";
         for (Map.Entry<String, Set<Identifier>> entry : unregisteredStuffMap.entrySet()) {
 
+            String biomeAffected = numberOfBiomes == entry.getValue().size() ? "All biomes" : entry.getValue().toString().replaceAll("(([\\w :]*,){7})", "$1\n                  ");
+
             // Add extra info to the log.
-            String errorReport = (printedInitialInfo ? "" : initialInfo) +
+            String errorReport = (printedInitialInfo ? "----------------------------------" : initialInfo) +
                     "\n Unregistered " + type + " JSON info : " + entry.getKey() +
-                    "\n\n Biome affected : " + entry.getValue().toString().replaceAll("(([\\w :]*,){7})", "$1\n                  ") + "\n\n";
+                    "\n\n Biome affected : " + biomeAffected + "\n\n";
 
             // Log it to the latest.log file as well.
             Blame.LOGGER.log(Level.ERROR, errorReport);
