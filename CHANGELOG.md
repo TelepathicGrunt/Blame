@@ -1,3 +1,9 @@
+### **(V.3.2.6 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
+
+#### Unregistered Worldgen:
+Will condense the report so that unregistered worldgen affecting all biomes will say "all biomes" instead of listing every biome.
+
+
 ### **(V.3.2.5 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
 
 #### Broken/Unregistered Worldgen:
