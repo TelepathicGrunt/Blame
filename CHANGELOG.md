@@ -1,4 +1,8 @@
-### **(V.3.2.6 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
+### **(V.3.3.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
+
+#### Empty Structure Start Pools:
+Blame will print additional info if a start pool for a jigsaw structure is empty as that will cause a crash.
+It will talk you through why it make be empty and who is the owner of the pool that became empty and crashed.
 
 #### Unregistered Worldgen:
 Will condense the report so that unregistered worldgen affecting all biomes will say "all biomes" instead of listing every biome.
