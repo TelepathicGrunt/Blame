@@ -296,7 +296,7 @@ public class DynamicRegistriesBlame {
             String biomeAffected = numberOfBiomes == entry.getValue().size() ? "All biomes" : entry.getValue().toString().replaceAll("(([\\w :]*,){7})", "$1\n                  ");
 
             // Add extra info to the log.
-            String errorReport = (printedInitialInfo ? "----------------------------------" : initialInfo) +
+            String errorReport = (printedInitialInfo ? "\n----------------------------------------------------------------------------------" : initialInfo) +
                     "\n Unregistered " + type + " JSON info : " + entry.getKey() +
                     "\n\n Biome affected : " + biomeAffected + "\n\n";
 
