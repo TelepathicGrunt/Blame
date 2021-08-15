@@ -35,10 +35,10 @@ public class TemplateStructurePieceMixin {
 
     @Inject(method = "postProcess(Lnet/minecraft/world/ISeedReader;Lnet/minecraft/world/gen/feature/structure/StructureManager;Lnet/minecraft/world/gen/ChunkGenerator;Ljava/util/Random;Lnet/minecraft/util/math/MutableBoundingBox;Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/util/math/BlockPos;)Z",
             at = @At(value = "HEAD"))
-    private void addMissingnbtDetails(ISeedReader world, StructureManager structureManager,
-                                      ChunkGenerator chunkGenerator, Random random,
-                                      MutableBoundingBox boundingBox, ChunkPos chunkPos,
-                                      BlockPos blockPos, CallbackInfoReturnable<Boolean> cir) {
+    private void blame_addMissingnbtDetails(ISeedReader world, StructureManager structureManager,
+                                            ChunkGenerator chunkGenerator, Random random,
+                                            MutableBoundingBox boundingBox, ChunkPos chunkPos,
+                                            BlockPos blockPos, CallbackInfoReturnable<Boolean> cir) {
         if (placeSettings == null) {
             TemplateStructurePieceBlame.printAboutToCrashBlame((TemplateStructurePiece)(Object)this);
         }

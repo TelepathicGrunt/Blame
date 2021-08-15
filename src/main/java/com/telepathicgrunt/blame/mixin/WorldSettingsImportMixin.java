@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 @Mixin(WorldSettingsImport.class)
 public class WorldSettingsImportMixin<E> {
     @Inject(method = "readAndRegisterElement", at = @At(value = "RETURN"))
-    private void addBrokenFileDetails(RegistryKey<? extends Registry<E>> registryKey, MutableRegistry<E> mutableRegistry, Codec<E> mapCodec, ResourceLocation id, CallbackInfoReturnable<DataResult<Supplier<E>>> cir) {
+    private void blame_addBrokenFileDetails(RegistryKey<? extends Registry<E>> registryKey, MutableRegistry<E> mutableRegistry, Codec<E> mapCodec, ResourceLocation id, CallbackInfoReturnable<DataResult<Supplier<E>>> cir) {
         WorldSettingsImportBlame.addBrokenFileDetails(registryKey, id, cir.getReturnValue());
     }
 }

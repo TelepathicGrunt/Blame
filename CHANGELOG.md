@@ -1,3 +1,13 @@
+### **(V.3.4.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
+
+#### Structure Registration:
+Will now print a Blame report if a registered Structure is not also added to the Structure.STRUCTURES_REGISTRY field (Mojmap)
+  Any structure not in that field will cause chunks to be unable to be saved. Which is bad. And the error for that is vague.
+
+#### Structure Piece NBT:
+Now will try to print out what structure piece failed to be converted to NBT for saving structure references to the chunk. 
+
+
 ### **(V.3.3.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
 
 #### Empty Structure Start Pools:

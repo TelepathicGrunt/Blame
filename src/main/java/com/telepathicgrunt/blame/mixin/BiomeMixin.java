@@ -39,12 +39,12 @@ public class BiomeMixin {
     @Inject(method = "generate(Lnet/minecraft/world/gen/feature/structure/StructureManager;Lnet/minecraft/world/gen/ChunkGenerator;Lnet/minecraft/world/gen/WorldGenRegion;JLnet/minecraft/util/SharedSeedRandom;Lnet/minecraft/util/math/BlockPos;)V",
             at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/crash/CrashReport;addCategory(Ljava/lang/String;)Lnet/minecraft/crash/CrashReportCategory;", ordinal = 1),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    private void addFeatureDetails(StructureManager structureManager, ChunkGenerator chunkGenerator,
-                                   WorldGenRegion worldGenRegion, long seed, SharedSeedRandom random, BlockPos pos,
-                                   CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> GenerationStageList,
-                                   int numOfGenerationStage, int generationStageIndex, int configuredFeatureIndex,
-                                   Iterator<ConfiguredFeature<?, ?>> var12, Supplier<ConfiguredFeature<?, ?>> supplier,
-                                   ConfiguredFeature<?, ?> configuredfeature, Exception exception, CrashReport crashreport) {
+    private void blame_addFeatureDetails(StructureManager structureManager, ChunkGenerator chunkGenerator,
+                                         WorldGenRegion worldGenRegion, long seed, SharedSeedRandom random, BlockPos pos,
+                                         CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> GenerationStageList,
+                                         int numOfGenerationStage, int generationStageIndex, int configuredFeatureIndex,
+                                         Iterator<ConfiguredFeature<?, ?>> var12, Supplier<ConfiguredFeature<?, ?>> supplier,
+                                         ConfiguredFeature<?, ?> configuredfeature, Exception exception, CrashReport crashreport) {
         BiomeBlame.addFeatureDetails((Biome) (Object) this, worldGenRegion, configuredfeature);
     }
 
@@ -57,13 +57,13 @@ public class BiomeMixin {
     @Inject(method = "generate(Lnet/minecraft/world/gen/feature/structure/StructureManager;Lnet/minecraft/world/gen/ChunkGenerator;Lnet/minecraft/world/gen/WorldGenRegion;JLnet/minecraft/util/SharedSeedRandom;Lnet/minecraft/util/math/BlockPos;)V",
             at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/crash/CrashReport;addCategory(Ljava/lang/String;)Lnet/minecraft/crash/CrashReportCategory;", ordinal = 0),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    private void addStructureDetails(StructureManager structureManager, ChunkGenerator chunkGenerator,
-                                     WorldGenRegion worldGenRegion, long seed, SharedSeedRandom random, BlockPos pos,
-                                     CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> list,
-                                     int numOfGenerationStage, int generationStageIndex, int configuredFeatureIndex,
-                                     Iterator<Structure<?>> var12, Structure<?> structureFeature,
-                                     int chunkX, int chunkZ, int ChunkXPos, int ChunkZPos,
-                                     Exception exception, CrashReport crashreport) {
+    private void blame_addStructureDetails(StructureManager structureManager, ChunkGenerator chunkGenerator,
+                                           WorldGenRegion worldGenRegion, long seed, SharedSeedRandom random, BlockPos pos,
+                                           CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> list,
+                                           int numOfGenerationStage, int generationStageIndex, int configuredFeatureIndex,
+                                           Iterator<Structure<?>> var12, Structure<?> structureFeature,
+                                           int chunkX, int chunkZ, int ChunkXPos, int ChunkZPos,
+                                           Exception exception, CrashReport crashreport) {
         BiomeBlame.addStructureDetails((Biome) (Object) this, worldGenRegion, structureFeature, crashreport);
     }
 }

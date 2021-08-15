@@ -40,9 +40,9 @@ public class FlatGenerationSettingsMixin {
     @Inject(method = "getBiomeFromSettings()Lnet/minecraft/world/biome/Biome;",
             at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    private void addCrashDetails(CallbackInfoReturnable<Biome> cir, Biome biome, BiomeGenerationSettings biomegenerationsettings,
-                                 BiomeGenerationSettings.Builder biomegenerationsettings$builder, Iterator<?> var4,
-                                 Map.Entry<Structure<?>, StructureSeparationSettings> structureEntry) {
+    private void blame_addCrashDetails(CallbackInfoReturnable<Biome> cir, Biome biome, BiomeGenerationSettings biomegenerationsettings,
+                                       BiomeGenerationSettings.Builder biomegenerationsettings$builder, Iterator<?> var4,
+                                       Map.Entry<Structure<?>, StructureSeparationSettings> structureEntry) {
         FlatGenerationSettingsBlame.addCrashDetails(STRUCTURE_FEATURES, structureEntry);
     }
 }

@@ -20,7 +20,7 @@ public class TemplateManagerMixin {
 
     @Inject(method = "loadFromResource(Lnet/minecraft/util/ResourceLocation;)Lnet/minecraft/world/gen/feature/template/Template;",
             at = @At(value = "RETURN"))
-    private void addMissingnbtDetails(ResourceLocation miniRL, CallbackInfoReturnable<Template> cir) {
+    private void blame_addMissingnbtDetails(ResourceLocation miniRL, CallbackInfoReturnable<Template> cir) {
         if (cir.getReturnValue() == null) {
             MissingNBTBlame.addMissingnbtDetails(miniRL);
         }

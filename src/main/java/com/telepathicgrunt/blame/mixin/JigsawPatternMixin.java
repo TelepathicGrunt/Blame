@@ -26,7 +26,7 @@ public class JigsawPatternMixin {
 
     @Redirect(method = "<init>(Lnet/minecraft/util/ResourceLocation;Lnet/minecraft/util/ResourceLocation;Ljava/util/List;)V",
             at = @At(value = "INVOKE", target = "Lcom/mojang/datafixers/util/Pair;getFirst()Ljava/lang/Object;", remap = false))
-    private <F> F tooLargePool(Pair<F, Integer> pair, ResourceLocation name, ResourceLocation fallback, List<Pair<JigsawPiece, Integer>> pieceElements) {
+    private <F> F blame_tooLargePool(Pair<F, Integer> pair, ResourceLocation name, ResourceLocation fallback, List<Pair<JigsawPiece, Integer>> pieceElements) {
         if (pair.getSecond() > 100000) {
             JigsawPatternBlame.printExcessiveWeight(name, (Pair<JigsawPiece, Integer>) pair);
         }
@@ -36,13 +36,13 @@ public class JigsawPatternMixin {
 
     @Inject(method = "getMaxSize(Lnet/minecraft/world/gen/feature/template/TemplateManager;)I",
             at = @At(value = "HEAD"))
-    private void tempPool(TemplateManager templateManager, CallbackInfoReturnable<Integer> cir) {
+    private void blame_tempPool(TemplateManager templateManager, CallbackInfoReturnable<Integer> cir) {
         MissingNBTBlame.CALLING_POOL = ((JigsawPattern) (Object) this).getName();
     }
 
     @Inject(method = "getMaxSize(Lnet/minecraft/world/gen/feature/template/TemplateManager;)I",
             at = @At(value = "TAIL"))
-    private void tempPoolClear(TemplateManager templateManager, CallbackInfoReturnable<Integer> cir) {
+    private void blame_tempPoolClear(TemplateManager templateManager, CallbackInfoReturnable<Integer> cir) {
         MissingNBTBlame.CALLING_POOL = null;
     }
 }

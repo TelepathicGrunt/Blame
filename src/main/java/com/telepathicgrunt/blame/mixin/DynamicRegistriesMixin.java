@@ -22,7 +22,7 @@ public class DynamicRegistriesMixin {
 
     @Dynamic
     @Inject(method = "<clinit>", at = @At("TAIL"), require = 1)
-    private static void onInit(CallbackInfo ci) {
+    private static void blame_onInit(CallbackInfo ci) {
         DynamicRegistriesBlame.classloadedCheck();
     }
 
@@ -33,7 +33,7 @@ public class DynamicRegistriesMixin {
      */
     @Inject(method = "builtin()Lnet/minecraft/util/registry/DynamicRegistries$Impl;",
             at = @At(value = "RETURN"), require = 1)
-    private static void worldCreateHook(CallbackInfoReturnable<DynamicRegistries.Impl> cir) {
+    private static void blame_worldCreateHook(CallbackInfoReturnable<DynamicRegistries.Impl> cir) {
         DynamicRegistriesBlame.printUnregisteredWorldgenConfiguredStuff(cir.getReturnValue());
     }
 }

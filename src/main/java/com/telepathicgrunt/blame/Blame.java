@@ -1,5 +1,7 @@
 package com.telepathicgrunt.blame;
 
+import com.telepathicgrunt.blame.main.StructureFeatureBlame;
+import com.telepathicgrunt.blame.main.StructurePieceBlame;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.DatagenModLoader;
 import net.minecraftforge.fml.ExtensionPoint;
@@ -56,6 +58,7 @@ public class Blame {
 
     private void afterModStartups(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
+            StructureFeatureBlame.verifyStructuresInRegistry();
             MAIN_MOD_STARTUPS_FINISHED = true;
         });
     }

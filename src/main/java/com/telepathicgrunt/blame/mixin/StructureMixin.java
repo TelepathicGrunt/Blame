@@ -21,7 +21,7 @@ public class StructureMixin {
 
     @Inject(method = "getPotentialFeatureChunk(Lnet/minecraft/world/gen/settings/StructureSeparationSettings;JLnet/minecraft/util/SharedSeedRandom;II)Lnet/minecraft/util/math/ChunkPos;",
             at = @At(value = "HEAD"))
-    private void checkSpacing(StructureSeparationSettings separationSettings, long seed, SharedSeedRandom rand, int x, int z, CallbackInfoReturnable<ChunkPos> cir) {
+    private void blame_checkSpacing(StructureSeparationSettings separationSettings, long seed, SharedSeedRandom rand, int x, int z, CallbackInfoReturnable<ChunkPos> cir) {
         if (separationSettings.spacing() == 0 || separationSettings.spacing() - separationSettings.separation() <= 0) {
             StructureFeatureBlame.printStructureSpacingBlame((Structure<?>) (Object) this, separationSettings);
         }

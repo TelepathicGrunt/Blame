@@ -25,7 +25,7 @@ public class TagCollectionManagerMixin {
     @Inject(method = "getInstance",
             at = @At(value = "TAIL"),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void possibleClassloadPoint1(CallbackInfoReturnable<ITagCollectionSupplier> cir) {
+    private static void blame_possibleClassloadPoint1(CallbackInfoReturnable<ITagCollectionSupplier> cir) {
         if(DatagenModLoader.isRunningDataGen()) return;
         if (!Blame.MAIN_MOD_STARTUPS_FINISHED) {
             Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report " + Blame.VERSION + " ******************" +
@@ -40,7 +40,7 @@ public class TagCollectionManagerMixin {
     @Inject(method = "bind",
             at = @At(value = "TAIL"),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void possibleClassloadPoint2(ITagCollectionSupplier managerIn, CallbackInfo ci) {
+    private static void blame_possibleClassloadPoint2(ITagCollectionSupplier managerIn, CallbackInfo ci) {
         if(DatagenModLoader.isRunningDataGen()) return;
         if (!Blame.MAIN_MOD_STARTUPS_FINISHED) {
             Blame.LOGGER.log(Level.ERROR, "\n****************** Blame Report " + Blame.VERSION + " ******************" +

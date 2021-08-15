@@ -5,6 +5,7 @@
   "plugin": "com.telepathicgrunt.blame.mixin.BlameMixinPlugin",
   "refmap": "blame.refmap.json",
   "mixins": [
+    "AbstractVillagePieceMixin",
     "BiomeMixin",
     "BootstrapMixin",
     "CommandsMixin",

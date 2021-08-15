@@ -35,16 +35,16 @@ public class CommandsMixin {
 
     @Inject(method = "<init>",
             at = @At(value = "RETURN"))
-    private void onInit(Commands.EnvironmentType p_i232148_1_, CallbackInfo ci) {
+    private void blame_onInit(Commands.EnvironmentType p_i232148_1_, CallbackInfo ci) {
         BrokenCommandBlame.detectBrokenCommand(dispatcher);
     }
 
     @Inject(method = "performCommand(Lnet/minecraft/command/CommandSource;Ljava/lang/String;)I",
             at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;isDebugEnabled()Z", remap = false),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    private void printFailedCommandStacktrace(CommandSource commandSource, String commandString, CallbackInfoReturnable<Integer> cir,
-                                              StringReader stringreader, Exception exception,
-                                              IFormattableTextComponent iformattabletextcomponent) {
+    private void blame_printFailedCommandStacktrace(CommandSource commandSource, String commandString, CallbackInfoReturnable<Integer> cir,
+                                                    StringReader stringreader, Exception exception,
+                                                    IFormattableTextComponent iformattabletextcomponent) {
         if (!LOGGER.isDebugEnabled()) {
             BrokenCommandBlame.printStacktrace(commandString, LOGGER, exception, iformattabletextcomponent);
         }
