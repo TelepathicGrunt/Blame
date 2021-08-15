@@ -7,9 +7,6 @@ Will now print a Blame report if a registered Structure is not also added to the
 #### Structure Piece NBT:
 Now will try to print out what structure piece failed to be converted to NBT for saving structure references to the chunk.
 
-
-### **(V.4.0.2 Changes) (1.17.1 Minecraft)**
-
 #### Unregistered Worldgen:
 Will condense the report so that unregistered worldgen affecting all biomes will say "all biomes" instead of listing every biome.
 
