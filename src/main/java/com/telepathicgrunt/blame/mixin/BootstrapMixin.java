@@ -22,7 +22,7 @@ public class BootstrapMixin {
 
     @Inject(method = "initialize()V",
             at = @At(value = "TAIL"))
-    private static void onInit(CallbackInfo ci) {
+    private static void blame_onInit(CallbackInfo ci) {
         DispenserBlockRegistry<Item, DispenserBehavior> map = Util.make(new DispenserBlockRegistry<>(), (behaviour) -> behaviour.defaultReturnValue(new ItemDispenserBehavior()));
         map.putAll(DispenserBlockAccessor.blame_getBEHAVIORS());
         map.startupIgnore = false; // Finished copying. Now turn on registry replacement detection.

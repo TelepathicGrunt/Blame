@@ -12,6 +12,7 @@
     "GenerationSettingsAccessor",
     "LootManagerMixin",
     "PoolAccessor",
+    "PoolStructurePieceMixin",
     "RecipeManagerMixin",
     "RegistryOpsInnerClassMixin",
     "RegistryOpsMixin",

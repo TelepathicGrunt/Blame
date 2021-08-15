@@ -1,3 +1,13 @@
+### **(V.4.1.0 Changes) (1.17.1 Minecraft)**
+
+#### Structure Registration:
+Will now print a Blame report if a registered Structure is not also added to the StructureFeature.STRUCTURES field (Yarn)
+  Any structure not in that field will cause chunks to be unable to be saved. Which is bad. And the error for that is vague.
+
+#### Structure Piece NBT:
+Now will try to print out what structure piece failed to be converted to NBT for saving structure references to the chunk.
+
+
 ### **(V.4.0.2 Changes) (1.17.1 Minecraft)**
 
 #### Unregistered Worldgen:

@@ -1,38 +1,15 @@
 package com.telepathicgrunt.blame;
 
-import com.telepathicgrunt.blame.mixin.GenerationSettingsAccessor;
+import com.telepathicgrunt.blame.main.StructureFeatureBlame;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.intprovider.ConstantIntProvider;
-import net.minecraft.util.registry.BuiltinRegistries;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeEffects;
-import net.minecraft.world.biome.BuiltinBiomes;
-import net.minecraft.world.biome.GenerationSettings;
-import net.minecraft.world.biome.SpawnSettings;
-import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.ConfiguredFeatures;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.TreeFeatureConfig;
-import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
-import net.minecraft.world.gen.foliage.AcaciaFoliagePlacer;
-import net.minecraft.world.gen.stateprovider.SimpleBlockStateProvider;
-import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilders;
-import net.minecraft.world.gen.trunk.ForkingTrunkPlacer;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
-
-public class Blame implements ModInitializer {
+public class Blame implements ModInitializer, DedicatedServerModInitializer, ClientModInitializer {
     public static final String MODID = "blame";
     public static final Logger LOGGER = LogManager.getLogger();
     public static String VERSION = "N/A";
@@ -114,5 +91,17 @@ public class Blame implements ModInitializer {
 //        ((GenerationSettingsAccessor)BuiltinBiomes.PLAINS.getGenerationSettings()).setFeatures(mutableGenerationStages);
 //
 //        BuiltinBiomes.PLAINS.getGenerationSettings().getFeatures().get(GenerationStep.Feature.LOCAL_MODIFICATIONS.ordinal()).add(() -> brokenTree);
+    }
+
+
+    // These two methods run after onInitialize() so that we can verify all mod's structures after the main setup.
+    @Override
+    public void onInitializeServer() {
+        StructureFeatureBlame.verifyStructuresInRegistry();
+    }
+
+    @Override
+    public void onInitializeClient() {
+        StructureFeatureBlame.verifyStructuresInRegistry();
     }
 }

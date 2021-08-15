@@ -28,7 +28,7 @@ public class RegistryOpsInnerClassMixin {
     @Inject(method = "add(Lnet/minecraft/util/registry/DynamicRegistryManager$Impl;Lnet/minecraft/util/registry/RegistryKey;Lcom/mojang/serialization/Encoder;ILjava/lang/Object;Lcom/mojang/serialization/Lifecycle;)V",
             at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;)V", remap = false),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    private <E> void printBrokenWorldgenElementInfo(DynamicRegistryManager.Impl registryManager, RegistryKey<E> key, Encoder<E> encoder, int rawId, E entry, Lifecycle lifecycle, CallbackInfo ci, DataResult<JsonElement> dataResult, Optional<DataResult.PartialResult<JsonElement>> error) {
+    private <E> void blame_printBrokenWorldgenElementInfo(DynamicRegistryManager.Impl registryManager, RegistryKey<E> key, Encoder<E> encoder, int rawId, E entry, Lifecycle lifecycle, CallbackInfo ci, DataResult<JsonElement> dataResult, Optional<DataResult.PartialResult<JsonElement>> error) {
         RegistryOpsBlame.printBrokenWorldgenElement(key, entry, dataResult, error);
     }
 }

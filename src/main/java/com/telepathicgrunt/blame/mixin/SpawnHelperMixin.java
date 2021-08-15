@@ -35,7 +35,7 @@ public class SpawnHelperMixin {
 
     @Redirect(method = "pickRandomSpawnEntry(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/entity/SpawnGroup;Ljava/util/Random;Lnet/minecraft/util/math/BlockPos;)Ljava/util/Optional;",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/util/collection/Pool;getOrEmpty(Ljava/util/Random;)Ljava/util/Optional;"))
-    private static Optional<SpawnSettings.SpawnEntry> checkIfMobSpawnWillCrash(Pool<SpawnSettings.SpawnEntry> pool, Random random,
+    private static Optional<SpawnSettings.SpawnEntry> blame_checkIfMobSpawnWillCrash1(Pool<SpawnSettings.SpawnEntry> pool, Random random,
                                                                                      ServerWorld serverWorld, StructureAccessor structureAccessor,
                                                                                      ChunkGenerator chunkGenerator, SpawnGroup spawnGroup,
                                                                                      Random random2, BlockPos pos) {
@@ -47,7 +47,7 @@ public class SpawnHelperMixin {
     @Inject(method = "populateEntities(Lnet/minecraft/world/ServerWorldAccess;Lnet/minecraft/world/biome/Biome;Lnet/minecraft/util/math/ChunkPos;Ljava/util/Random;)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/util/collection/Pool;getOrEmpty(Ljava/util/Random;)Ljava/util/Optional;", ordinal = 0),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void checkIfMobSpawnWillCrash2(ServerWorldAccess world, Biome biome, ChunkPos chunkPos, Random random, CallbackInfo ci, SpawnSettings spawnSettings, Pool<SpawnSettings.SpawnEntry> pool) {
+    private static void blame_checkIfMobSpawnWillCrash2(ServerWorldAccess world, Biome biome, ChunkPos chunkPos, Random random, CallbackInfo ci, SpawnSettings spawnSettings, Pool<SpawnSettings.SpawnEntry> pool) {
         addMobCrashDetails(world, chunkPos, biome, pool);
     }
 }

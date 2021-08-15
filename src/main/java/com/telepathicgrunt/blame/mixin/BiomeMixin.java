@@ -40,14 +40,14 @@ public class BiomeMixin {
     @Inject(method = "generateFeatureStep(Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/world/ChunkRegion;JLnet/minecraft/world/gen/ChunkRandom;Lnet/minecraft/util/math/BlockPos;)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/util/crash/CrashReport;create(Ljava/lang/Throwable;Ljava/lang/String;)Lnet/minecraft/util/crash/CrashReport;", ordinal = 1),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    private void addFeatureDetails(StructureAccessor structureAccessor, ChunkGenerator chunkGenerator,
-                                   ChunkRegion chunkRegion, long seed, ChunkRandom random, BlockPos pos,
-                                   CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> list,
-                                   Registry<ConfiguredFeature<?, ?>> registry, Registry<StructureFeature<?>> structureFeatures,
-                                   int numOfGenerationSteps, int generationStepIndex, int configuredFeatureIndex,
-                                   Iterator<ConfiguredFeature<?, ?>> var12, Supplier<ConfiguredFeature<?, ?>> supplier,
-                                   ConfiguredFeature<?, ?> configuredFeature, Supplier<String> supplier3,
-                                   Exception exception) {
+    private void blame_addFeatureDetails(StructureAccessor structureAccessor, ChunkGenerator chunkGenerator,
+                                         ChunkRegion chunkRegion, long seed, ChunkRandom random, BlockPos pos,
+                                         CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> list,
+                                         Registry<ConfiguredFeature<?, ?>> registry, Registry<StructureFeature<?>> structureFeatures,
+                                         int numOfGenerationSteps, int generationStepIndex, int configuredFeatureIndex,
+                                         Iterator<ConfiguredFeature<?, ?>> var12, Supplier<ConfiguredFeature<?, ?>> supplier,
+                                         ConfiguredFeature<?, ?> configuredFeature, Supplier<String> supplier3,
+                                         Exception exception) {
         BiomeBlame.addFeatureDetails((Biome) (Object) this, chunkRegion, configuredFeature);
     }
 
@@ -60,16 +60,16 @@ public class BiomeMixin {
     @Inject(method = "generateFeatureStep(Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/world/ChunkRegion;JLnet/minecraft/world/gen/ChunkRandom;Lnet/minecraft/util/math/BlockPos;)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/util/crash/CrashReport;create(Ljava/lang/Throwable;Ljava/lang/String;)Lnet/minecraft/util/crash/CrashReport;", ordinal = 0),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    private void addStructureDetails(StructureAccessor structureAccessor, ChunkGenerator chunkGenerator,
-                                     ChunkRegion chunkRegion, long seed, ChunkRandom random, BlockPos pos,
-                                     CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> list,
-                                     Registry<ConfiguredFeature<?, ?>> registry, Registry<StructureFeature<?>> structureFeatures,
-                                     int numOfGenerationSteps, int generationStepIndex, int configuredFeatureIndex,
-                                     List<List<Supplier<ConfiguredFeature<?, ?>>>> list2,
-                                     Iterator<StructureFeature<?>> structureFeatureIterator,
-                                     StructureFeature<?> structureFeature,
-                                     int sectionCordX, int sectionCordZ, int blockCordX, int blockCordZ,
-                                     Supplier<String> supplier, Exception exception) {
+    private void blame_addStructureDetails(StructureAccessor structureAccessor, ChunkGenerator chunkGenerator,
+                                           ChunkRegion chunkRegion, long seed, ChunkRandom random, BlockPos pos,
+                                           CallbackInfo ci, List<List<Supplier<ConfiguredFeature<?, ?>>>> list,
+                                           Registry<ConfiguredFeature<?, ?>> registry, Registry<StructureFeature<?>> structureFeatures,
+                                           int numOfGenerationSteps, int generationStepIndex, int configuredFeatureIndex,
+                                           List<List<Supplier<ConfiguredFeature<?, ?>>>> list2,
+                                           Iterator<StructureFeature<?>> structureFeatureIterator,
+                                           StructureFeature<?> structureFeature,
+                                           int sectionCordX, int sectionCordZ, int blockCordX, int blockCordZ,
+                                           Supplier<String> supplier, Exception exception) {
         BiomeBlame.addStructureDetails((Biome) (Object) this, chunkRegion, structureFeature);
     }
 }

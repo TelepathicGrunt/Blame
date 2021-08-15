@@ -37,8 +37,8 @@ public class StructurePoolBasedGeneratorStructurePoolGeneratorMixin {
     @Inject(method = "generatePiece(Lnet/minecraft/structure/PoolStructurePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZLnet/minecraft/world/HeightLimitView;)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/util/BlockRotation;randomRotationOrder(Ljava/util/Random;)Ljava/util/List;"),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    private void storeCurrentPool2(PoolStructurePiece piece, MutableObject<VoxelShape> pieceShape, int minY, int currentSize,
-                                   boolean bl, HeightLimitView world, CallbackInfo ci, StructurePoolElement structurePoolElement) {
+    private void blame_storeCurrentPool1(PoolStructurePiece piece, MutableObject<VoxelShape> pieceShape, int minY, int currentSize,
+                                         boolean bl, HeightLimitView world, CallbackInfo ci, StructurePoolElement structurePoolElement) {
         if (structurePoolElement instanceof SinglePoolElement && ((SinglePoolElementAccessor) structurePoolElement).blame_getTemplateID().left().isPresent()) {
             MissingNBTBlame.CALLING_POOL = ((SinglePoolElementAccessor) structurePoolElement).blame_getTemplateID().left().get();
         }
@@ -46,8 +46,8 @@ public class StructurePoolBasedGeneratorStructurePoolGeneratorMixin {
 
     @Inject(method = "generatePiece(Lnet/minecraft/structure/PoolStructurePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZLnet/minecraft/world/HeightLimitView;)V",
             at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/structure/pool/StructurePoolBasedGenerator$PieceFactory;create(Lnet/minecraft/structure/StructureManager;Lnet/minecraft/structure/pool/StructurePoolElement;Lnet/minecraft/util/math/BlockPos;ILnet/minecraft/util/BlockRotation;Lnet/minecraft/util/math/BlockBox;)Lnet/minecraft/structure/PoolStructurePiece;"))
-    private void storeCurrentPool3(PoolStructurePiece piece, MutableObject<VoxelShape> pieceShape, int minY, int currentSize,
-                                   boolean bl, HeightLimitView world, CallbackInfo ci) {
+    private void blame_storeCurrentPool2(PoolStructurePiece piece, MutableObject<VoxelShape> pieceShape, int minY, int currentSize,
+                                         boolean bl, HeightLimitView world, CallbackInfo ci) {
         MissingNBTBlame.CALLING_POOL = null;
     }
 
@@ -55,26 +55,26 @@ public class StructurePoolBasedGeneratorStructurePoolGeneratorMixin {
     @Inject(method = "generatePiece(Lnet/minecraft/structure/PoolStructurePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZLnet/minecraft/world/HeightLimitView;)V",
             at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", ordinal = 0, remap = false),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    private void printMissingPoolDetails1(PoolStructurePiece piece, MutableObject<VoxelShape> pieceShape, int minY, int currentSize,
-                                          boolean bl, HeightLimitView world, CallbackInfo ci, StructurePoolElement structurePoolElement,
-                                          BlockPos blockPos, BlockRotation blockRotation, StructurePool.Projection projection,
-                                          boolean bl2, MutableObject<VoxelShape> mutableObject2, BlockBox blockBox, int i,
-                                          Iterator<Structure.StructureBlockInfo> var14, Structure.StructureBlockInfo structureBlockInfo,
-                                          Direction direction, BlockPos blockPos2, BlockPos blockPos3, int j, int k,
-                                          Identifier targetPoolId) {
+    private void blame_printMissingPoolDetails1(PoolStructurePiece piece, MutableObject<VoxelShape> pieceShape, int minY, int currentSize,
+                                                boolean bl, HeightLimitView world, CallbackInfo ci, StructurePoolElement structurePoolElement,
+                                                BlockPos blockPos, BlockRotation blockRotation, StructurePool.Projection projection,
+                                                boolean bl2, MutableObject<VoxelShape> mutableObject2, BlockBox blockBox, int i,
+                                                Iterator<Structure.StructureBlockInfo> var14, Structure.StructureBlockInfo structureBlockInfo,
+                                                Direction direction, BlockPos blockPos2, BlockPos blockPos3, int j, int k,
+                                                Identifier targetPoolId) {
         MissingTemplatePoolBlame.addEmptyPoolDetails(targetPoolId, ((SinglePoolElementAccessor) structurePoolElement).blame_getTemplateID().left().orElse(null));
     }
 
     @Inject(method = "generatePiece(Lnet/minecraft/structure/PoolStructurePiece;Lorg/apache/commons/lang3/mutable/MutableObject;IIZLnet/minecraft/world/HeightLimitView;)V",
             at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false, ordinal = 1),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    private void printMissingPoolDetails2(PoolStructurePiece piece, MutableObject<VoxelShape> pieceShape, int minY, int currentSize,
-                                          boolean bl, HeightLimitView world, CallbackInfo ci, StructurePoolElement structurePoolElement,
-                                          BlockPos blockPos, BlockRotation blockRotation, StructurePool.Projection projection,
-                                          boolean bl2, MutableObject<VoxelShape> mutableObject2, BlockBox blockBox, int i,
-                                          Iterator<Structure.StructureBlockInfo> var14, Structure.StructureBlockInfo structureBlockInfo,
-                                          Direction direction, BlockPos blockPos2, BlockPos blockPos3, int j, int k,
-                                          Identifier targetPoolId) {
+    private void blame_printMissingPoolDetails2(PoolStructurePiece piece, MutableObject<VoxelShape> pieceShape, int minY, int currentSize,
+                                                boolean bl, HeightLimitView world, CallbackInfo ci, StructurePoolElement structurePoolElement,
+                                                BlockPos blockPos, BlockRotation blockRotation, StructurePool.Projection projection,
+                                                boolean bl2, MutableObject<VoxelShape> mutableObject2, BlockBox blockBox, int i,
+                                                Iterator<Structure.StructureBlockInfo> var14, Structure.StructureBlockInfo structureBlockInfo,
+                                                Direction direction, BlockPos blockPos2, BlockPos blockPos3, int j, int k,
+                                                Identifier targetPoolId) {
         MissingTemplatePoolBlame.addEmptyPoolDetails(targetPoolId, ((SinglePoolElementAccessor) structurePoolElement).blame_getTemplateID().left().orElse(null));
     }
 }

@@ -35,7 +35,7 @@ public abstract class StructurePoolMixin {
     // Detect and print the empty template pool that is gonna crash game.
     @Inject(method = "getRandomElement(Ljava/util/Random;)Lnet/minecraft/structure/pool/StructurePoolElement;",
             at = @At(value = "HEAD"))
-    private void isEmptyPool(Random random, CallbackInfoReturnable<StructurePoolElement> cir) {
+    private void blame_isEmptyPool(Random random, CallbackInfoReturnable<StructurePoolElement> cir) {
         if (elements.size() == 0) {
             MissingTemplatePoolBlame.addEmptyPoolDetails(id, null);
         }

@@ -39,9 +39,9 @@ public class FlatChunkGeneratorConfigMixin {
     @Inject(method = "createBiome()Lnet/minecraft/world/biome/Biome;",
             at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;"),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    private void addCrashDetails(CallbackInfoReturnable<Biome> cir, Biome biome, GenerationSettings generationSettings,
-                                 GenerationSettings.Builder biomegenerationsettings$builder, Iterator<?> var4,
-                                 Map.Entry<StructureFeature<?>, ConfiguredStructureFeature<?, ?>> structureEntry) {
+    private void blame_addCrashDetails(CallbackInfoReturnable<Biome> cir, Biome biome, GenerationSettings generationSettings,
+                                       GenerationSettings.Builder biomegenerationsettings$builder, Iterator<?> var4,
+                                       Map.Entry<StructureFeature<?>, ConfiguredStructureFeature<?, ?>> structureEntry) {
         FlatChunkGeneratorConfigBlame.addCrashDetails(STRUCTURE_TO_FEATURES, structureEntry);
     }
 }

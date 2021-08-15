@@ -20,6 +20,12 @@
     "entrypoints": {
         "main": [
             "com.telepathicgrunt.blame.Blame"
+        ],
+        "client": [
+            "com.telepathicgrunt.blame.Blame"
+        ],
+        "server": [
+            "com.telepathicgrunt.blame.Blame"
         ]
     },
     "mixins": [

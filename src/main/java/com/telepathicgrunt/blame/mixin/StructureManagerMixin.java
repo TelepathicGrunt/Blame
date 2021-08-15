@@ -22,7 +22,7 @@ public class StructureManagerMixin {
 
     @Inject(method = "getStructureOrBlank(Lnet/minecraft/util/Identifier;)Lnet/minecraft/structure/Structure;",
             at = @At(value = "RETURN"))
-    private void addMissingnbtDetails1(Identifier miniRL, CallbackInfoReturnable<Structure> cir) {
+    private void blame_addMissingnbtDetails1(Identifier miniRL, CallbackInfoReturnable<Structure> cir) {
         if (cir.getReturnValue() == null) {
             MissingNBTBlame.addMissingNbtDetails(miniRL);
         }
@@ -30,7 +30,7 @@ public class StructureManagerMixin {
 
     @Inject(method = "getStructure(Lnet/minecraft/util/Identifier;)Ljava/util/Optional;",
             at = @At(value = "RETURN"))
-    private void addMissingnbtDetails2(Identifier miniRL, CallbackInfoReturnable<Optional<Structure>> cir) {
+    private void blame_addMissingnbtDetails2(Identifier miniRL, CallbackInfoReturnable<Optional<Structure>> cir) {
         if (!cir.getReturnValue().isPresent()) {
             MissingNBTBlame.addMissingNbtDetails(miniRL);
         }

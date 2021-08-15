@@ -24,7 +24,7 @@ public class RecipeManagerMixin {
      * `require = 0` as this is the definition of non-essential
      */
     @Redirect(method = "apply", at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false), require = 0)
-    private void simplifyInvalidRecipeLogOutput(Logger logger, String message, Object p0, Object p1) {
+    private void blame_simplifyInvalidRecipeLogOutput(Logger logger, String message, Object p0, Object p1) {
         logger.error(message + " {}: {} (Blame {}: suppressed long stacktrace)", p0, p1.getClass().getSimpleName(), ((Exception) p1).getMessage(), Blame.VERSION);
     }
 
@@ -33,7 +33,7 @@ public class RecipeManagerMixin {
      * See MC-190122 https://bugs.mojang.com/browse/MC-190122
      */
     @Redirect(method = "apply", at = @At(value = "INVOKE", target = "Ljava/util/Map;size()I"), require = 0)
-    private int redirect$apply$size(Map<RecipeType<?>, ImmutableMap.Builder<Identifier, Recipe<?>>> map) {
+    private int blame_redirect$apply$size(Map<RecipeType<?>, ImmutableMap.Builder<Identifier, Recipe<?>>> map) {
         return this.recipes.values().stream().mapToInt(Map::size).sum();
     }
 }

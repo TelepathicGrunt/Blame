@@ -23,7 +23,7 @@ public class StructureMixin {
     @Redirect(method = "process(Lnet/minecraft/world/WorldAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/structure/StructurePlacementData;Ljava/util/List;)Ljava/util/List;",
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/structure/processor/StructureProcessor;process(Lnet/minecraft/world/WorldView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/structure/Structure$StructureBlockInfo;Lnet/minecraft/structure/Structure$StructureBlockInfo;Lnet/minecraft/structure/StructurePlacementData;)Lnet/minecraft/structure/Structure$StructureBlockInfo;"))
-    private static Structure.StructureBlockInfo processBlockInfos(StructureProcessor structureProcessor, WorldView world, BlockPos blockPos1, BlockPos blockPos2, Structure.StructureBlockInfo blockInfo1, Structure.StructureBlockInfo blockInfo2, StructurePlacementData placementSettings) {
+    private static Structure.StructureBlockInfo blame_processBlockInfos(StructureProcessor structureProcessor, WorldView world, BlockPos blockPos1, BlockPos blockPos2, Structure.StructureBlockInfo blockInfo1, Structure.StructureBlockInfo blockInfo2, StructurePlacementData placementSettings) {
         return ProcessorBlame.findBrokenProcessor(structureProcessor, world, blockPos1, blockPos2, blockInfo1, blockInfo2, placementSettings);
     }
 }

@@ -29,7 +29,7 @@ public class LootManagerMixin {
 
     @Inject(method = "getTable(Lnet/minecraft/util/Identifier;)Lnet/minecraft/loot/LootTable;",
             at = @At(value = "HEAD"))
-    private void addMissingLoottableDetails(Identifier ressources, CallbackInfoReturnable<LootTable> cir) {
+    private void blame_addMissingLoottableDetails(Identifier ressources, CallbackInfoReturnable<LootTable> cir) {
         if (!tables.containsKey(ressources)) {
             MissingLoottableBlame.addMissingLoottableDetails(ressources);
         }
@@ -40,7 +40,7 @@ public class LootManagerMixin {
      */
     @SuppressWarnings("UnresolvedMixinReference")
     @Redirect(method = "*(Lnet/minecraft/resources/IResourceManager;Lcom/google/common/collect/ImmutableMap$Builder;Lnet/minecraft/util/ResourceLocation;Lcom/google/gson/JsonElement;)V", at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"), require = 0, remap = false)
-    private void simplifyInvalidLootTableLogOutput(Logger logger, String message, Object p0, Object p1) {
+    private void blame_simplifyInvalidLootTableLogOutput(Logger logger, String message, Object p0, Object p1) {
         logger.error(message + " {}: {} (Blame {}: suppressed long stacktrace)", p0, p1.getClass().getSimpleName(), ((Exception) p1).getMessage(), Blame.VERSION);
     }
 }
