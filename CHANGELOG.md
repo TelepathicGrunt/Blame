@@ -1,6 +1,12 @@
 ### **(V.3.4.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
 
-#### Structure Registration/Tag manager:
+#### Structure Registration:
+Fixed report name being wrong lol. And formatted the report for Structure.STRUCTURES_REGISTRY field to be a bit better.
+
+
+### **(V.3.4.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
+
+#### Structure Registration/Tag Manager:
 Fixed false positive reports being printed because event priority does not apply to events that extends ParallelDispatchEvent.
 
 
