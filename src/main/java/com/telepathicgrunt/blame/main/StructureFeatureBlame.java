@@ -40,10 +40,10 @@ public class StructureFeatureBlame {
     public static void verifyStructuresInRegistry(){
         for(Map.Entry<RegistryKey<StructureFeature<?>>, StructureFeature<?>> structure : Registry.STRUCTURE_FEATURE.getEntries()){
             if(!StructureFeature.STRUCTURES.containsValue(structure.getValue())){
-                String errorReport = "\n****************** Blame Report Processor " + Blame.VERSION + " ******************" +
-                        "\n\n Found a structure not registered to the \"StructureFeature.STRUCTURES\" field (Mojmap)." +
+                String errorReport = "\n****************** Blame Report Structure Map " + Blame.VERSION + " ******************" +
+                        "\n Found a structure not registered to the \"StructureFeature.STRUCTURES\" field (Mojmap)." +
                         "\n Modders, please add your structure to that map or else chunks cannot be saved in game anymore." +
-                        "\n The missing structure from the map is: " + structure.getKey();
+                        "\n The missing structure from the map is: " + structure.getKey() + "\n";
                 Blame.LOGGER.log(Level.ERROR, errorReport);
             }
         }
