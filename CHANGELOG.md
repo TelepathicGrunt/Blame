@@ -1,3 +1,9 @@
+### **(V.3.4.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
+
+#### Structure Registration/Tag manager:
+Fixed false positive reports being printed because event priority does not apply to events that extends ParallelDispatchEvent.
+
+
 ### **(V.3.4.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
 
 #### Structure Registration:

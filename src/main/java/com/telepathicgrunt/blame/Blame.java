@@ -8,7 +8,10 @@ import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.FMLNetworkConstants;
 import org.apache.commons.lang3.tuple.Pair;
@@ -35,7 +38,9 @@ public class Blame {
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST,
                 () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
 
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(EventPriority.LOWEST, this::afterModStartups);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::afterModStartups);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::afterModStartups2);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::modInitFullyFinished);
 
         // Test code biomes stuff to see what missing stuff does to the logs
         //FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Biome.class, this::registerBiome);
@@ -56,11 +61,16 @@ public class Blame {
     // Let us know when TagCollectionManager is safe to be classloaded.
     public static boolean MAIN_MOD_STARTUPS_FINISHED = false;
 
-    private void afterModStartups(final FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> {
-            StructureFeatureBlame.verifyStructuresInRegistry();
-            MAIN_MOD_STARTUPS_FINISHED = true;
-        });
+    private void afterModStartups(final FMLClientSetupEvent event) {
+        MAIN_MOD_STARTUPS_FINISHED = true;
+    }
+
+    private void afterModStartups2(final FMLDedicatedServerSetupEvent event) {
+        MAIN_MOD_STARTUPS_FINISHED = true;
+    }
+
+    private void modInitFullyFinished(final FMLLoadCompleteEvent event) {
+        event.enqueueWork(StructureFeatureBlame::verifyStructuresInRegistry);
     }
 
 //    private void registerBiome(final RegistryEvent.Register<Biome> event){
