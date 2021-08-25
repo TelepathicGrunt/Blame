@@ -1,7 +1,10 @@
-### **(V.4.1.1 Changes) (1.17.1 Minecraft)**
+### **(V.4.2.0 Changes) (1.17.1 Minecraft)**
 
 #### Structure Registration:
 Fixed report name being wrong lol. And formatted the report for Structure.STRUCTURES_REGISTRY field to be a bit better.
+
+#### Worldgen Mob Spawning:
+Will detect and print out info if the game is about to crash because a mob's minGroup size is greater than its maxGroup size during worldgen.
 
 
 ### **(V.4.1.0 Changes) (1.17.1 Minecraft)**
