@@ -1,3 +1,19 @@
+### **(V.3.6.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
+
+#### Worldgen Mob Spawning:
+Will detect and print out info if the game is about to crash because a mob's minGroup size is greater than its maxGroup size during worldgen.
+
+
+### **(V.3.5.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
+
+#### Processor Saving:
+Will now detect if a structure piece crashed chunk saving due to a modded processor returning null in their getType method. 
+
+#### Structure Piece NBT:
+Will now print out which structure piece crashed during chunk saving to nbt.
+  (before, the piece crash caused Blame to not print what piece it was)
+
+
 ### **(V.3.4.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
 
 #### Structure Registration:

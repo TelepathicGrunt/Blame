@@ -31,8 +31,7 @@ public class ProcessorBlame {
     public static Template.BlockInfo findBrokenProcessor(StructureProcessor structureProcessor, IWorldReader world, BlockPos blockPos1, BlockPos blockPos2, Template.BlockInfo blockInfo1, Template.BlockInfo blockInfo2, PlacementSettings placementSettings, Template template) {
         try {
             return structureProcessor.process(world, blockPos1, blockPos2, blockInfo1, blockInfo2, placementSettings, template);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             MinecraftServer minecraftServer = ServerLifecycleHooks.getCurrentServer();
             TemplateManager templateManager = ((MinecraftServerAccessor) minecraftServer).blame_getStructureManager();
             Map<ResourceLocation, Template> templateMap = ((TemplateManagerAccessor) templateManager).blame_getStructureRepository();
