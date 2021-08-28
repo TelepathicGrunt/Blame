@@ -1,3 +1,19 @@
+### **(V.3.7.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
+
+#### Structure Step:
+Detects and prints out what structure is missing their entry in the Structure.STEP map.
+  That map is used for determining what generation step the structure will generate in unless the structure overrode getStep() method.
+
+#### Biome Source:
+Detects if a dimension's biome source has a null entry in their possibleBiomes list which will cause a crash with /locate and other structure checks.
+
+
+### **(V.3.6.1 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
+
+#### Broken Worldgen:
+Fixed up detection and reports for `Error adding element:` issues. No more vague lines hopefully now!
+
+
 ### **(V.3.6.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
 
 #### Worldgen Mob Spawning:

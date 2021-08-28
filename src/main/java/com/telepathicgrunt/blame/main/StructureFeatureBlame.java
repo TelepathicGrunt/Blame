@@ -1,6 +1,7 @@
 package com.telepathicgrunt.blame.main;
 
 import com.telepathicgrunt.blame.Blame;
+import com.telepathicgrunt.blame.mixin.StructureAccessor;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
@@ -48,5 +49,14 @@ public class StructureFeatureBlame {
                 Blame.LOGGER.log(Level.ERROR, errorReport);
             }
         }
+    }
+
+    public static void printMissingStep(Structure<?> currentStructure){
+        String errorReport = "\n****************** Blame Report Structure Step " + Blame.VERSION + " ******************" +
+                "\n Found a structure missing from the STEP map (mojmap)." +
+                "\n That map is used to connect structures to their generation step to use." +
+                "\n The missing structure from the map is: " + currentStructure.getFeatureName() + " : " + currentStructure +
+                "\n STEP map has: " + StructureAccessor.blame_getSTEP();
+        Blame.LOGGER.log(Level.ERROR, errorReport);
     }
 }

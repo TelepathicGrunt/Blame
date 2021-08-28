@@ -1,5 +1,10 @@
 package com.telepathicgrunt.blame.main;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.DataResult;
 import com.telepathicgrunt.blame.Blame;
 import com.telepathicgrunt.blame.utils.ErrorHints;
@@ -11,6 +16,7 @@ import org.apache.logging.log4j.Level;
 
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -78,5 +84,25 @@ public class WorldSettingsImportBlame {
                             + "\n\n"
             );
         });
+    }
+
+
+    /**
+     * Similar to how DynamicRegistryManagerBlame tries to print broken worldgen elements except it seems in 1.17,
+     * that hook there will not actually get broken worldgen elements. This method's hook will. But I kept the original
+     * code in DynamicRegistryManagerBlame just in case...
+     */
+    public static <E> void printBrokenWorldgenElement(RegistryKey<E> key, E entry, DataResult<JsonElement> dataResult, Optional<DataResult.PartialResult<JsonElement>> error) {
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Either<JsonElement, DataResult.PartialResult<JsonElement>> partialResult = dataResult.promotePartial(s->{}).get();
+        JsonElement jsonElement = partialResult.left().orElse(JsonNull.INSTANCE);
+        Blame.LOGGER.error(
+                "\n****************** Blame Report Worldgen Import " + Blame.VERSION + " ******************" +
+                        "\n\n Failed to parse worldgen. This can be tricky to solve but it could be from using a value that is over a hardcoded limit." +
+                        "\n Here's some info to help narrow down where and what could be the broken worldgen element." +
+                        "\n\n Error msg is: " + error.get().message() +
+                        "\n Parent Affected: " + key + " | " + entry +
+                        "\n\n Partial JSON Result: " + gson.toJson(jsonElement));
     }
 }

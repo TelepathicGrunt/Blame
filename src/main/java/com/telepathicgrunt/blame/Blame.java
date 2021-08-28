@@ -1,7 +1,11 @@
 package com.telepathicgrunt.blame;
 
+import com.telepathicgrunt.blame.main.BiomeSourceBlame;
 import com.telepathicgrunt.blame.main.StructureFeatureBlame;
 import com.telepathicgrunt.blame.main.StructurePieceBlame;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.DatagenModLoader;
 import net.minecraftforge.fml.ExtensionPoint;
@@ -41,6 +45,7 @@ public class Blame {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::afterModStartups);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::afterModStartups2);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::modInitFullyFinished);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, this::addDimensionalSpacing);
 
         // Test code biomes stuff to see what missing stuff does to the logs
         //FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Biome.class, this::registerBiome);
@@ -71,6 +76,13 @@ public class Blame {
 
     private void modInitFullyFinished(final FMLLoadCompleteEvent event) {
         event.enqueueWork(StructureFeatureBlame::verifyStructuresInRegistry);
+    }
+
+    public void addDimensionalSpacing(final WorldEvent.Load event) {
+        if(event.getWorld() instanceof ServerWorld) {
+            ServerWorld serverWorld = (ServerWorld) event.getWorld();
+            BiomeSourceBlame.checkWorld(serverWorld);
+        }
     }
 
 //    private void registerBiome(final RegistryEvent.Register<Biome> event){

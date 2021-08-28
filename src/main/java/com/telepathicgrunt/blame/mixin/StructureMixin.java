@@ -3,6 +3,7 @@ package com.telepathicgrunt.blame.mixin;
 import com.telepathicgrunt.blame.main.StructureFeatureBlame;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.settings.StructureSeparationSettings;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,6 +25,14 @@ public class StructureMixin {
     private void blame_checkSpacing(StructureSeparationSettings separationSettings, long seed, SharedSeedRandom rand, int x, int z, CallbackInfoReturnable<ChunkPos> cir) {
         if (separationSettings.spacing() == 0 || separationSettings.spacing() - separationSettings.separation() <= 0) {
             StructureFeatureBlame.printStructureSpacingBlame((Structure<?>) (Object) this, separationSettings);
+        }
+    }
+
+    @Inject(method = "step()Lnet/minecraft/world/gen/GenerationStage$Decoration;",
+            at = @At(value = "RETURN"))
+    private void blame_checkStep(CallbackInfoReturnable<GenerationStage.Decoration> cir) {
+        if (cir.getReturnValue() == null) {
+            StructureFeatureBlame.printMissingStep((Structure<?>) (Object) this);
         }
     }
 }
