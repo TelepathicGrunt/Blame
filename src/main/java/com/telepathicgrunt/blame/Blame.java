@@ -2,6 +2,8 @@ package com.telepathicgrunt.blame;
 
 import com.telepathicgrunt.blame.main.BiomeSourceBlame;
 import com.telepathicgrunt.blame.main.StructureFeatureBlame;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
