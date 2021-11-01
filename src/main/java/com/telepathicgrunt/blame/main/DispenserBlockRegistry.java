@@ -2,6 +2,7 @@ package com.telepathicgrunt.blame.main;
 
 import com.google.common.collect.ImmutableMap;
 import com.telepathicgrunt.blame.Blame;
+import com.telepathicgrunt.blame.BlameConfig;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -54,7 +55,7 @@ public class DispenserBlockRegistry<K, V> extends Object2ObjectOpenHashMap<K, V>
         // Can't use Forge Item Registry as it is null when this method is first called by vanilla.
         // Have to check for default air as that is the default value if no entry is found for the item.
         // Getting the optional RegistryKey always return null even for values that exists. Wth Mojang?
-        if (!Registry.ITEM.getKey((Item) item).toString().equals("minecraft:air")) {
+        if (BlameConfig.printDispenserBehaviorReplacements && !Registry.ITEM.getKey((Item) item).toString().equals("minecraft:air")) {
             ResourceLocation itemRl = Registry.ITEM.getKey((Item) item);
             String behaviorClassName = behavior.getClass().getName();
 

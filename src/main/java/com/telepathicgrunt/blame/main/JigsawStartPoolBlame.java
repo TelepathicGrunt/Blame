@@ -1,13 +1,7 @@
 package com.telepathicgrunt.blame.main;
 
-import com.mojang.datafixers.util.Pair;
 import com.telepathicgrunt.blame.Blame;
-import com.telepathicgrunt.blame.mixin.SingleJigsawPieceAccessor;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPattern;
-import net.minecraft.world.gen.feature.jigsaw.JigsawPiece;
-import net.minecraft.world.gen.feature.jigsaw.SingleJigsawPiece;
-import net.minecraft.world.gen.feature.structure.VillageConfig;
 import org.apache.logging.log4j.Level;
 
 /* @author - TelepathicGrunt

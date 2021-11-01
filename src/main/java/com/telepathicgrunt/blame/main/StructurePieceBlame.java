@@ -5,17 +5,10 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
 import com.telepathicgrunt.blame.Blame;
 import com.telepathicgrunt.blame.mixin.SingleJigsawPieceAccessor;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTDynamicOps;
-import net.minecraft.util.RegistryKey;
 import net.minecraft.world.gen.feature.jigsaw.JigsawPiece;
 import net.minecraft.world.gen.feature.jigsaw.SingleJigsawPiece;
 import net.minecraft.world.gen.feature.structure.AbstractVillagePiece;
-import net.minecraft.world.gen.feature.structure.Structure;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.Level;
-
-import java.util.Map;
 
 /* @author - TelepathicGrunt
  *

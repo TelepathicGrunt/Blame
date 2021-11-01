@@ -1,5 +1,13 @@
 ### **(V.3.7.0 Changes) (1.16.2/1.16.3/1.16.4/1.16.5 Minecraft)**
 
+#### Duplicate Optional Tags:
+Will detect if anyone tried to use createOptional method for tags when they should be doing bind instead.
+ Using createOptional for tags will create duplicate optional tags which will break Forge and CraftTweaker and could prevent world loading too.
+
+#### Dispenser Behaviors:
+Printing Dispenser Behaviors Registry Replacements is now turned off by default since I have not seen a single problem yet with mods modifying Dispenser Behaviors that was solved by logging them out.
+ You can turn it on by editing config/blame-forge.properties file above the mods folder.
+
 #### Structure Step:
 Detects and prints out what structure is missing their entry in the Structure.STEP map.
   That map is used for determining what generation step the structure will generate in unless the structure overrode getStep() method.

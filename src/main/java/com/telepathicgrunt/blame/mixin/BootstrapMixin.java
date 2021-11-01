@@ -1,5 +1,6 @@
 package com.telepathicgrunt.blame.mixin;
 
+import com.telepathicgrunt.blame.BlameConfig;
 import com.telepathicgrunt.blame.main.DispenserBlockRegistry;
 import net.minecraft.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.dispenser.IDispenseItemBehavior;
@@ -25,6 +26,7 @@ public class BootstrapMixin {
             at = @At(value = "TAIL"))
     private static void onInit(CallbackInfo ci) {
         if(DatagenModLoader.isRunningDataGen()) return;
+        BlameConfig.createAndReadConfig();
         DispenserBlockRegistry<Item, IDispenseItemBehavior> map = Util.make(new DispenserBlockRegistry<>(), (behaviour) -> behaviour.defaultReturnValue(new DefaultDispenseItemBehavior()));
         map.putAll(DispenserBlockAccessor.blame_getDISPENSER_REGISTRY());
         map.startupIgnore = false; // Finished copying. Now turn on registry replacement detection.

@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 /* @author - TelepathicGrunt
  *
@@ -23,8 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public class TagCollectionManagerMixin {
 
     @Inject(method = "getInstance",
-            at = @At(value = "TAIL"),
-            locals = LocalCapture.CAPTURE_FAILHARD)
+            at = @At(value = "TAIL"))
     private static void blame_possibleClassloadPoint1(CallbackInfoReturnable<ITagCollectionSupplier> cir) {
         if(DatagenModLoader.isRunningDataGen()) return;
         if (!Blame.MAIN_MOD_STARTUPS_FINISHED) {
@@ -38,8 +36,7 @@ public class TagCollectionManagerMixin {
     }
 
     @Inject(method = "bind",
-            at = @At(value = "TAIL"),
-            locals = LocalCapture.CAPTURE_FAILHARD)
+            at = @At(value = "TAIL"))
     private static void blame_possibleClassloadPoint2(ITagCollectionSupplier managerIn, CallbackInfo ci) {
         if(DatagenModLoader.isRunningDataGen()) return;
         if (!Blame.MAIN_MOD_STARTUPS_FINISHED) {

@@ -2,7 +2,6 @@ package com.telepathicgrunt.blame;
 
 import com.telepathicgrunt.blame.main.BiomeSourceBlame;
 import com.telepathicgrunt.blame.main.StructureFeatureBlame;
-import com.telepathicgrunt.blame.main.StructurePieceBlame;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
@@ -13,7 +12,6 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -23,14 +21,15 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
+
 @Mod(Blame.MODID)
 public class Blame {
     public static final String MODID = "blame";
     public static final Logger LOGGER = LogManager.getLogger();
     public static String VERSION = "N/A";
 
-    public Blame() {
-
+    public Blame() throws IOException {
         ModList.get().getModContainerById(Blame.MODID)
                 .ifPresent(container -> VERSION = container.getModInfo().getVersion().toString());
 
@@ -54,7 +53,7 @@ public class Blame {
         //MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
 
         // Test detecting dispenser registry replacements
-        // DispenserBlock.registerDispenseBehavior(Items.HONEY_BOTTLE, new DefaultDispenseItemBehavior());
+        // DispenserBlock.registerBehavior(Items.HONEY_BOTTLE, new DefaultDispenseItemBehavior());
 
         // Test detecting unregistered configuredfeatures.
         // MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, this::unregisteredConfiguredFeature);
@@ -65,6 +64,7 @@ public class Blame {
 
     // Let us know when TagCollectionManager is safe to be classloaded.
     public static boolean MAIN_MOD_STARTUPS_FINISHED = false;
+    public static boolean MAIN_TAG_INIT = false;
 
     private void afterModStartups(final FMLClientSetupEvent event) {
         MAIN_MOD_STARTUPS_FINISHED = true;
