@@ -1,3 +1,9 @@
+### **(V.4.2.1 Changes) (1.17.1 Minecraft)**
+
+#### Null Processors:
+Now prints out the pool that crashed due to having a null processor list.
+
+
 ### **(V.4.2.0 Changes) (1.17.1 Minecraft)**
 
 #### Structure Registration:

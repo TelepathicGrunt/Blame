@@ -2,8 +2,11 @@ package com.telepathicgrunt.blame.mixin;
 
 import com.mojang.datafixers.util.Pair;
 import com.telepathicgrunt.blame.main.MissingNBTBlame;
+import com.telepathicgrunt.blame.main.StructurePieceBlame;
 import net.minecraft.structure.StructureManager;
+import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.structure.pool.SinglePoolElement;
+import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockBox;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,6 +30,14 @@ public class SinglePoolElementMixin {
         }
         else {
             MissingNBTBlame.storeCurrentIdentifiers(null);
+        }
+    }
+
+    @Inject(method = "createPlacementData(Lnet/minecraft/util/BlockRotation;Lnet/minecraft/util/math/BlockBox;Z)Lnet/minecraft/structure/StructurePlacementData;",
+            at = @At(value = "HEAD"))
+    private void blame_nullProcessors(BlockRotation rotation, BlockBox box, boolean keepJigsaws, CallbackInfoReturnable<StructurePlacementData> cir) {
+        if (((SinglePoolElementAccessor) this).blame_getProcessors().get() == null) {
+            StructurePieceBlame.addNullProcessorDetails((SinglePoolElement)(Object)this);
         }
     }
 }
