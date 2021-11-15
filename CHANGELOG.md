@@ -1,7 +1,10 @@
-### **(V.4.2.1 Changes) (1.17.1 Minecraft)**
+### **(V.4.3.0 Changes) (1.17.1 Minecraft)**
 
 #### Null Processors:
 Now prints out the pool that crashed due to having a null processor list.
+
+#### Invalid Player Data:
+Will now print out what the error message is that normally would've been hidden to the logs when faced with Invalid Player Data disconnection.
 
 
 ### **(V.4.2.0 Changes) (1.17.1 Minecraft)**

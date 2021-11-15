@@ -16,6 +16,7 @@
     "RecipeManagerMixin",
     "RegistryOpsInnerClassMixin",
     "RegistryOpsMixin",
+    "ServerLoginNetworkHandlerMixin",
     "SinglePoolElementAccessor",
     "SinglePoolElementMixin",
     "SpawnHelperMixin",
