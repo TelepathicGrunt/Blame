@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(ServerLoginNetworkHandler.class)
 public class ServerLoginNetworkHandlerMixin {
-
     @Inject(method = "acceptPlayer()V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/network/ClientConnection;disconnect(Lnet/minecraft/text/Text;)V"),
             locals = LocalCapture.CAPTURE_FAILHARD)

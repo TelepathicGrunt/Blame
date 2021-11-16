@@ -9,13 +9,10 @@ import com.telepathicgrunt.blame.Blame;
  * LGPLv3
  */
 public class PacketBlame {
-
     public static void printError(Exception exception) {
         Blame.LOGGER.error(
                 "\n****************** Blame Report Invalid Player Data Error " + Blame.VERSION + " ******************" +
                         "\n\n An error occurred with player trying to join world." +
-                        "\n\n Here's the error message that would've been hidden: ");
-        exception.printStackTrace();
+                        "\n Here's the error message that would've been hidden:\n", exception);
     }
-
 }
