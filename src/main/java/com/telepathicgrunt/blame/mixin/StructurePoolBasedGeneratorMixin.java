@@ -32,7 +32,7 @@ import java.util.Random;
 @Mixin(StructurePoolBasedGenerator.class)
 public class StructurePoolBasedGeneratorMixin {
 
-    @Inject(method = "method_30419(Lnet/minecraft/util/registry/DynamicRegistryManager;Lnet/minecraft/world/gen/feature/StructurePoolFeatureConfig;Lnet/minecraft/structure/pool/StructurePoolBasedGenerator$PieceFactory;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/structure/StructureManager;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/structure/StructurePiecesHolder;Ljava/util/Random;ZZLnet/minecraft/world/HeightLimitView;)V",
+    @Inject(method = "generate(Lnet/minecraft/util/registry/DynamicRegistryManager;Lnet/minecraft/world/gen/feature/StructurePoolFeatureConfig;Lnet/minecraft/structure/pool/StructurePoolBasedGenerator$PieceFactory;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/structure/StructureManager;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/structure/StructurePiecesHolder;Ljava/util/Random;ZZLnet/minecraft/world/HeightLimitView;)V",
             at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/structure/pool/StructurePool;getRandomElement(Ljava/util/Random;)Lnet/minecraft/structure/pool/StructurePoolElement;"),
             locals = LocalCapture.CAPTURE_FAILHARD)
     private static void blame_storeCurrentPool(DynamicRegistryManager dynamicRegistryManager, StructurePoolFeatureConfig structurePoolFeatureConfig,

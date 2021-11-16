@@ -23,7 +23,7 @@ public class RecipeManagerMixin {
      * Log a more useful message. Full stack trace is not useful. Concise, readable errors are useful.
      * `require = 0` as this is the definition of non-essential
      */
-    @Redirect(method = "apply", at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false), require = 0)
+    @Redirect(method = "apply(Ljava/util/Map;Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/util/profiler/Profiler;)V", at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false), require = 0)
     private void blame_simplifyInvalidRecipeLogOutput(Logger logger, String message, Object p0, Object p1) {
         logger.error(message + " {}: {} (Blame {}: suppressed long stacktrace)", p0, p1.getClass().getSimpleName(), ((Exception) p1).getMessage(), Blame.VERSION);
     }
@@ -32,7 +32,7 @@ public class RecipeManagerMixin {
      * This fixes a stupid vanilla bug - when it logs "Loaded X recipes", it actually logs the number of recipe types, not the number of recipes. `require = 0` as this is the definition of non-essential
      * See MC-190122 https://bugs.mojang.com/browse/MC-190122
      */
-    @Redirect(method = "apply", at = @At(value = "INVOKE", target = "Ljava/util/Map;size()I"), require = 0)
+    @Redirect(method = "apply(Ljava/util/Map;Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/util/profiler/Profiler;)V", at = @At(value = "INVOKE", target = "Ljava/util/Map;size()I"), require = 0)
     private int blame_redirect$apply$size(Map<RecipeType<?>, ImmutableMap.Builder<Identifier, Recipe<?>>> map) {
         return this.recipes.values().stream().mapToInt(Map::size).sum();
     }
