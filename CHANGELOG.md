@@ -1,3 +1,10 @@
+### **(V.4.3.1 Changes) (1.17.1 Minecraft)**
+
+#### Mod Compat:
+Added support for Notify - https://www.curseforge.com/minecraft/mc-mods/notify
+ Notify will let you know if a new update for Blame is out.
+
+
 ### **(V.4.3.0 Changes) (1.17.1 Minecraft)**
 
 #### Null Processors:
