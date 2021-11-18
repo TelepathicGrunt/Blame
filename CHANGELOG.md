@@ -1,3 +1,9 @@
+### **(V.4.3.2 Changes) (1.17.1 Minecraft)**
+
+#### Mod Compat:
+Fixed Notify compat
+
+
 ### **(V.4.3.1 Changes) (1.17.1 Minecraft)**
 
 #### Mod Compat:
